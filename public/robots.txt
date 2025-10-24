@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Host
+Host: https://aaronsoto.io
+
+# Sitemaps
+Sitemap: https://aaronsoto.io/sitemap-index.xml

@@ -4,6 +4,16 @@ import AnimatedLines from "../components/AnimatedLines.tsx";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import { ViewTransitions } from "astro:transitions";
+const { title, description, image, canonical } = Astro.props;
+
+const siteTitle = title
+  ? `${title} | Aaron Soto`
+  : "Aaron Soto - Veteran Developer";
+const siteDescription =
+  description ||
+  "Portfolio of Aaron Soto, a veteran developer specializing in web development and custom software solutions.";
+const siteImage = image || "/images/aaron-social.png";
+const siteUrl = canonical || Astro.url.href;
 ---
 
 <!doctype html>
@@ -13,7 +23,27 @@ import { ViewTransitions } from "astro:transitions";
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+
+    <title>{siteTitle}</title>
+    <meta name="description" content={siteDescription} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={siteDescription} />
+    <meta property="og:image" content={siteImage} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={siteUrl} />
+    <meta property="twitter:title" content={siteTitle} />
+    <meta property="twitter:description" content={siteDescription} />
+    <meta property="twitter:image" content={siteImage} />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={siteUrl} />
+
     <ViewTransitions fallback="swap" />
   </head>
   <body class="antialiased min-h-screen relative flex flex-col">

@@ -1,0 +1,48 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Arrow from "../components/icons/Arrow.astro";
+---
+
+<Layout
+  title="Page Not Found"
+  description="The page you're looking for doesn't exist. Let's get you back on track."
+>
+  <div class="container min-h-[60vh] flex items-center justify-center">
+    <div class="text-center max-w-2xl mx-auto">
+      <div class="mb-8">
+        <h1 class="text-6xl md:text-8xl font-bold text-primary mb-4">404</h1>
+        <div class="flex items-center gap-4 justify-center mb-6">
+          <span class="text-foreground-muted">// page not found</span>
+          <div class="h-px bg-lines flex-1 max-w-32"></div>
+        </div>
+      </div>
+
+      <h2 class="text-2xl md:text-3xl font-semibold mb-6">
+        looks like this page decided to go rogue.
+      </h2>
+
+      <p class="text-foreground-muted text-lg mb-8 leading-relaxed">
+        The page you're looking for doesn't exist. It might have been moved,
+        deleted, or you entered the wrong URL. Let's get you back on track.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a
+          href="/"
+          class="border border-primary bg-primary text-black py-3 px-6 transition-all hover:bg-primary/80 flex items-center justify-center gap-3 group min-w-48"
+        >
+          back home
+          <Arrow class="inline ml-2 group-hover:rotate-45 transition-all" />
+        </a>
+
+        <a
+          href="/projects"
+          class="border border-lines bg-black/1 backdrop-blur-sm text-foreground-muted py-3 px-6 transition-all hover:border-primary hover:text-primary flex items-center justify-center gap-3 group min-w-48"
+        >
+          view projects
+          <Arrow class="inline ml-2 group-hover:rotate-45 transition-all" />
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

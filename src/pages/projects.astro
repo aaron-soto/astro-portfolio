@@ -5,7 +5,10 @@ import { getCollection } from "astro:content";
 const workPosts = await getCollection("work");
 ---
 
-<Layout>
+<Layout
+  title="Projects by Aaron Soto"
+  description="Explore a curated selection of projects developed by Aaron Soto, showcasing his expertise in web development and software solutions."
+>
   <div class="container">
     <h1 class="mb-12">projects.</h1>
 
