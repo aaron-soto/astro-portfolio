@@ -1,16 +1,69 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { SOCIAL_LINKS } from "../lib/data";
 ---
 
 <Layout>
   <div class="container">
-    <h1>Contact Me</h1>
+    <h1>contact me</h1>
     <p>
-      Feel free to reach out to me via email at
+      feel free to reach out to me via email at
       <a
-        href="mailto:aaron.m.soto1@gmail.com"
-        class="text-primary hover:underline">aaron.m.soto1@gmail.com</a
+        href="mailto:aaron@ayezeewebdesigns.com"
+        class="text-primary hover:underline">aaron@ayezeewebdesigns.com</a
       >
     </p>
+
+    <p class="mt-6">
+      you can also find me on social media:
+      <ul class="flex gap-4 mt-2">
+        {
+          Object.values(SOCIAL_LINKS).map((link) => (
+            <li>
+              <a href={link.url} class="text-primary hover:underline">
+                {link.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </p>
+
+    <form action="" class="w-full grid grid-cols-8">
+      <div class="col-span-4">
+        <label for="name" class="block mt-4 mb-2">name:</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          class="w-full border border-lines bg-neutral-950 py-2 px-3"
+          required
+        />
+
+        <label for="email" class="block mt-4 mb-2">email:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="w-full border border-lines bg-neutral-950 py-2 px-3"
+          required
+        />
+
+        <label for="message" class="block mt-4 mb-2">message:</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          class="w-full border border-lines bg-neutral-950 py-2 px-3"
+          required></textarea>
+
+        <button
+          type="submit"
+          class="mt-4 bg-neutral-950 hover:bg-neutral-900 border border-lines text-white py-2.5 px-4 w-1/2 transition-all"
+        >
+          send message
+        </button>
+      </div>
+    </form>
   </div>
 </Layout>

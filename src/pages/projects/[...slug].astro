@@ -18,14 +18,6 @@ interface Props {
 
 const { project }: Props = Astro.props;
 const { Content } = await project.render();
-
-// Extract headings for navigation - simplified approach
-const headings = [
-  { id: "overview", title: "Overview" },
-  { id: "challenges", title: "Challenges" },
-  { id: "solution", title: "Solution" },
-  { id: "results", title: "Results" },
-];
 ---
 
 <Layout
@@ -34,16 +26,18 @@ const headings = [
 >
   <!-- Hero Section with floating elements -->
   <div class="relative">
-    <div class="container relative pt-20">
-      <div class="w-full mx-auto">
-        <div class="flex items-center gap-6">
+    <div class="container relative pt-20 grid grid-cols-4 md:grid-cols-8">
+      <div class="w-full md:col-span-6 col-start-2 mx-auto">
+        <div class="flex items-start gap-6 w-full">
           {
             project.data.logo && (
-              <img
-                src={project.data.logo}
-                alt={`${project.data.title} logo`}
-                class="size-44 object-contain group-hover:scale-110 transition-transform duration-300"
-              />
+              <div class="bg-white">
+                <img
+                  src={project.data.logo}
+                  alt={`${project.data.title} logo`}
+                  class="size-44 object-contain group-hover:scale-110 transition-transform duration-300"
+                />
+              </div>
             )
           }
           <div>
@@ -76,14 +70,10 @@ const headings = [
   </div>
 
   <!-- Main Content with dynamic sections -->
-  <div class="container py-16">
-    <div class="w-full mx-auto">
-      <div class="content-sections">
-        <Content />
-      </div>
+  <div class="container content-sections py-16 grid-cols-4 md:grid-cols-8">
+    <Content />
 
-      <!-- Blog footer here -->
-    </div>
+    <!-- Blog footer here -->
   </div>
 </Layout>
 

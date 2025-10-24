@@ -1,35 +1,21 @@
 ---
+import DownloadFile from "../components/icons/DownloadFile.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
   <div class="container">
     <h1>resume.</h1>
-    <p class="text-center my-32 text-3xl font-semibold">
-      my professional journey and skills.
-    </p>
 
     <div class="max-w-4xl mx-auto">
       <!-- Download Resume Button -->
-      <div class="text-center mb-12">
+      <div class="text-center mb-20 mt-12">
         <a
           href="/resume.pdf"
-          download
-          class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-md hover:bg-primary/90 transition-colors"
+          download="AaronSotoResume.pdf"
+          class="inline-flex items-center gap-2 bg-black/1 backdrop-blur-sm border border-lines text-white px-9 py-3 hover:text-primary hover:border-primary transition-colors"
         >
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-            ></path>
-          </svg>
+          <DownloadFile />
           Download Resume
         </a>
       </div>
@@ -42,15 +28,15 @@ import Layout from "../layouts/Layout.astro";
         </div>
 
         <div class="space-y-8">
-          <div class="border-l-2 border-primary pl-6">
+          <div class="">
             <div
               class="flex flex-col md:flex-row md:items-center md:justify-between mb-2"
             >
               <h3 class="text-xl font-semibold">Senior Full Stack Developer</h3>
-              <span class="text-foreground-muted">2021 - Present</span>
+              <span class="text-foreground-muted">2024 - Present</span>
             </div>
-            <p class="text-primary mb-3">Freelance / Contract Work</p>
-            <ul class="text-foreground-muted space-y-2">
+            <p class="text-primary mb-3">Freelance / Contract / Agency Work</p>
+            <ul class="text-foreground-muted space-y-2 max-w-prose">
               <li>
                 • Developed responsive web applications using modern frameworks
               </li>
@@ -63,15 +49,15 @@ import Layout from "../layouts/Layout.astro";
             </ul>
           </div>
 
-          <div class="border-l-2 border-lines pl-6">
+          <div class="">
             <div
               class="flex flex-col md:flex-row md:items-center md:justify-between mb-2"
             >
-              <h3 class="text-xl font-semibold">Full Stack Developer</h3>
-              <span class="text-foreground-muted">2019 - 2021</span>
+              <h3 class="text-xl font-semibold">Senior Full Stack Developer</h3>
+              <span class="text-foreground-muted">2019 - 2024</span>
             </div>
-            <p class="text-primary mb-3">Previous Company</p>
-            <ul class="text-foreground-muted space-y-2">
+            <p class="text-primary mb-3">Allata</p>
+            <ul class="text-foreground-muted space-y-2 max-w-prose">
               <li>
                 • Built and maintained web applications serving thousands of
                 users
@@ -96,24 +82,32 @@ import Layout from "../layouts/Layout.astro";
             <h4 class="font-semibold mb-4 text-primary">Frontend</h4>
             <div class="flex flex-wrap gap-2">
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
                 >React</span
               >
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
                 >TypeScript</span
               >
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
+                >JavaScript</span
+              >
+              <span
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
                 >Astro</span
               >
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
                 >Tailwind CSS</span
               >
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
                 >Next.js</span
+              >
+              <span
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
+                >Angular</span
               >
             </div>
           </div>
@@ -122,24 +116,24 @@ import Layout from "../layouts/Layout.astro";
             <h4 class="font-semibold mb-4 text-primary">Backend</h4>
             <div class="flex flex-wrap gap-2">
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
                 >Node.js</span
               >
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
                 >Python</span
               >
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
                 >PostgreSQL</span
               >
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
-                >MongoDB</span
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
+                >Express</span
               >
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
-                >Express</span
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
+                >MySql</span
               >
             </div>
           </div>
@@ -148,24 +142,32 @@ import Layout from "../layouts/Layout.astro";
             <h4 class="font-semibold mb-4 text-primary">Tools & Others</h4>
             <div class="flex flex-wrap gap-2">
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
                 >Git</span
               >
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
                 >Docker</span
               >
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
                 >AWS</span
               >
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
                 >Figma</span
               >
               <span
-                class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
                 >VS Code</span
+              >
+              <span
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
+                >Cloudflare</span
+              >
+              <span
+                class="text-xs bg-primary/10 backdrop-blur-sm text-primary px-3 py-1"
+                >Vercel</span
               >
             </div>
           </div>
@@ -173,25 +175,28 @@ import Layout from "../layouts/Layout.astro";
       </section>
 
       <!-- Education Section -->
-      <section>
+      <section class="mb-24">
         <div class="flex items-center gap-4 mb-8">
           <h2 class="text-2xl font-semibold">Education</h2>
           <div class="h-px bg-lines flex-1"></div>
         </div>
 
-        <div class="border-l-2 border-primary pl-6">
+        <div class="">
           <div
             class="flex flex-col md:flex-row md:items-center md:justify-between mb-2"
           >
             <h3 class="text-xl font-semibold">
               Bachelor's Degree in Computer Science
             </h3>
-            <span class="text-foreground-muted">2015 - 2019</span>
+            <span class="text-foreground-muted">2021 - Present</span>
           </div>
-          <p class="text-primary mb-3">University Name</p>
-          <p class="text-foreground-muted">
+          <p class="text-primary mb-3">
+            Arizona State University <span class="text-foreground-muted"
+              >(still in progress)</span
+            >
+          </p>
+          <p class="text-foreground-muted max-w-prose">
             Focused on software engineering, algorithms, and web development.
-            Graduated with honors and completed several significant projects.
           </p>
         </div>
       </section>

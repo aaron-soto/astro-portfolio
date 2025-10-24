@@ -95,7 +95,7 @@ const AnimatedLines: React.FC = () => {
               .map((circle) => (
                 <div
                   key={circle.id}
-                  className="bg-primary/80 absolute size-1 rounded-full"
+                  className="bg-primary/50 absolute size-1 rounded-full"
                   style={{
                     left: "0px",
                     transform: "translateX(-50%)",
@@ -109,7 +109,7 @@ const AnimatedLines: React.FC = () => {
               .map((circle) => (
                 <div
                   key={circle.id}
-                  className="bg-primary/80 absolute size-1 rounded-full"
+                  className="bg-primary/50 absolute size-1 rounded-full"
                   style={{
                     right: "0px",
                     transform: "translateX(50%)",
@@ -124,7 +124,7 @@ const AnimatedLines: React.FC = () => {
               .map((circle) => (
                 <div
                   key={circle.id}
-                  className="bg-primary/80 absolute size-1 rounded-full"
+                  className="bg-primary/50 absolute size-1 rounded-full"
                   style={{
                     right: "0px",
                     transform: "translateX(50%)",
@@ -139,7 +139,7 @@ const AnimatedLines: React.FC = () => {
               .map((circle) => (
                 <div
                   key={circle.id}
-                  className="bg-primary/80 absolute size-1 rounded-full"
+                  className="bg-primary/50 absolute size-1 rounded-full"
                   style={{
                     right: "0px",
                     transform: "translateX(50%)",
@@ -154,7 +154,7 @@ const AnimatedLines: React.FC = () => {
               .map((circle) => (
                 <div
                   key={circle.id}
-                  className="bg-primary/80 absolute size-1 rounded-full"
+                  className="bg-primary/50 absolute size-1 rounded-full"
                   style={{
                     right: "0px",
                     transform: "translateX(50%)",
@@ -170,7 +170,7 @@ const AnimatedLines: React.FC = () => {
               .map((circle) => (
                 <div
                   key={circle.id}
-                  className="bg-primary/80 absolute size-1 rounded-full"
+                  className="bg-primary/50 absolute size-1 rounded-full"
                   style={{
                     right: "0px",
                     transform: "translateX(50%)",
@@ -185,7 +185,7 @@ const AnimatedLines: React.FC = () => {
               .map((circle) => (
                 <div
                   key={circle.id}
-                  className="bg-primary/80 absolute size-1 rounded-full"
+                  className="bg-primary/50 absolute size-1 rounded-full"
                   style={{
                     right: "0px",
                     transform: "translateX(50%)",
@@ -200,7 +200,7 @@ const AnimatedLines: React.FC = () => {
               .map((circle) => (
                 <div
                   key={circle.id}
-                  className="bg-primary/80 absolute size-1 rounded-full"
+                  className="bg-primary/50 absolute size-1 rounded-full"
                   style={{
                     right: "0px",
                     transform: "translateX(50%)",
@@ -215,7 +215,7 @@ const AnimatedLines: React.FC = () => {
               .map((circle) => (
                 <div
                   key={circle.id}
-                  className="bg-primary/80 absolute size-1 rounded-full"
+                  className="bg-primary/50 absolute size-1 rounded-full"
                   style={{
                     right: "0px",
                     transform: "translateX(50%)",

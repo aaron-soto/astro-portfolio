@@ -1,18 +1,8 @@
 ---
-import GithubSvg from "../assets/images/github.svg";
-import InstagramSvg from "../assets/images/instagram.svg";
-import FacebookSvg from "../assets/images/facebook.svg";
-import PinterestSvg from "../assets/images/pinterest.svg";
+import { SOCIAL_LINKS } from "../lib/data";
 import AaronLogo from "./AaronLogo.astro";
 
 const currentYear = new Date().getFullYear();
-
-const SOCIAL_LINKS = {
-  github: "https://github.com/aaron-soto",
-  instagram: "https://www.instagram.com/sotobaggins1/",
-  facebook: "https://www.facebook.com/aaron.soto.988/",
-  pinterest: "https://www.pinterest.com/AyeZeeWebDesigns/",
-};
 ---
 
 <div class="relative">
@@ -59,30 +49,30 @@ const SOCIAL_LINKS = {
     <ul class="flex gap-2">
       <li>
         <a
-          href={SOCIAL_LINKS.github}
+          href={SOCIAL_LINKS.github.url}
           class="bg-neutral-950 size-12 grid place-items-center hover:bg-neutral-800 transition-all"
-          ><GithubSvg class="size-6" /></a
+          ><SOCIAL_LINKS.github.icon class="size-6" /></a
         >
       </li>
       <li>
         <a
-          href={SOCIAL_LINKS.instagram}
+          href={SOCIAL_LINKS.instagram.url}
           class="bg-neutral-950 size-12 grid place-items-center hover:bg-neutral-800 transition-all"
-          ><InstagramSvg class="size-6" /></a
+          ><SOCIAL_LINKS.instagram.icon class="size-6" /></a
         >
       </li>
       <li>
         <a
-          href={SOCIAL_LINKS.facebook}
+          href={SOCIAL_LINKS.facebook.url}
           class="bg-neutral-950 size-12 grid place-items-center hover:bg-neutral-800 transition-all"
-          ><FacebookSvg class="size-6" /></a
+          ><SOCIAL_LINKS.facebook.icon class="size-6" /></a
         >
       </li>
       <li>
         <a
-          href={SOCIAL_LINKS.pinterest}
+          href={SOCIAL_LINKS.pinterest.url}
           class="bg-neutral-950 size-12 grid place-items-center hover:bg-neutral-800 transition-all"
-          ><PinterestSvg class="size-6" /></a
+          ><SOCIAL_LINKS.pinterest.icon class="size-6" /></a
         >
       </li>
     </ul>
