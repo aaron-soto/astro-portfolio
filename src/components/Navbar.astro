@@ -1,0 +1,283 @@
+---
+import AaronLogo from "./AaronLogo.astro";
+
+// Get the current pathname for active link styling
+const currentPath = Astro.url.pathname;
+
+// Helper function to determine if a link is active
+function isActive(href: string): boolean {
+  if (href === "/" && currentPath === "/") return true;
+  if (href !== "/" && currentPath.startsWith(href)) return true;
+  return false;
+}
+
+// Navigation items
+const navItems = [
+  { href: "/", label: "home" },
+  { href: "/about", label: "about" },
+  { href: "/projects", label: "projects" },
+  { href: "/resume", label: "resume" },
+];
+---
+
+<div
+  class="sticky top-0 bg-linear-to-b from-black via-black to-transparent z-20 via-20% from-60% pb-6 md:pb-3"
+  transition:name="navbar"
+>
+  <div class="container py-6 md:py-4">
+    <div class="flex flex-row justify-between items-center pb-4 relative z-30">
+      <AaronLogo transition:name="main-logo" />
+
+      <button id="mobile-menu-toggle" class="md:hidden z-30 relative">
+        <!-- Hamburger Icon -->
+        <svg
+          id="hamburger-icon"
+          xmlns="http://www.w3.org/2000/svg"
+          class="size-9 text-foreground transition-opacity duration-200"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+
+        <!-- X Icon -->
+        <svg
+          id="close-icon"
+          xmlns="http://www.w3.org/2000/svg"
+          class="size-9 text-foreground transition-opacity duration-200 opacity-0 absolute top-0 left-0"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+
+      <!-- Desktop Navigation -->
+      <nav class="items-center hidden md:flex">
+        <ul class="flex gap-4">
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class={`transition-colors hover:underline ${
+                    isActive(item.href)
+                      ? "text-foreground font-medium"
+                      : "text-foreground-muted"
+                  }`}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <a
+          href="/contact"
+          class={`py-2 px-6 ml-2 hover:underline transition-all ${
+            isActive("/contact") ? "text-primary font-medium" : "text-primary"
+          }`}
+        >
+          get in touch
+        </a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div
+    id="mobile-menu"
+    class="fixed inset-0 bg-black bg-opacity-95 z-20 md:hidden opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out"
+  >
+    <nav class="flex flex-col items-center justify-center w-full h-full">
+      <ul
+        id="mobile-menu-links"
+        class="w-full flex flex-col gap-8 px-6 h-full pt-44 pb-20"
+      >
+        {
+          navItems.map((item, index) => (
+            <li
+              class="transform translate-y-8 opacity-0 transition-all duration-300 ease-out"
+              style={`transition-delay: ${150 + index * 100}ms`}
+            >
+              <a
+                href={item.href}
+                class={`text-3xl transition-colors hover:text-primary ${
+                  isActive(item.href)
+                    ? "text-primary font-medium"
+                    : "text-foreground-muted"
+                }`}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+
+        <li
+          class="transform translate-y-8 opacity-0 transition-all duration-300 ease-out mt-auto w-full"
+          style={`transition-delay: ${150 + navItems.length * 100}ms`}
+        >
+          <a
+            href="/contact"
+            class={`text-2xl transition-colors border text-center inline-block w-full border-lines px-20 py-3 hover:bg-primary hover:text-white`}
+          >
+            get in touch
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<script>
+  // Global variable to track menu state and prevent multiple initializations
+  declare global {
+    interface Window {
+      navbarInitialized?: boolean;
+      mobileMenuState?: {
+        isOpen: boolean;
+        cleanup: () => void;
+      };
+    }
+  }
+
+  function initializeNavbar() {
+    // Cleanup any existing initialization
+    if (window.mobileMenuState) {
+      window.mobileMenuState.cleanup();
+    }
+
+    const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const hamburgerIcon = document.getElementById("hamburger-icon");
+    const closeIcon = document.getElementById("close-icon");
+    const mobileMenuLinks = document.querySelectorAll("#mobile-menu-links li");
+
+    if (!mobileMenuToggle || !mobileMenu || !hamburgerIcon || !closeIcon) {
+      return; // Exit if elements don't exist
+    }
+
+    let isMenuOpen = false;
+
+    function toggleMenu() {
+      if (!mobileMenu || !hamburgerIcon || !closeIcon) return;
+
+      isMenuOpen = !isMenuOpen;
+
+      if (isMenuOpen) {
+        // Open menu
+        mobileMenu.classList.remove("opacity-0", "pointer-events-none");
+        mobileMenu.classList.add("opacity-100");
+
+        // Switch icons
+        hamburgerIcon.classList.add("opacity-0");
+        closeIcon.classList.remove("opacity-0");
+        closeIcon.classList.add("opacity-100");
+
+        // Animate links in with staggered delay
+        mobileMenuLinks.forEach((link, index) => {
+          setTimeout(
+            () => {
+              link.classList.remove("translate-y-8", "opacity-0");
+              link.classList.add("translate-y-0", "opacity-100");
+            },
+            150 + index * 100
+          ); // 150ms delay + 100ms stagger
+        });
+
+        // Prevent body scroll
+        document.body.style.overflow = "hidden";
+      } else {
+        // Close menu
+        mobileMenu.classList.add("opacity-0", "pointer-events-none");
+        mobileMenu.classList.remove("opacity-100");
+
+        // Switch icons
+        hamburgerIcon.classList.remove("opacity-0");
+        closeIcon.classList.add("opacity-0");
+        closeIcon.classList.remove("opacity-100");
+
+        // Reset links
+        mobileMenuLinks.forEach((link) => {
+          link.classList.add("translate-y-8", "opacity-0");
+          link.classList.remove("translate-y-0", "opacity-100");
+        });
+
+        // Restore body scroll
+        document.body.style.overflow = "";
+      }
+    }
+
+    function handleEscape(e: KeyboardEvent) {
+      if (e.key === "Escape" && isMenuOpen) {
+        toggleMenu();
+      }
+    }
+
+    function handleLinkClick() {
+      if (isMenuOpen) {
+        toggleMenu();
+      }
+    }
+
+    // Add event listeners
+    mobileMenuToggle.addEventListener("click", toggleMenu);
+
+    // Close menu when clicking on a link
+    mobileMenuLinks.forEach((link) => {
+      link.addEventListener("click", handleLinkClick);
+    });
+
+    // Close menu when pressing escape
+    document.addEventListener("keydown", handleEscape);
+
+    // Store state and cleanup function globally
+    window.mobileMenuState = {
+      isOpen: isMenuOpen,
+      cleanup: () => {
+        mobileMenuToggle.removeEventListener("click", toggleMenu);
+        mobileMenuLinks.forEach((link) => {
+          link.removeEventListener("click", handleLinkClick);
+        });
+        document.removeEventListener("keydown", handleEscape);
+
+        // Reset menu state
+        if (isMenuOpen) {
+          toggleMenu();
+        }
+
+        // Restore body scroll just in case
+        document.body.style.overflow = "";
+      },
+    };
+  }
+
+  // Initialize on both DOMContentLoaded and astro:page-load (for client-side navigation)
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeNavbar);
+  } else {
+    initializeNavbar();
+  }
+
+  // Re-initialize when navigating between pages with Astro's client-side navigation
+  document.addEventListener("astro:page-load", initializeNavbar);
+
+  // Cleanup when leaving the page
+  document.addEventListener("astro:before-preparation", () => {
+    if (window.mobileMenuState) {
+      window.mobileMenuState.cleanup();
+    }
+  });
+</script>

@@ -1,0 +1,23 @@
+---
+import Arrow from "../icons/Arrow.astro";
+---
+
+<div class="container flex flex-col md:grid grid-cols-8 pt-4 pb-24">
+  <div class="flex text-foreground-muted gap-4 items-center mb-4 col-span-8">
+    <span>// say hello</span>
+    <div class="h-px bg-lines/50 flex-1"></div>
+  </div>
+
+  <p class="col-span-4">
+    i am open for freelance projects and agency work, feel free to send me a
+    message to see how we can work together
+  </p>
+
+  <a
+    href="/contact"
+    class="border border-lines mt-6 bg-black text-foreground-muted py-3 px-6 w-full transition-all hover:border-primary hover:text-primary flex items-center justify-center gap-3 group col-span-2 col-start-6"
+    >get in touch <Arrow
+      class="inline ml-2 group-hover:rotate-45 transition-all"
+    />
+  </a>
+</div>

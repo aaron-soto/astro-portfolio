@@ -1,0 +1,52 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const workPosts = await getCollection("work");
+---
+
+<Layout>
+  <div class="container">
+    <h1 class="mb-12">projects.</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {
+        workPosts.map((project: any) => (
+          <a
+            href={`/projects/${project.data.slug}`}
+            class="border border-lines rounded p-6 hover:border-primary bg-black/[1%] backdrop-blur-xs transition-colors block"
+          >
+            <div class="flex flex-col">
+              <div class="bg-white rounded-full size-16 grid place-items-center mr-3">
+                {project.data.logo && (
+                  <img
+                    src={project.data.logo}
+                    alt={`${project.data.title} logo`}
+                    class="size-12"
+                  />
+                )}
+              </div>
+              <h3 class="text-lg! mt-2 font-semibold">{project.data.title}</h3>
+            </div>
+
+            <p class="text-foreground-muted text-base mt-2 mb-4">
+              {project.data.description}
+            </p>
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="text-center mt-16">
+      <p class="text-foreground-muted mb-6">
+        Want to see more of my work or discuss a project?
+      </p>
+      <a
+        href="/contact"
+        class="inline-block bg-primary text-white px-8 py-3 rounded-md hover:bg-primary/90 transition-colors"
+      >
+        Get in touch
+      </a>
+    </div>
+  </div>
+</Layout>

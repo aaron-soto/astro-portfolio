@@ -1,0 +1,52 @@
+---
+import { Image } from "astro:assets";
+import AaronImg from "../../assets/images/aaron.webp";
+import Arrow from "../icons/Arrow.astro";
+---
+
+<div
+  class="container relative md:pt-20 grid grid-cols-4 md:grid-cols-8 md:pb-12"
+>
+  <div class="col-span-4 md:col-span-4 order-2 md:order-1 -mt-12 md:mt-0">
+    <span
+      class="relative flex items-center gap-2 text-sm font-medium text-primary"
+    >
+      <div class="bg-green-400 animate-pulse size-2 rounded-full"></div>
+      open to work</span
+    >
+    <h1 class="font-normal! text-balance mb-12">
+      a software development partner for your business.
+    </h1>
+
+    <div class="">
+      <div class="flex text-foreground-muted gap-4 items-center mb-4">
+        <span>// about</span>
+        <div class="h-px bg-lines flex-1"></div>
+      </div>
+
+      <p class="text-foreground text-lg! leading-relaxed mb-6">
+        my craft is building websites or web app/custom software for businesses
+        that do not have a tech department. If you have a problem in your
+        business that you have thought “If only I could automate...” or “How can
+        we make this better” we can work together to build the software that
+        helps your business grow.
+      </p>
+    </div>
+  </div>
+  <div class="col-span-4 md:col-span-4 order-1 md:order-2 mb-8">
+    <div class="w-[60%] ml-auto mr-10">
+      <Image src={AaronImg} alt="Aaron Soto" class="object-cover" />
+    </div>
+  </div>
+
+  <!-- Button spans columns 2-3 on mobile, 4-5 on desktop -->
+  <div class="w-full col-span-full flex justify-center order-3 mt-4 md:mt-8">
+    <a
+      href="/about"
+      class="border border-lines bg-black/1 backdrop-blur-sm text-foreground-muted py-3 px-6 mx-auto transition-all hover:border-primary hover:text-primary flex items-center justify-center gap-3 group min-w-64"
+      >about me <Arrow
+        class="inline ml-2 group-hover:rotate-45 transition-all"
+      />
+    </a>
+  </div>
+</div>

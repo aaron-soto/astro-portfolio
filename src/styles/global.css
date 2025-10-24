@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Urbanist";
+  src: url("/fonts/Urbanist-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Urbanist";
+  src: url("/fonts/Urbanist-Italic-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --brand-orange: #fe6601;
+  --brand-orange-hover: #e65501;
+  --brand-blue: #2f5e8e;
+  --brand-blue-hover: #274f76;
+
+  --background: #000000;
+  --foreground: #ffffff;
+
+  --lines: #222222;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: #878787;
+
+  --color-primary: var(--brand-orange);
+  --color-primary-hover: var(--brand-orange-hover);
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: var(--brand-blue);
+  --color-secondary-hover: var(--brand-blue-hover);
+
+  --color-border: #e0e0e0;
+  --color-input: #f0f0f0;
+
+  --color-lines: var(--lines);
+}
+
+body {
+  font-family: "Urbanist", sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-size: 18px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Urbanist", sans-serif;
+  font-weight: 700;
+}
+
+h1 {
+  @apply text-4xl font-bold sm:text-6xl;
+}
+
+h2 {
+  @apply text-4xl font-bold;
+}
+
+h3 {
+  @apply text-3xl font-semibold;
+}
+
+.container {
+  @apply mx-auto w-full max-w-[1200px]! px-4;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* View Transition Animations */
+@view-transition {
+  navigation: auto;
+}
+
+/* Ensure view transitions work with fallback */
+html {
+  view-transition-name: none;
+}

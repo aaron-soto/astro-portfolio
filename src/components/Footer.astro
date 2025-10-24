@@ -1,0 +1,94 @@
+---
+import GithubSvg from "../assets/images/github.svg";
+import InstagramSvg from "../assets/images/instagram.svg";
+import FacebookSvg from "../assets/images/facebook.svg";
+import PinterestSvg from "../assets/images/pinterest.svg";
+import AaronLogo from "./AaronLogo.astro";
+
+const currentYear = new Date().getFullYear();
+
+const SOCIAL_LINKS = {
+  github: "https://github.com/aaron-soto",
+  instagram: "https://www.instagram.com/sotobaggins1/",
+  facebook: "https://www.facebook.com/aaron.soto.988/",
+  pinterest: "https://www.pinterest.com/AyeZeeWebDesigns/",
+};
+---
+
+<div class="relative">
+  <div
+    class="absolute bottom-full inset-x-0 h-20 bg-[linear-gradient(to_bottom,transparent_0%,black_90%)]"
+  >
+  </div>
+</div>
+<div class="container pt-10 pb-12 bg-black">
+  <div class="flex flex-col md:flex-row items-center justify-between">
+    <AaronLogo variant="footer" />
+
+    <ul class="flex gap-4 my-12 md:my-0">
+      <li>
+        <a
+          href="/about"
+          class="text-foreground-muted hover:underline py-3 px-3 inline-block"
+          >about</a
+        >
+      </li>
+      <li>
+        <a
+          href="/projects"
+          class="text-foreground-muted hover:underline py-3 px-3 inline-block"
+          >projects</a
+        >
+      </li>
+      <li>
+        <a
+          href="/resume"
+          class="text-foreground-muted hover:underline py-3 px-3 inline-block"
+          >resume</a
+        >
+      </li>
+      <li>
+        <a
+          href="/contact"
+          class="text-foreground-muted hover:underline py-3 px-3 inline-block"
+          >contact</a
+        >
+      </li>
+    </ul>
+
+    <ul class="flex gap-2">
+      <li>
+        <a
+          href={SOCIAL_LINKS.github}
+          class="bg-neutral-950 size-12 grid place-items-center hover:bg-neutral-800 transition-all"
+          ><GithubSvg class="size-6" /></a
+        >
+      </li>
+      <li>
+        <a
+          href={SOCIAL_LINKS.instagram}
+          class="bg-neutral-950 size-12 grid place-items-center hover:bg-neutral-800 transition-all"
+          ><InstagramSvg class="size-6" /></a
+        >
+      </li>
+      <li>
+        <a
+          href={SOCIAL_LINKS.facebook}
+          class="bg-neutral-950 size-12 grid place-items-center hover:bg-neutral-800 transition-all"
+          ><FacebookSvg class="size-6" /></a
+        >
+      </li>
+      <li>
+        <a
+          href={SOCIAL_LINKS.pinterest}
+          class="bg-neutral-950 size-12 grid place-items-center hover:bg-neutral-800 transition-all"
+          ><PinterestSvg class="size-6" /></a
+        >
+      </li>
+    </ul>
+  </div>
+
+  <p class="text-foreground-muted text-center text-sm mt-8">
+    &copy; {currentYear} Aaron Soto. All rights reserved.
+  </p>
+</div>

@@ -1,0 +1,148 @@
+---
+import Arrow from "../icons/Arrow.astro";
+import { getCollection } from "astro:content";
+
+const workProjects = await getCollection("work");
+// Sort projects by some criteria if needed
+// const sortedProjects = workProjects.sort((a, b) => /* your sorting logic */);
+---
+
+<div
+  class="relative bg-[linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] py-20"
+>
+  <div class="container">
+    <div class="flex items-center gap-4 mt-4 mb-8">
+      <span class="text-foreground-muted">// my projects</span>
+      <div class="h-px bg-lines flex-1"></div>
+    </div>
+
+    <div id="projects-container" class="relative">
+      {
+        workProjects.map((project: any, index: number) => (
+          <div
+            class={`grid grid-cols-4 md:grid-cols-8 items-center border-b border-lines mb-12 pb-12 project-slide ${index === 0 ? "active" : "hidden"}`}
+            data-project-index={index}
+          >
+            <div class="bg-neutral-200 w-full aspect-video col-span-4 md:col-span-4 flex items-center justify-center">
+              {project.data.logo && (
+                <img
+                  src={project.data.logo}
+                  alt={`${project.data.title} logo`}
+                  class="size-64 object-contain"
+                />
+              )}
+            </div>
+
+            <div class="col-span-4 md:col-span-3 md:col-start-6 flex flex-col mt-8 md:mt-0">
+              <span class="text-foreground-muted">
+                {project.data.tags && project.data.tags[0]
+                  ? project.data.tags[0].toLowerCase()
+                  : "project"}
+              </span>
+              <h3 class="mb-4">{project.data.title}</h3>
+              <p class="text-primary">{project.data.description}</p>
+              <div class="flex flex-col mt-4 gap-2">
+                {project.data.url && (
+                  <a
+                    href={project.data.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="py-2.5 w-full bg-black hover:border-primary hover:text-primary transition-all border border-lines text-center"
+                  >
+                    view website
+                  </a>
+                )}
+                <a
+                  href={`/projects/${project.data.slug}`}
+                  class="py-2.5 w-full bg-neutral-950 hover:bg-neutral-900 transition-all border border-lines text-center"
+                >
+                  about the project
+                </a>
+              </div>
+
+              <div class="flex w-full gap-4 mt-8">
+                {workProjects.map((_: any, i: number) => (
+                  <div
+                    class={`h-1 flex-1 mt-6 ${i === index ? "bg-primary" : "bg-lines"}`}
+                  />
+                ))}
+              </div>
+
+              <div class="flex mt-4 gap-2 justify-between">
+                <button class="prev-project-btn bg-neutral-950 border border-lines flex-1 px-6 py-2 hover:bg-neutral-900 transition-all">
+                  <Arrow class="inline mr-2 rotate-[-135deg]" />
+                </button>
+                <button class="next-project-btn bg-neutral-950 border border-lines flex-1 px-6 py-2 hover:bg-neutral-900 transition-all">
+                  <Arrow class="inline ml-2 rotate-45" />
+                </button>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<script>
+  function initializeProjects() {
+    let currentProjectIndex = 0;
+    const projects = document.querySelectorAll(".project-slide");
+    const totalProjects = projects.length;
+
+    console.log("Total projects found:", totalProjects);
+
+    function showProject(index: number) {
+      projects.forEach((project, i) => {
+        if (i === index) {
+          project.classList.remove("hidden");
+          project.classList.add("active");
+        } else {
+          project.classList.add("hidden");
+          project.classList.remove("active");
+        }
+      });
+      currentProjectIndex = index;
+    }
+
+    function nextProject() {
+      const nextIndex = (currentProjectIndex + 1) % totalProjects;
+      console.log("Next project:", nextIndex);
+      showProject(nextIndex);
+    }
+
+    function prevProject() {
+      const prevIndex =
+        currentProjectIndex === 0 ? totalProjects - 1 : currentProjectIndex - 1;
+      console.log("Previous project:", prevIndex);
+      showProject(prevIndex);
+    }
+
+    // Remove existing event listeners to prevent duplicates
+    document.querySelectorAll(".next-project-btn").forEach((btn) => {
+      btn.replaceWith(btn.cloneNode(true));
+    });
+
+    document.querySelectorAll(".prev-project-btn").forEach((btn) => {
+      btn.replaceWith(btn.cloneNode(true));
+    });
+
+    // Add event listeners to all next/prev buttons
+    document.querySelectorAll(".next-project-btn").forEach((btn) => {
+      btn.addEventListener("click", nextProject);
+    });
+
+    document.querySelectorAll(".prev-project-btn").forEach((btn) => {
+      btn.addEventListener("click", prevProject);
+    });
+
+    // Optional: Auto-advance every 10 seconds
+    // setInterval(nextProject, 10000);
+  }
+
+  // Initialize on DOMContentLoaded (for direct page loads)
+  document.addEventListener("DOMContentLoaded", initializeProjects);
+
+  // Initialize on astro:page-load (for view transitions)
+  document.addEventListener("astro:page-load", initializeProjects);
+</script>
