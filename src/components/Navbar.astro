@@ -108,8 +108,8 @@ const navItems = [
         {
           navItems.map((item, index) => (
             <li
-              class="transform translate-y-8 opacity-0 transition-all duration-300 ease-out"
-              style={`transition-delay: ${150 + index * 100}ms`}
+              class="transform translate-y-8 opacity-0 transition-all duration-150 ease-out"
+              style={`transition-delay: ${100}ms`}
             >
               <a
                 href={item.href}
@@ -127,7 +127,7 @@ const navItems = [
 
         <li
           class="transform translate-y-8 opacity-0 transition-all duration-300 ease-out mt-auto w-full"
-          style={`transition-delay: ${150 + navItems.length * 100}ms`}
+          style={`transition-delay: ${100 + navItems.length}ms`}
         >
           <a
             href="/contact"
