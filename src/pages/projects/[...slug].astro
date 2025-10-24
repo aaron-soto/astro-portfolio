@@ -26,51 +26,47 @@ const { Content } = await project.render();
 >
   <!-- Hero Section with floating elements -->
   <div class="relative">
-    <div class="container relative pt-20 grid grid-cols-4 md:grid-cols-8">
-      <div class="w-full md:col-span-6 col-start-2 mx-auto">
-        <div class="flex items-start gap-6 w-full">
-          {
-            project.data.logo && (
-              <div class="bg-white">
-                <img
-                  src={project.data.logo}
-                  alt={`${project.data.title} logo`}
-                  class="size-44 object-contain group-hover:scale-110 transition-transform duration-300"
-                />
-              </div>
-            )
-          }
-          <div>
-            <h1 class="text-5xl lg:text-6xl font-bold mb-4 bg-linear-to-br">
-              {project.data.title}
-            </h1>
-            <p class="text-lg text-neutral-300 leading-relaxed max-w-prose">
-              {project.data.description}
-            </p>
-
-            {
-              project.data.url && (
-                <div class="pt-6">
-                  <a
-                    href={project.data.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="flex items-center gap-2 hover:text-primary transition-colors"
-                  >
-                    <span class="">View Live Website</span>
-                    <ExternalLink class="size-5" />
-                  </a>
-                </div>
-              )
-            }
+    <div class="container relative pt-6 flex flex-col">
+      {
+        project.data.logo && (
+          <div class="bg-white aspect-square size-44 mb-6 grid place-items-center">
+            <img
+              src={project.data.logo}
+              alt={`${project.data.title} logo`}
+              class="size-44 object-contain group-hover:scale-110 transition-transform duration-300"
+            />
           </div>
-        </div>
+        )
+      }
+      <div>
+        <h1 class="text-3xl! md:text-5xl! font-bold mb-4 bg-linear-to-br">
+          {project.data.title}
+        </h1>
+        <p class="text-lg text-neutral-300 leading-relaxed max-w-prose">
+          {project.data.description}
+        </p>
+
+        {
+          project.data.url && (
+            <div class="pt-6">
+              <a
+                href={project.data.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-2 hover:text-primary w-full md:max-w-[25%] bg-black hover:bg-neutral-950 border border-lines py-2.5 px-4 transition-colors"
+              >
+                <span class="">View Live Website</span>
+                <ExternalLink class="size-5" />
+              </a>
+            </div>
+          )
+        }
       </div>
     </div>
   </div>
 
   <!-- Main Content with dynamic sections -->
-  <div class="container content-sections py-16 grid-cols-4 md:grid-cols-8">
+  <div class="container content-sections pb-20 grid-cols-4 md:grid-cols-8">
     <Content />
 
     <!-- Blog footer here -->
@@ -162,7 +158,7 @@ const { Content } = await project.render();
   }
 
   .content-sections :global(img.full-width) {
-    width: 100%;
+    width: 75%;
   }
 
   /* Enhanced blockquotes */
