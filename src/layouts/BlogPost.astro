@@ -31,17 +31,29 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
       border-radius: 0 !important;
     }
 
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: white;
+      font-weight: 600;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
     p {
       margin-bottom: 2rem;
+      color: rgb(187, 187, 187);
     }
 
     p > code,
     td > code,
     li > code {
-      background: white;
+      background: rgba(255, 255, 255, 0.106);
       padding: 0.15rem 0.4rem;
-      border-radius: 0.4rem;
-      color: var(--brand-brown);
+      color: aliceblue;
     }
 
     p > img {
