@@ -44,6 +44,12 @@ const siteUrl = canonical || Astro.url.href;
     <!-- Canonical URL -->
     <link rel="canonical" href={siteUrl} />
 
+    <!-- Umami Analytics -->
+    <script
+      defer
+      src="https://cloud.umami.is/script.js"
+      data-website-id="55b52f61-a7e6-4ff0-b3da-64df2d79250c"></script>
+
     <ViewTransitions fallback="swap" />
   </head>
   <body class="antialiased min-h-screen relative flex flex-col">
