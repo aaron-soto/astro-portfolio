@@ -10,7 +10,9 @@ import AyeZeeLogo from "../components/AyeZeeLogo.astro";
   description="Learn more about Aaron Soto, a veteran developer with 6 years of experience based in Arizona building custom websites and software."
 >
   <div class="container">
-    <h1>about.</h1>
+    <div class="slide-up mb-12">
+      <h1>about.</h1>
+    </div>
     <p class="text-center my-32 text-3xl font-semibold">
       i am a creative that loves building beautiful, practical software.
     </p>
@@ -57,16 +59,19 @@ import AyeZeeLogo from "../components/AyeZeeLogo.astro";
 
       <div class="col-span-4 flex flex-col gap-6">
         <h2>hello! i'm aaron.</h2>
-        <p>
+        <p class="text-foreground-muted">
           i'm a builder at heart. I love to build things that make a difference.
         </p>
 
-        <p>
-          I run a small software development agency where we focus on creating
-          custom web applications that follow best practices and deliver real
-          value to our clients.
+        <p class="text-foreground-muted">
+          I run a small <a
+            class="text-primary/70 hover:underline hover:text-primary"
+            href="https://ayezeewebdesigns.com"
+            target="_blank">software development agency</a
+          > where we focus on creating custom web applications that follow best practices
+          and deliver real value to our clients.
         </p>
-        <p>
+        <p class="text-foreground-muted">
           i'm always eager to connect with like-minded professionals and explore
           new opportunities. feel free to reach out if you'd like to collaborate
           or just say hello!

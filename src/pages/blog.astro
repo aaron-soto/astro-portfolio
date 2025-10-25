@@ -12,7 +12,9 @@ const posts = (await getCollection("blog")).sort(
 
 <Layout>
   <section class="container">
-    <h1 class="mb-4">Blog</h1>
+    <div class="slide-up mb-12">
+      <h1 class="mb-4">Blog</h1>
+    </div>
     <p class="max-w-prose text-foreground-muted">
       Welcome to my blog! Here, I share insights, tutorials, and case studies on
       web development, UI/UX design, and AI integration. Dive in to explore my
@@ -46,6 +48,7 @@ const posts = (await getCollection("blog")).sort(
                   <img
                     src={post.data.heroImage}
                     alt={post.data.heroAlt || "Blog Post Hero Image"}
+                    transition:name={`blog-hero-${post.id}`}
                   />
                 </div>
                 <div

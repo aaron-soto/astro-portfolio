@@ -6,6 +6,9 @@ import Layout from "./Layout.astro";
 type Props = CollectionEntry<"blog">["data"];
 
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+
+// Get the slug from the URL
+const slug = Astro.url.pathname.split("/").pop() || Astro.params.slug;
 ---
 
 <style>
@@ -78,14 +81,20 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 <Layout>
   <div class="container">
     <article>
-      <h1 class="max-w-3xl mb-6 md:text-5xl!">{title}</h1>
       {
         heroImage && (
           <div class="hero-image w-3/4 mb-4">
-            <img width={1020} height={510} src={heroImage} alt="" />
+            <img
+              width={1020}
+              height={510}
+              src={heroImage}
+              alt=""
+              transition:name={`blog-hero-${slug}`}
+            />
           </div>
         )
       }
+      <h1 class="max-w-3xl mb-6 md:text-5xl!">{title}</h1>
       <div class="prose max-w-prose">
         <div class="title mb-12">
           <div class="date">

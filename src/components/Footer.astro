@@ -1,8 +1,17 @@
 ---
 import { SOCIAL_LINKS } from "../lib/data";
 import AaronLogo from "./AaronLogo.astro";
+import BackToTop from "./BackToTop.tsx";
 
 const currentYear = new Date().getFullYear();
+
+const links = [
+  { name: "about", href: "/about" },
+  { name: "blog", href: "/blog" },
+  { name: "projects", href: "/projects" },
+  { name: "resume", href: "/resume" },
+  { name: "contact", href: "/contact" },
+];
 ---
 
 <div class="relative">
@@ -15,41 +24,26 @@ const currentYear = new Date().getFullYear();
   <div class="flex flex-col md:flex-row items-center justify-between">
     <AaronLogo variant="footer" />
 
-    <ul class="flex gap-4 my-12 md:my-0">
-      <li>
-        <a
-          href="/about"
-          class="text-foreground-muted hover:underline py-3 px-3 inline-block"
-          >about</a
-        >
-      </li>
-      <li>
-        <a
-          href="/projects"
-          class="text-foreground-muted hover:underline py-3 px-3 inline-block"
-          >projects</a
-        >
-      </li>
-      <li>
-        <a
-          href="/resume"
-          class="text-foreground-muted hover:underline py-3 px-3 inline-block"
-          >resume</a
-        >
-      </li>
-      <li>
-        <a
-          href="/contact"
-          class="text-foreground-muted hover:underline py-3 px-3 inline-block"
-          >contact</a
-        >
-      </li>
+    <ul class="flex flex-wrap justify-center gap-4 my-12 md:my-0">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="text-foreground-muted hover:underline py-3 px-3 inline-block"
+            >
+              {link.name}
+            </a>
+          </li>
+        ))
+      }
     </ul>
 
     <ul class="flex gap-2">
       <li>
         <a
           href={SOCIAL_LINKS.github.url}
+          title="GitHub"
           class="bg-neutral-950 size-12 grid place-items-center hover:bg-neutral-800 transition-all"
           ><SOCIAL_LINKS.github.icon class="size-6" /></a
         >
@@ -57,6 +51,7 @@ const currentYear = new Date().getFullYear();
       <li>
         <a
           href={SOCIAL_LINKS.instagram.url}
+          title="Instagram"
           class="bg-neutral-950 size-12 grid place-items-center hover:bg-neutral-800 transition-all"
           ><SOCIAL_LINKS.instagram.icon class="size-6" /></a
         >
@@ -64,6 +59,7 @@ const currentYear = new Date().getFullYear();
       <li>
         <a
           href={SOCIAL_LINKS.facebook.url}
+          title="Facebook"
           class="bg-neutral-950 size-12 grid place-items-center hover:bg-neutral-800 transition-all"
           ><SOCIAL_LINKS.facebook.icon class="size-6" /></a
         >
@@ -71,10 +67,13 @@ const currentYear = new Date().getFullYear();
       <li>
         <a
           href={SOCIAL_LINKS.pinterest.url}
+          title="Pinterest"
           class="bg-neutral-950 size-12 grid place-items-center hover:bg-neutral-800 transition-all"
           ><SOCIAL_LINKS.pinterest.icon class="size-6" /></a
         >
       </li>
+
+      <BackToTop client:load />
     </ul>
   </div>
 

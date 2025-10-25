@@ -19,82 +19,183 @@ const workProjects = await getCollection("work");
       <div class="h-px bg-lines flex-1"></div>
     </div>
 
-    <div id="projects-container" class="relative">
-      {
-        workProjects.map((project: any, index: number) => (
-          <div
-            class={`grid grid-cols-4 md:grid-cols-8 items-center border-b border-lines mb-12 pb-12 project-slide ${index === 0 ? "active" : "hidden"}`}
-            data-project-index={index}
-          >
-            <div class="bg-neutral-900 w-full aspect-video col-span-4 md:col-span-4 flex items-center justify-center relative overflow-hidden z-0">
-              <div class="absolute inset-0">
-                <Image
-                  src={shatteredImg}
-                  alt="Shattered glass effect"
-                  class="relative w-full h-full z-20 object-cover opacity-70 "
-                  style="background-repeat: repeat; background-size: auto;"
-                />
-              </div>
+    <!-- Mobile/Touch Swipeable Version -->
+    <div class="block md:hidden">
+      <div id="mobile-projects-container" class="relative overflow-hidden">
+        <div
+          id="projects-track"
+          class="flex transition-transform duration-300 ease-out"
+          style="transform: translateX(0px)"
+        >
+          {
+            workProjects.map((project: any, index: number) => (
+              <div class="shrink-0 w-full px-4" data-project-index={index}>
+                <div class="grid grid-cols-1 gap-6">
+                  <div class="bg-neutral-900 w-full aspect-video flex items-center justify-center relative overflow-hidden z-0">
+                    <div class="absolute inset-0">
+                      <Image
+                        src={shatteredImg}
+                        alt="Shattered glass effect"
+                        class="relative w-full h-full z-20 object-cover opacity-70"
+                        style="background-repeat: repeat; background-size: auto;"
+                      />
+                    </div>
 
-              {project.data.logo && (
-                <div class="bg-white w-fit rounded-full p-2 z-30 drop-shadow-2xl">
-                  <img
-                    src={project.data.logo}
-                    alt={`${project.data.title} logo`}
-                    class=" object-cover relative z-20 size-24 md:size-48 drop-shadow-2xl"
+                    {project.data.logo && (
+                      <div class="bg-white w-fit rounded-full p-2 z-30 drop-shadow-2xl">
+                        <img
+                          src={project.data.logo}
+                          alt={`${project.data.title} logo`}
+                          class="object-cover relative z-20 size-16"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  <div class="flex flex-col">
+                    <span class="text-foreground-muted">
+                      {project.data.tags && project.data.tags[0]
+                        ? project.data.tags[0].toLowerCase()
+                        : "project"}
+                    </span>
+
+                    <h3 class="mb-4 text-xl">{project.data.title}</h3>
+                    <p class="text-primary/75 text-sm">
+                      {project.data.description}
+                    </p>
+
+                    <div class="flex flex-col mt-4 gap-2">
+                      {project.data.url && (
+                        <a
+                          href={project.data.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="py-2.5 w-full bg-black hover:border-primary hover:text-primary transition-all border border-lines text-center text-sm"
+                        >
+                          view website
+                        </a>
+                      )}
+                      <a
+                        href={`/projects/${project.data.slug}`}
+                        class="py-2.5 w-full bg-neutral-950 hover:bg-neutral-900 transition-all border border-lines text-center text-sm"
+                      >
+                        about the project
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <!-- Progress Indicators -->
+        <div class="flex justify-center gap-2 mt-6">
+          {
+            workProjects.map((_dot: any, i: number) => (
+              <button
+                class={`h-1.5 transition-all duration-300 indicator-dot w-6 ${i === 0 ? "bg-primary" : "bg-lines "}`}
+                data-index={i}
+              />
+            ))
+          }
+        </div>
+
+        <!-- Navigation Arrows -->
+        <div class="flex justify-center gap-4 mt-4">
+          <button
+            class="mobile-prev-btn bg-neutral-950 border border-lines px-4 py-2 hover:bg-neutral-900 transition-all rounded"
+          >
+            <Arrow class="inline rotate-[-135deg]" />
+          </button>
+          <button
+            class="mobile-next-btn bg-neutral-950 border border-lines px-4 py-2 hover:bg-neutral-900 transition-all rounded"
+          >
+            <Arrow class="inline rotate-45" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Version -->
+    <div class="hidden md:block">
+      <div id="projects-container" class="relative">
+        {
+          workProjects.map((project: any, index: number) => (
+            <div
+              class={`grid grid-cols-4 md:grid-cols-8 items-center border-b border-lines mb-12 pb-12 project-slide ${index === 0 ? "active" : "hidden"}`}
+              data-project-index={index}
+            >
+              <div class="bg-neutral-900 w-full aspect-video col-span-4 md:col-span-4 flex items-center justify-center relative overflow-hidden z-0">
+                <div class="absolute inset-0">
+                  <Image
+                    src={shatteredImg}
+                    alt="Shattered glass effect"
+                    class="relative w-full h-full z-20 object-cover opacity-70 "
+                    style="background-repeat: repeat; background-size: auto;"
                   />
                 </div>
-              )}
-            </div>
-            <div class="col-span-4 md:col-span-3 md:col-start-6 flex flex-col mt-8 md:mt-0">
-              <span class="text-foreground-muted">
-                {project.data.tags && project.data.tags[0]
-                  ? project.data.tags[0].toLowerCase()
-                  : "project"}
-              </span>
 
-              <h3 class="mb-4">{project.data.title}</h3>
-              <p class="text-primary/75">{project.data.description}</p>
-
-              <div class="flex flex-col mt-4 gap-2">
-                {project.data.url && (
-                  <a
-                    href={project.data.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="py-2.5 w-full bg-black hover:border-primary hover:text-primary transition-all border border-lines text-center"
-                  >
-                    view website
-                  </a>
+                {project.data.logo && (
+                  <div class="bg-white w-fit rounded-full p-2 z-30 drop-shadow-2xl">
+                    <img
+                      src={project.data.logo}
+                      alt={`${project.data.title} logo`}
+                      class=" object-cover relative z-20 size-24 md:size-48 drop-shadow-2xl"
+                    />
+                  </div>
                 )}
-                <a
-                  href={`/projects/${project.data.slug}`}
-                  class="py-2.5 w-full bg-neutral-950 hover:bg-neutral-900 transition-all border border-lines text-center"
-                >
-                  about the project
-                </a>
               </div>
+              <div class="col-span-4 md:col-span-3 md:col-start-6 flex flex-col mt-8 md:mt-0">
+                <span class="text-foreground-muted">
+                  {project.data.tags && project.data.tags[0]
+                    ? project.data.tags[0].toLowerCase()
+                    : "project"}
+                </span>
 
-              <div class="flex w-full gap-4 mt-8">
-                {workProjects.map((_: any, i: number) => (
-                  <div
-                    class={`h-1 flex-1 mt-6 ${i === index ? "bg-primary" : "bg-lines"}`}
-                  />
-                ))}
-              </div>
+                <h3 class="mb-4">{project.data.title}</h3>
+                <p class="text-primary/75">{project.data.description}</p>
 
-              <div class="flex mt-4 gap-2 justify-between">
-                <button class="prev-project-btn bg-neutral-950 border border-lines flex-1 px-6 py-2 hover:bg-neutral-900 transition-all">
-                  <Arrow class="inline mr-2 rotate-[-135deg]" />
-                </button>
-                <button class="next-project-btn bg-neutral-950 border border-lines flex-1 px-6 py-2 hover:bg-neutral-900 transition-all">
-                  <Arrow class="inline ml-2 rotate-45" />
-                </button>
+                <div class="flex flex-col mt-4 gap-2">
+                  {project.data.url && (
+                    <a
+                      href={project.data.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="py-2.5 w-full bg-black hover:border-primary hover:text-primary transition-all border border-lines text-center"
+                    >
+                      view website
+                    </a>
+                  )}
+                  <a
+                    href={`/projects/${project.data.slug}`}
+                    class="py-2.5 w-full bg-neutral-950 hover:bg-neutral-900 transition-all border border-lines text-center"
+                  >
+                    about the project
+                  </a>
+                </div>
+
+                <div class="flex w-full gap-4 mt-8">
+                  {workProjects.map((_: any, i: number) => (
+                    <div
+                      class={`h-1 flex-1 mt-6 ${i === index ? "bg-primary" : "bg-lines"}`}
+                    />
+                  ))}
+                </div>
+
+                <div class="flex mt-4 gap-2 justify-between">
+                  <button class="prev-project-btn bg-neutral-950 border border-lines flex-1 px-6 py-2 hover:bg-neutral-900 transition-all">
+                    <Arrow class="inline mr-2 rotate-[-135deg]" />
+                  </button>
+                  <button class="next-project-btn bg-neutral-950 border border-lines flex-1 px-6 py-2 hover:bg-neutral-900 transition-all">
+                    <Arrow class="inline ml-2 rotate-45" />
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))
-      }
+          ))
+        }
+      </div>
     </div>
   </div>
 </div>
@@ -102,11 +203,13 @@ const workProjects = await getCollection("work");
 <script>
   function initializeProjects() {
     let currentProjectIndex = 0;
+    let currentMobileIndex = 0;
     const projects = document.querySelectorAll(".project-slide");
     const totalProjects = projects.length;
 
     console.log("Total projects found:", totalProjects);
 
+    // Desktop functionality
     function showProject(index: number) {
       projects.forEach((project, i) => {
         if (i === index) {
@@ -133,7 +236,156 @@ const workProjects = await getCollection("work");
       showProject(prevIndex);
     }
 
-    // Remove existing event listeners to prevent duplicates
+    // Mobile swipe functionality
+    function initializeMobileSwipe() {
+      const track = document.getElementById("projects-track");
+      const container = document.getElementById("mobile-projects-container");
+      const indicators = document.querySelectorAll(".indicator-dot");
+
+      if (!track || !container) return;
+
+      let isDown = false;
+      let startX = 0;
+      let scrollLeft = 0;
+      let isDragging = false;
+
+      function updateMobileProject(index: number) {
+        if (!track || !container) return;
+
+        const slideWidth = container.offsetWidth;
+        track.style.transform = `translateX(-${index * slideWidth}px)`;
+
+        // Update indicators
+        indicators.forEach((indicator, i) => {
+          if (i === index) {
+            indicator.classList.add("bg-primary", "w-8");
+            indicator.classList.remove("bg-lines", "w-2");
+          } else {
+            indicator.classList.remove("bg-primary", "w-8");
+            indicator.classList.add("bg-lines", "w-2");
+          }
+        });
+
+        currentMobileIndex = index;
+      }
+
+      // Touch events
+      container.addEventListener("touchstart", (e) => {
+        startX = e.touches[0].pageX;
+        isDragging = false;
+      });
+
+      container.addEventListener("touchmove", (e) => {
+        if (Math.abs(e.touches[0].pageX - startX) > 10) {
+          isDragging = true;
+        }
+      });
+
+      container.addEventListener("touchend", (e) => {
+        if (!isDragging) return;
+
+        const endX = e.changedTouches[0].pageX;
+        const diff = startX - endX;
+        const threshold = 50;
+
+        if (diff > threshold) {
+          // Swipe left - next project
+          const nextIndex = (currentMobileIndex + 1) % totalProjects;
+          updateMobileProject(nextIndex);
+        } else if (diff < -threshold) {
+          // Swipe right - previous project
+          const prevIndex =
+            currentMobileIndex === 0
+              ? totalProjects - 1
+              : currentMobileIndex - 1;
+          updateMobileProject(prevIndex);
+        }
+      });
+
+      // Mouse events for desktop drag
+      container.addEventListener("mousedown", (e) => {
+        isDown = true;
+        startX = e.pageX;
+        isDragging = false;
+        container.style.cursor = "grabbing";
+      });
+
+      container.addEventListener("mousemove", (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        if (Math.abs(e.pageX - startX) > 10) {
+          isDragging = true;
+        }
+      });
+
+      container.addEventListener("mouseup", (e) => {
+        if (!isDown) return;
+        isDown = false;
+        container.style.cursor = "grab";
+
+        if (!isDragging) return;
+
+        const endX = e.pageX;
+        const diff = startX - endX;
+        const threshold = 50;
+
+        if (diff > threshold) {
+          // Drag left - next project
+          const nextIndex = (currentMobileIndex + 1) % totalProjects;
+          updateMobileProject(nextIndex);
+        } else if (diff < -threshold) {
+          // Drag right - previous project
+          const prevIndex =
+            currentMobileIndex === 0
+              ? totalProjects - 1
+              : currentMobileIndex - 1;
+          updateMobileProject(prevIndex);
+        }
+      });
+
+      container.addEventListener("mouseleave", () => {
+        isDown = false;
+        container.style.cursor = "grab";
+      });
+
+      // Button navigation for mobile
+      const mobileNextBtn = document.querySelector(".mobile-next-btn");
+      const mobilePrevBtn = document.querySelector(".mobile-prev-btn");
+
+      if (mobileNextBtn) {
+        mobileNextBtn.addEventListener("click", () => {
+          const nextIndex = (currentMobileIndex + 1) % totalProjects;
+          updateMobileProject(nextIndex);
+        });
+      }
+
+      if (mobilePrevBtn) {
+        mobilePrevBtn.addEventListener("click", () => {
+          const prevIndex =
+            currentMobileIndex === 0
+              ? totalProjects - 1
+              : currentMobileIndex - 1;
+          updateMobileProject(prevIndex);
+        });
+      }
+
+      // Indicator clicks
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener("click", () => {
+          updateMobileProject(index);
+        });
+      });
+
+      // Handle resize
+      window.addEventListener("resize", () => {
+        updateMobileProject(currentMobileIndex);
+      });
+
+      // Set cursor style
+      container.style.cursor = "grab";
+    }
+
+    // Remove existing event listeners to prevent duplicates (desktop)
     document.querySelectorAll(".next-project-btn").forEach((btn) => {
       btn.replaceWith(btn.cloneNode(true));
     });
@@ -142,7 +394,7 @@ const workProjects = await getCollection("work");
       btn.replaceWith(btn.cloneNode(true));
     });
 
-    // Add event listeners to all next/prev buttons
+    // Add event listeners to all next/prev buttons (desktop)
     document.querySelectorAll(".next-project-btn").forEach((btn) => {
       btn.addEventListener("click", nextProject);
     });
@@ -151,8 +403,18 @@ const workProjects = await getCollection("work");
       btn.addEventListener("click", prevProject);
     });
 
-    // Optional: Auto-advance every 10 seconds
-    // setInterval(nextProject, 10000);
+    // Initialize mobile swipe functionality
+    initializeMobileSwipe();
+
+    // Optional: Auto-advance every 10 seconds (uncomment if desired)
+    // setInterval(() => {
+    //   if (window.innerWidth >= 768) {
+    //     nextProject();
+    //   } else {
+    //     const nextIndex = (currentMobileIndex + 1) % totalProjects;
+    //     updateMobileProject(nextIndex);
+    //   }
+    // }, 10000);
   }
 
   // Initialize on DOMContentLoaded (for direct page loads)
