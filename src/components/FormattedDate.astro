@@ -1,0 +1,25 @@
+---
+interface Props {
+  date: Date | string;
+}
+
+const { date } = Astro.props;
+
+// Convert string to Date if needed
+const dateObject = typeof date === "string" ? new Date(date) : date;
+
+// Check if the date is valid
+const isValidDate = dateObject instanceof Date && !isNaN(dateObject.getTime());
+---
+
+<time datetime={isValidDate ? dateObject.toISOString() : ""}>
+  {
+    isValidDate
+      ? dateObject.toLocaleDateString("en-us", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      : "Invalid Date"
+  }
+</time>

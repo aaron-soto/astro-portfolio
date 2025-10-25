@@ -30,7 +30,17 @@ import { SOCIAL_LINKS } from "../lib/data";
       </ul>
     </p>
 
-    <form id="contact-form" class="w-full grid grid-cols-4 md:grid-cols-8">
+    <!-- mailTo Button -->
+    <div class="mt-6">
+      <a
+        href="mailto:aaron@ayezeewebdesigns.com"
+        class="bg-neutral-950 hover:bg-neutral-900 border border-lines text-white py-2.5 px-16 transition-all w-fit flex items-center justify-center h-[46px]"
+      >
+        send me an email
+      </a>
+    </div>
+
+    <!-- <form id="contact-form" class="w-full grid grid-cols-4 md:grid-cols-8">
       <div class="col-span-4">
         <label for="name" class="block mt-4 mb-2">name:</label>
         <input
@@ -74,15 +84,14 @@ import { SOCIAL_LINKS } from "../lib/data";
           </span>
         </button>
 
-        <!-- Message display area -->
         <div id="form-message" class="hidden mt-4 p-3 border rounded text-sm">
         </div>
       </div>
-    </form>
+    </form> -->
   </div>
 </Layout>
 
-<script>
+<!-- <script>
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("contact-form") as HTMLFormElement;
     const submitButton = document.getElementById(
@@ -169,4 +178,4 @@ import { SOCIAL_LINKS } from "../lib/data";
       }
     });
   });
-</script>
+</script> -->
