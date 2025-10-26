@@ -48,7 +48,7 @@ const posts = (await getCollection("blog")).sort(
                   <img
                     src={post.data.heroImage}
                     alt={post.data.heroAlt || "Blog Post Hero Image"}
-                    transition:name={`blog-hero-${post.id}`}
+                    transition:name={`blog-hero-${post.slug}`}
                   />
                 </div>
                 <div
