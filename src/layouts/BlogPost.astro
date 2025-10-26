@@ -80,6 +80,16 @@ const slug = Astro.url.pathname.split("/").pop() || Astro.params.slug;
 
 <Layout>
   <div class="container">
+    <a 
+      href="/blog" 
+      class="inline-flex items-center gap-2 text-foreground-muted hover:text-white transition-colors mb-8"
+    >
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Back
+    </a>
+    
     <article>
       {
         heroImage && (
