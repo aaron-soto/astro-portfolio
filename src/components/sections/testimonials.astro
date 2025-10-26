@@ -1,0 +1,52 @@
+---
+// src/components/sections/Testimonials.astro
+
+interface Testimonial {
+  quote: string;
+  author: string;
+  role: string;
+  company: string;
+}
+
+const testimonials: Testimonial[] = [
+  {
+    quote: "If you want professional and reliable website, reach out to Aaron at Ayezee. He got our website up and running to include our checkout section. We started profiting on the same day. Ayezee's commitment to your project offers one on one service that is above the rest.",
+    author: "Manuel",
+    role: "Owner",
+    company: "C3 Security & Logistics"
+  },
+  {
+    quote: "He was great to work with and made my ideas a reality. Ayezee Web Designs far exceeded my expectations. I now have a website that I am proud of and that is thanks to him.",
+    author: "Greg Green",
+    role: "Owner",
+    company: "Roping Finder"
+  }
+];
+---
+
+<div class="relative bg-[linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] py-20">
+  <div class="container">
+    <div class="flex text-foreground-muted gap-4 items-center mb-12">
+      <span>// what clients say</span>
+      <div class="h-px bg-lines flex-1"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-8 gap-8 md:gap-6">
+      {testimonials.map((testimonial) => (
+        <div class="col-span-1 md:col-span-8 grid grid-cols-1 md:grid-cols-8 gap-6 border-b border-lines pb-8 last:border-b-0">
+          <div class="col-span-1 md:col-span-5">
+            <p class="text-foreground-muted text-lg leading-relaxed">
+              "{testimonial.quote}"
+            </p>
+          </div>
+          <div class="col-span-1 md:col-span-3 flex flex-col justify-end">
+            <p class="text-white font-medium">{testimonial.author}</p>
+            <p class="text-foreground-muted text-sm">
+              {testimonial.role}, {testimonial.company}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
