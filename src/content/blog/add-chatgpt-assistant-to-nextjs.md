@@ -3,6 +3,7 @@ title: "How to Add a ChatGPT Assistant to Your Next.js Website"
 description: "Learn how to integrate OpenAI's ChatGPT model into your Next.js website to create a conversational assistant. This tutorial covers setting up the ChatGPT API, creating a custom React hook, and implementing the assistant in your project."
 pubDate: "2025-02-10"
 tags: ["ai", "ui/ux", "fullstack"]
+slug: "add-chatgpt-assistant-to-nextjs"
 heroImage: "/images/blog/add-chatgpt-assistant-to-nextjs/hero.webp"
 ---
 

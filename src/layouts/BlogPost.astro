@@ -67,13 +67,20 @@ const slug = Astro.url.pathname.split("/").pop() || Astro.params.slug;
     }
 
     p > a {
-      color: var(--brand-link-color);
+      color: var(--color-primary);
+      opacity: 0.8;
       text-decoration: underline;
+      transition: all 0.3s ease;
+
+      &:hover {
+        opacity: 1;
+      }
     }
 
     pre {
-      box-shadow: var(--box-shadow);
+      font-size: 0.9rem;
       max-height: 800px;
+      padding: 4px 8px;
     }
   }
 </style>

@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 
 import { Image } from "astro:assets";
 import shatteredImg from "../../assets/images/shattered.png";
+import patternImg from "../../assets/images/pattern.webp";
 
 const workProjects = await getCollection("work");
 // Sort projects by some criteria if needed
@@ -33,10 +34,17 @@ const workProjects = await getCollection("work");
                 <div class="grid grid-cols-1 gap-6">
                   <div class="bg-neutral-900 w-full aspect-video flex items-center justify-center relative overflow-hidden z-0">
                     <div class="absolute inset-0">
-                      <Image
+                      {/* <Image
                         src={shatteredImg}
                         alt="Shattered glass effect"
                         class="relative w-full h-full z-20 object-cover opacity-70"
+                        style="background-repeat: repeat; background-size: auto;"
+                      /> */}
+
+                      <Image
+                        src={patternImg}
+                        alt="Subtle pattern background"
+                        class="relative w-full h-full z-10 object-cover opacity-20"
                         style="background-repeat: repeat; background-size: auto;"
                       />
                     </div>
