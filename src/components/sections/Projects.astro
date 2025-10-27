@@ -102,6 +102,8 @@ const workProjects = await getCollection("work");
           {
             workProjects.map((_dot: any, i: number) => (
               <button
+                type="button"
+                aria-label={`Go to project ${i + 1}`}
                 class={`h-1.5 transition-all duration-300 indicator-dot w-6 ${i === 0 ? "bg-primary" : "bg-lines "}`}
                 data-index={i}
               />
@@ -112,11 +114,15 @@ const workProjects = await getCollection("work");
         <!-- Navigation Arrows -->
         <div class="flex justify-center gap-4 mt-4">
           <button
+            type="button"
+            aria-label="Previous project"
             class="mobile-prev-btn bg-neutral-950 border border-lines px-4 py-2 hover:bg-neutral-900 transition-all rounded"
           >
             <Arrow class="inline rotate-[-135deg]" />
           </button>
           <button
+            type="button"
+            aria-label="Next project"
             class="mobile-next-btn bg-neutral-950 border border-lines px-4 py-2 hover:bg-neutral-900 transition-all rounded"
           >
             <Arrow class="inline rotate-45" />
@@ -149,7 +155,7 @@ const workProjects = await getCollection("work");
                     <img
                       src={project.data.logo}
                       alt={`${project.data.title} logo`}
-                      class=" object-cover relative z-20 size-24 md:size-48 drop-shadow-2xl"
+                      class="object-cover relative z-20 size-24 md:size-48 drop-shadow-2xl"
                     />
                   </div>
                 )}

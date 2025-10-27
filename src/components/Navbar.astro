@@ -29,7 +29,12 @@ const navItems = [
     <div class="flex flex-row justify-between items-center pb-4 relative z-30">
       <AaronLogo transition:name="main-logo" />
 
-      <button id="mobile-menu-toggle" class="md:hidden z-30 relative">
+      <button
+        id="mobile-menu-toggle"
+        type="button"
+        aria-label="Toggle mobile menu"
+        class="md:hidden z-30 relative"
+      >
         <!-- Hamburger Icon -->
         <svg
           id="hamburger-icon"

@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import AaronImg from "../../assets/images/aaron.webp";
 import Arrow from "../icons/Arrow.astro";
+import StaticImg from "../../assets/images/static.jpg";
 ---
 
 <div
@@ -25,13 +26,28 @@ import Arrow from "../icons/Arrow.astro";
       </div>
 
       <p class="text-foreground-muted text-lg! leading-relaxed mb-6">
-        I build websites and custom software for businesses without tech teams. If you’ve got a workflow that’s slowing you down or a process you wish ran itself, we can build something that fixes it.
+        I build websites and custom software for businesses without tech teams.
+        If you’ve got a workflow that’s slowing you down or a process you wish
+        ran itself, we can build something that fixes it.
       </p>
     </div>
   </div>
   <div class="col-span-4 md:col-span-4 order-1 md:order-2 mb-8">
-    <div class="w-[60%] ml-auto mr-10">
-      <Image src={AaronImg} alt="Aaron Soto" priority class="object-cover" />
+    <div class="w-[60%] ml-auto mr-10 relative overflow-hidden">
+      <Image
+        src={AaronImg}
+        alt="Aaron Soto"
+        priority
+        class="object-cover"
+        sizes="(max-width: 768px) 60vw, 30vw"
+        widths={[240, 360, 480, 720]}
+      />
+
+      <div
+        class="absolute inset-0 w-[200%] h-[200%] -top-1/2 -left-1/2 z-10 mix-blend-multiply opacity-30 pointer-events-none animate-[staticRotate_8s_infinite_steps(4)]"
+        style={`background-image: url(${StaticImg.src}); background-repeat: repeat; background-size: 100px 100px;`}
+      >
+      </div>
     </div>
   </div>
 
