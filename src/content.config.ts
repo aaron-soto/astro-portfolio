@@ -15,11 +15,13 @@ const blogCollection = defineCollection({
     heroImage: z.string().optional(),
     heroAlt: z.string().optional(),
     tags: z.array(z.string()).optional().default([]),
+    slug: z.string(),
   }),
 });
 
 const workCollection = defineCollection({
-  type: "content",
+  // Load Markdown and MDX files in the `src/content/work/` directory.
+  loader: glob({ base: "./src/content/work", pattern: "**/*.{md,mdx}" }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),

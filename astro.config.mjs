@@ -10,7 +10,23 @@ export default defineConfig({
   site: "https://aaronsoto.io",
   integrations: [react(), mdx(), sitemap()],
 
+  image: {
+    remotePatterns: [{ protocol: "https" }],
+    domains: [],
+  },
+
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      cssCodeSplit: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            "react-vendor": ["react", "react-dom"],
+            "motion-vendor": ["framer-motion"],
+          },
+        },
+      },
+    },
   },
 });

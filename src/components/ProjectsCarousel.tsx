@@ -106,6 +106,8 @@ export default function ProjectsCarousel({
                       backgroundRepeat: "repeat",
                       backgroundSize: "auto",
                     }}
+                    loading="lazy"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
 

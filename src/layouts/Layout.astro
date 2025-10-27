@@ -24,6 +24,19 @@ const siteUrl = canonical || Astro.url.href;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://api-gateway.umami.dev" />
+    <link rel="preconnect" href="https://cloud.umami.is" />
+
+    <!-- Font preload -->
+    <link
+      rel="preload"
+      href="/fonts/Urbanist-Variable.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+
     <title>{siteTitle}</title>
     <meta name="description" content={siteDescription} />
 

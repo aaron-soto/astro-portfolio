@@ -145,8 +145,11 @@ const workProjects = await getCollection("work");
                   <Image
                     src={shatteredImg}
                     alt="Shattered glass effect"
-                    class="relative w-full h-full z-20 object-cover opacity-70 "
+                    class="relative w-full h-full z-20 object-cover opacity-70"
                     style="background-repeat: repeat; background-size: auto;"
+                    loading="lazy"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    widths={[320, 640, 960, 1280]}
                   />
                 </div>
 
