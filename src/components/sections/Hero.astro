@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import AaronImg from "../../assets/images/aaron.webp";
 import Arrow from "../icons/Arrow.astro";
-import StaticImg from "../../assets/images/static.jpg";
+import StaticImg from "../../assets/images/static-optimized.png";
 ---
 
 <div
@@ -44,8 +44,8 @@ import StaticImg from "../../assets/images/static.jpg";
       />
 
       <div
-        class="absolute inset-0 w-[200%] h-[200%] -top-1/2 -left-1/2 z-10 mix-blend-multiply opacity-30 pointer-events-none animate-[staticRotate_8s_infinite_steps(4)]"
-        style={`background-image: url(${StaticImg.src}); background-repeat: repeat; background-size: 100px 100px;`}
+        class="static-effect absolute inset-0 w-[200%] h-[200%] -top-1/2 -left-1/2 z-10 mix-blend-multiply opacity-30 pointer-events-none animate-[staticRotate_8s_infinite_steps(4)] will-change-transform"
+        style={`background-image: url(${StaticImg.src}); background-repeat: repeat; background-size: 32px 32px;`}
       >
       </div>
     </div>
