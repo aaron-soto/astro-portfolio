@@ -16,12 +16,7 @@ import { SOCIAL_LINKS } from "../lib/data";
       or use the form below:
     </p>
 
-    <form
-      id="contact-form"
-      class="w-full grid grid-cols-4 md:grid-cols-8 mt-8"
-      method="post"
-      action="#"
-    >
+    <form id="contact-form" class="w-full grid grid-cols-4 md:grid-cols-8 mt-8">
       <div class="col-span-4">
         <label for="name" class="block mt-4 mb-2">name:</label>
         <input
@@ -123,14 +118,23 @@ import { SOCIAL_LINKS } from "../lib/data";
       formMessage: !!formMessage,
     });
 
-    // Get environment variables
+    // Configuration - Update these values for your project
     const API_CONFIG = {
-      baseUrl: import.meta.env.PUBLIC_CMS_DOMAIN || "localhost:3000",
+      // Your AyeZee Dashboard domain (where your API is hosted)
+      baseUrl: import.meta.env.PUBLIC_CMS_DOMAIN || "http://localhost:3000",
+      // Your project slug in the dashboard
       projectSlug: import.meta.env.PUBLIC_PROJECT_SLUG || "portfolio",
+      // Your contact form instance key from the dashboard
       instanceKey:
         import.meta.env.PUBLIC_INSTANCE_KEY || "contact_form-1761612119807",
+      // Your project API key from the dashboard
       apiKey: import.meta.env.PUBLIC_AYEZEE_API_KEY,
     };
+
+    console.log("API Config:", {
+      ...API_CONFIG,
+      apiKey: API_CONFIG.apiKey ? "***set***" : "not set",
+    });
 
     function showMessage(message: string, isSuccess: boolean = true) {
       formMessage.textContent = message;
@@ -223,9 +227,7 @@ import { SOCIAL_LINKS } from "../lib/data";
           return;
         }
 
-        console.log("API Config:", API_CONFIG);
-
-        // Submit to your CMS API
+        // Construct the API URL with proper protocol handling
         let apiUrl;
         if (
           API_CONFIG.baseUrl.startsWith("http://") ||
@@ -233,12 +235,16 @@ import { SOCIAL_LINKS } from "../lib/data";
         ) {
           apiUrl = `${API_CONFIG.baseUrl}/api/v1/projects/${API_CONFIG.projectSlug}/submit/${API_CONFIG.instanceKey}`;
         } else {
+          // Handle cases where protocol is missing
           const protocol = API_CONFIG.baseUrl.includes("localhost")
             ? "http://"
             : "https://";
           apiUrl = `${protocol}${API_CONFIG.baseUrl}/api/v1/projects/${API_CONFIG.projectSlug}/submit/${API_CONFIG.instanceKey}`;
         }
 
+        console.log("Submitting to API:", apiUrl);
+
+        // Submit to your CMS API
         const response = await fetch(apiUrl, {
           method: "POST",
           headers: {
@@ -252,7 +258,22 @@ import { SOCIAL_LINKS } from "../lib/data";
           }),
         });
 
-        const result = await response.json();
+        console.log("Response status:", response.status);
+        console.log(
+          "Response headers:",
+          Object.fromEntries(response.headers.entries())
+        );
+
+        let result;
+        try {
+          result = await response.json();
+          console.log("Response data:", result);
+        } catch (parseError) {
+          console.error("Failed to parse response JSON:", parseError);
+          const responseText = await response.text();
+          console.log("Raw response:", responseText);
+          throw new Error("Invalid response format from server");
+        }
 
         if (response.ok) {
           showMessage(
@@ -265,23 +286,32 @@ import { SOCIAL_LINKS } from "../lib/data";
           let errorMessage = "Failed to send message. Please try again.";
 
           if (result.error) {
-            if (result.code === "VALIDATION_ERROR" && result.validationErrors) {
-              errorMessage = `Validation error: ${result.validationErrors.join(", ")}`;
+            if (result.code === "VALIDATION_ERROR" && result.details) {
+              const details =
+                typeof result.details === "string"
+                  ? JSON.parse(result.details)
+                  : result.details;
+
+              if (details.validationErrors) {
+                errorMessage = `Validation error: ${details.validationErrors.join(", ")}`;
+              } else if (details.missingFields) {
+                errorMessage = `Missing required fields: ${details.missingFields.join(", ")}`;
+              }
             } else if (result.code === "API_KEY_MISSING") {
               errorMessage =
                 "Contact form configuration error. Please use the email link above.";
             } else if (result.code === "INVALID_CREDENTIALS") {
               errorMessage =
                 "Contact form configuration error. Please use the email link above.";
+            } else if (result.code === "MODULE_NOT_FOUND") {
+              errorMessage =
+                "Contact form not found. Please use the email link above.";
             } else {
               errorMessage = result.error;
             }
-          } else if (result.message) {
-            errorMessage = result.message;
-          } else if (result.validationErrors) {
-            errorMessage = `Validation error: ${Array.isArray(result.validationErrors) ? result.validationErrors.join(", ") : result.validationErrors}`;
           }
 
+          console.log("Error details:", result);
           showMessage(errorMessage, false);
         }
       } catch (error) {
