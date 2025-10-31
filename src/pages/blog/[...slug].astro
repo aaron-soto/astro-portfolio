@@ -5,10 +5,15 @@ import { render } from "astro:content";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
-  return posts.map((post: CollectionEntry<"blog">) => ({
-    params: { slug: post.slug },
-    props: post,
-  }));
+  return posts
+    .filter(
+      (post: CollectionEntry<"blog">) =>
+        post.data.slug && post.data.slug !== "blog"
+    ) // Filter out empty slugs and avoid conflict with /blog
+    .map((post: CollectionEntry<"blog">) => ({
+      params: { slug: post.data.slug },
+      props: post,
+    }));
 }
 
 type Props = CollectionEntry<"blog">;

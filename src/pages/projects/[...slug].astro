@@ -3,13 +3,19 @@ import { getCollection, getEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import type { CollectionEntry } from "astro:content";
 import ExternalLink from "../../components/icons/ExternalLink.astro";
+import { render } from "astro:content";
 
 export async function getStaticPaths() {
   const workProjects = await getCollection("work");
-  return workProjects.map((project: CollectionEntry<"work">) => ({
-    params: { slug: project.slug },
-    props: { project },
-  }));
+  return workProjects
+    .filter(
+      (project: CollectionEntry<"work">) =>
+        project.data.slug && project.data.slug !== "projects"
+    ) // Filter out empty slugs and avoid conflict with /projects
+    .map((project: CollectionEntry<"work">) => ({
+      params: { slug: project.data.slug },
+      props: { project },
+    }));
 }
 
 interface Props {
@@ -17,7 +23,7 @@ interface Props {
 }
 
 const { project }: Props = Astro.props;
-const { Content } = await project.render();
+const { Content } = await render(project);
 ---
 
 <Layout
