@@ -16,7 +16,12 @@ import { SOCIAL_LINKS } from "../lib/data";
       or use the form below:
     </p>
 
-    <form id="contact-form" class="w-full grid grid-cols-4 md:grid-cols-8 mt-8">
+    <form
+      id="contact-form"
+      class="w-full grid grid-cols-4 md:grid-cols-8 mt-8"
+      method="post"
+      action="#"
+    >
       <div class="col-span-4">
         <label for="name" class="block mt-4 mb-2">name:</label>
         <input
@@ -94,6 +99,8 @@ import { SOCIAL_LINKS } from "../lib/data";
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+    console.log("Contact form script loaded");
+
     const form = document.getElementById("contact-form") as HTMLFormElement;
     const submitButton = document.getElementById(
       "submit-button"
@@ -107,6 +114,14 @@ import { SOCIAL_LINKS } from "../lib/data";
     const formMessage = document.getElementById(
       "form-message"
     ) as HTMLDivElement;
+
+    console.log("Form elements found:", {
+      form: !!form,
+      submitButton: !!submitButton,
+      buttonText: !!buttonText,
+      buttonSpinner: !!buttonSpinner,
+      formMessage: !!formMessage,
+    });
 
     // Get environment variables
     const API_CONFIG = {
@@ -165,6 +180,7 @@ import { SOCIAL_LINKS } from "../lib/data";
     }
 
     form.addEventListener("submit", async function (e) {
+      console.log("Form submit event triggered");
       e.preventDefault();
 
       // Hide any previous messages
@@ -174,12 +190,17 @@ import { SOCIAL_LINKS } from "../lib/data";
       setButtonLoading(true);
 
       try {
+        console.log("Starting form submission process");
+
         // Get form data
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
+        console.log("Form data collected:", data);
+
         // Basic validation
         if (!data.name || !data.email || !data.message) {
+          console.log("Validation failed: missing required fields");
           showMessage("Please fill in all required fields.", false);
           return;
         }
@@ -187,18 +208,22 @@ import { SOCIAL_LINKS } from "../lib/data";
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(data.email as string)) {
+          console.log("Validation failed: invalid email");
           showMessage("Please enter a valid email address.", false);
           return;
         }
 
         // Check if API key is configured
         if (!API_CONFIG.apiKey || API_CONFIG.apiKey === "your-api-key-here") {
+          console.log("API key not configured");
           showMessage(
             "Contact form is not properly configured. Please use the email link above.",
             false
           );
           return;
         }
+
+        console.log("API Config:", API_CONFIG);
 
         // Submit to your CMS API
         let apiUrl;
