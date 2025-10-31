@@ -2,6 +2,15 @@
 import SpinnerIcon from "../components/icons/SpinnerIcon.astro";
 import Layout from "../layouts/Layout.astro";
 import { SOCIAL_LINKS } from "../lib/data";
+
+// Get environment variables on the server side
+const apiConfig = {
+  baseUrl: import.meta.env.PUBLIC_CMS_DOMAIN || "http://localhost:3000",
+  projectSlug: import.meta.env.PUBLIC_PROJECT_SLUG || "portfolio",
+  instanceKey:
+    import.meta.env.PUBLIC_INSTANCE_KEY || "contact_form-1761612119807",
+  apiKey: import.meta.env.PUBLIC_AYEZEE_API_KEY || "",
+};
 ---
 
 <Layout>
@@ -16,7 +25,11 @@ import { SOCIAL_LINKS } from "../lib/data";
       or use the form below:
     </p>
 
-    <form id="contact-form" class="w-full grid grid-cols-4 md:grid-cols-8 mt-8">
+    <form
+      id="contact-form"
+      class="w-full grid grid-cols-4 md:grid-cols-8 mt-8"
+      onsubmit="return false;"
+    >
       <div class="col-span-4">
         <label for="name" class="block mt-4 mb-2">name:</label>
         <input
@@ -92,6 +105,11 @@ import { SOCIAL_LINKS } from "../lib/data";
   </div>
 </Layout>
 
+<!-- Pass server-side config to client-side -->
+<script is:inline define:vars={{ apiConfig }}>
+  window.API_CONFIG = apiConfig;
+</script>
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     console.log("Contact form script loaded");
@@ -118,17 +136,12 @@ import { SOCIAL_LINKS } from "../lib/data";
       formMessage: !!formMessage,
     });
 
-    // Configuration - Update these values for your project
-    const API_CONFIG = {
-      // Your AyeZee Dashboard domain (where your API is hosted)
-      baseUrl: import.meta.env.PUBLIC_CMS_DOMAIN || "http://localhost:3000",
-      // Your project slug in the dashboard
-      projectSlug: import.meta.env.PUBLIC_PROJECT_SLUG || "portfolio",
-      // Your contact form instance key from the dashboard
-      instanceKey:
-        import.meta.env.PUBLIC_INSTANCE_KEY || "contact_form-1761612119807",
-      // Your project API key from the dashboard
-      apiKey: import.meta.env.PUBLIC_AYEZEE_API_KEY,
+    // Configuration - Get from server-side passed variables
+    const API_CONFIG = (window as any).API_CONFIG || {
+      baseUrl: "http://localhost:3000",
+      projectSlug: "portfolio",
+      instanceKey: "contact_form-1761612119807",
+      apiKey: "",
     };
 
     console.log("API Config:", {
