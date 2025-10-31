@@ -3,7 +3,9 @@ import { getModuleData } from "../../lib/ayezee-cms-helper";
 
 let testimonials = [];
 try {
-  const testimonialData = await getModuleData("testimonials-1761693428651");
+  const testimonialData = await getModuleData(
+    import.meta.env.PUBLIC_TESTIMONIALS_KEY
+  );
   testimonials = testimonialData.data;
 } catch (error) {
   console.warn("Failed to load testimonials:", error);
