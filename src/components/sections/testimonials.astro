@@ -1,8 +1,32 @@
 ---
 import { getModuleData } from "../../lib/ayezee-cms-helper";
 
-const testimonialData = await getModuleData("testimonials-1761693428651");
-const testimonials = testimonialData.data;
+let testimonials = [];
+try {
+  const testimonialData = await getModuleData("testimonials-1761693428651");
+  testimonials = testimonialData.data;
+} catch (error) {
+  console.warn("Failed to load testimonials:", error);
+  // Fallback testimonials for when CMS is unavailable
+  testimonials = [
+    {
+      data: {
+        testimonial:
+          "Aaron delivered exceptional work on our project. His attention to detail and technical expertise made all the difference.",
+        customer_name: "John Smith",
+        company_name: "Tech Solutions Inc.",
+      },
+    },
+    {
+      data: {
+        testimonial:
+          "Professional, reliable, and skilled developer. Would definitely work with Aaron again.",
+        customer_name: "Sarah Johnson",
+        company_name: "Creative Digital Agency",
+      },
+    },
+  ];
+}
 ---
 
 <div

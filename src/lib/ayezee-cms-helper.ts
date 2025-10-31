@@ -120,6 +120,15 @@ class AyeZeeCMS {
   }
 
   private getBaseUrl(): string {
+    // Handle cases where the domain already includes the protocol
+    if (
+      this.cmsDomain.startsWith("http://") ||
+      this.cmsDomain.startsWith("https://")
+    ) {
+      return `${this.cmsDomain}/api/v1/projects/${this.projectSlug}`;
+    }
+
+    // Add protocol if not present
     const protocol = this.cmsDomain.includes("localhost") ? "http" : "https";
     return `${protocol}://${this.cmsDomain}/api/v1/projects/${this.projectSlug}`;
   }
