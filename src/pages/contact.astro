@@ -201,24 +201,31 @@ import { SOCIAL_LINKS } from "../lib/data";
         }
 
         // Submit to your CMS API
-        const protocol = API_CONFIG.baseUrl.includes("localhost")
-          ? "http://"
-          : "https://";
-        const response = await fetch(
-          `${protocol}${API_CONFIG.baseUrl}/api/v1/projects/${API_CONFIG.projectSlug}/submit/${API_CONFIG.instanceKey}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${API_CONFIG.apiKey}`,
-            },
-            body: JSON.stringify({
-              name: data.name,
-              email: data.email,
-              message: data.message,
-            }),
-          }
-        );
+        let apiUrl;
+        if (
+          API_CONFIG.baseUrl.startsWith("http://") ||
+          API_CONFIG.baseUrl.startsWith("https://")
+        ) {
+          apiUrl = `${API_CONFIG.baseUrl}/api/v1/projects/${API_CONFIG.projectSlug}/submit/${API_CONFIG.instanceKey}`;
+        } else {
+          const protocol = API_CONFIG.baseUrl.includes("localhost")
+            ? "http://"
+            : "https://";
+          apiUrl = `${protocol}${API_CONFIG.baseUrl}/api/v1/projects/${API_CONFIG.projectSlug}/submit/${API_CONFIG.instanceKey}`;
+        }
+
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${API_CONFIG.apiKey}`,
+          },
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            message: data.message,
+          }),
+        });
 
         const result = await response.json();
 
@@ -244,6 +251,10 @@ import { SOCIAL_LINKS } from "../lib/data";
             } else {
               errorMessage = result.error;
             }
+          } else if (result.message) {
+            errorMessage = result.message;
+          } else if (result.validationErrors) {
+            errorMessage = `Validation error: ${Array.isArray(result.validationErrors) ? result.validationErrors.join(", ") : result.validationErrors}`;
           }
 
           showMessage(errorMessage, false);
