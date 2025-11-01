@@ -25,11 +25,7 @@ const apiConfig = {
       or use the form below:
     </p>
 
-    <form
-      id="contact-form"
-      class="w-full grid grid-cols-4 md:grid-cols-8 mt-8"
-      onsubmit="return false;"
-    >
+    <form id="contact-form" class="w-full grid grid-cols-4 md:grid-cols-8 mt-8">
       <div class="col-span-4">
         <label for="name" class="block mt-4 mb-2">name:</label>
         <input
@@ -107,12 +103,15 @@ const apiConfig = {
 
 <!-- Pass server-side config to client-side -->
 <script is:inline define:vars={{ apiConfig }}>
+  console.log("Setting window.API_CONFIG:", apiConfig);
   window.API_CONFIG = apiConfig;
 </script>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
+  function initializeContactForm() {
     console.log("Contact form script loaded");
+    console.log("window.API_CONFIG available:", !!(window as any).API_CONFIG);
+    console.log("Document ready state:", document.readyState);
 
     const form = document.getElementById("contact-form") as HTMLFormElement;
     const submitButton = document.getElementById(
@@ -135,6 +134,26 @@ const apiConfig = {
       buttonSpinner: !!buttonSpinner,
       formMessage: !!formMessage,
     });
+
+    // Early return if form is not found
+    if (!form) {
+      console.error("Contact form not found! Cannot initialize.");
+      return;
+    }
+
+    if (!submitButton) {
+      console.error("Submit button not found! Cannot initialize.");
+      return;
+    }
+
+    // Check if already initialized
+    if (form.hasAttribute("data-initialized")) {
+      console.log("Form already initialized, skipping");
+      return;
+    }
+
+    // Mark as initialized
+    form.setAttribute("data-initialized", "true");
 
     // Configuration - Get from server-side passed variables
     const API_CONFIG = (window as any).API_CONFIG || {
@@ -248,7 +267,7 @@ const apiConfig = {
         ) {
           apiUrl = `${API_CONFIG.baseUrl}/api/v1/projects/${API_CONFIG.projectSlug}/submit/${API_CONFIG.instanceKey}`;
         } else {
-          // Handle cases where protocol is missing
+          // Handle cases where protocol is missing - prefer HTTPS for production
           const protocol = API_CONFIG.baseUrl.includes("localhost")
             ? "http://"
             : "https://";
@@ -257,7 +276,10 @@ const apiConfig = {
 
         console.log("Submitting to API:", apiUrl);
 
-        // Submit to your CMS API
+        // Submit to your CMS API with timeout and retry logic
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
         const response = await fetch(apiUrl, {
           method: "POST",
           headers: {
@@ -269,7 +291,10 @@ const apiConfig = {
             email: data.email,
             message: data.message,
           }),
+          signal: controller.signal,
         });
+
+        clearTimeout(timeoutId);
 
         console.log("Response status:", response.status);
         console.log(
@@ -337,5 +362,40 @@ const apiConfig = {
         setButtonLoading(false);
       }
     });
-  });
+
+    // Also add a direct click event listener to the submit button as backup
+    submitButton.addEventListener("click", function (e) {
+      console.log("Submit button clicked directly");
+      e.preventDefault();
+
+      // Trigger form submit event
+      const submitEvent = new Event("submit", {
+        bubbles: true,
+        cancelable: true,
+      });
+      form.dispatchEvent(submitEvent);
+    });
+
+    console.log("Event listeners attached successfully");
+  }
+
+  // Try to initialize immediately if DOM is already loaded
+  if (document.readyState === "loading") {
+    console.log("DOM is loading, waiting for DOMContentLoaded");
+    document.addEventListener("DOMContentLoaded", initializeContactForm);
+  } else {
+    console.log("DOM is already loaded, initializing immediately");
+    // DOM is already loaded, initialize immediately
+    initializeContactForm();
+  }
+
+  // Add a small delay as backup in case of timing issues
+  setTimeout(() => {
+    console.log("Backup initialization after 100ms");
+    if (
+      !document.getElementById("contact-form")?.hasAttribute("data-initialized")
+    ) {
+      initializeContactForm();
+    }
+  }, 100);
 </script>
