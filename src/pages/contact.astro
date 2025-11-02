@@ -107,7 +107,7 @@ const formConfig = {
 </script>
 
 <script>
-  import AyeZeeCMSClient from "@ayezeewebdesigns/cms-sdk";
+  import { submitForm } from "../lib/cms-client";
 
   function initializeContactForm() {
     console.log("Contact form script loaded");
@@ -148,14 +148,6 @@ const formConfig = {
       console.error("API key not configured");
       return;
     }
-
-    // Initialize CMS client
-    const cms = new AyeZeeCMSClient({
-      cmsDomain: config.cmsDomain,
-      projectSlug: config.projectSlug,
-      apiKey: config.apiKey,
-      cache: { enabled: false, ttl: 0 },
-    });
 
     function showMessage(message: string, isSuccess: boolean = true) {
       if (!formMessage) return;
@@ -235,12 +227,18 @@ const formConfig = {
           return;
         }
 
-        // Submit using the SDK
-        const result = await cms.submitForm(config.instanceKey, {
-          name: data.name,
-          email: data.email,
-          message: data.message,
-        });
+        // Submit using our helper function
+        const result = await submitForm(
+          config.cmsDomain,
+          config.projectSlug,
+          config.apiKey,
+          config.instanceKey,
+          {
+            name: data.name,
+            email: data.email,
+            message: data.message,
+          }
+        );
 
         if (result.success) {
           showMessage(

@@ -1,74 +1,67 @@
 ---
-import AyeZeeCMSClient from "@ayezeewebdesigns/cms-sdk";
+import { getModuleData } from "../../lib/ayezee-cms-helper";
 
-// Fallback testimonials in case API fails at build time
-const fallbackTestimonials = [
-  {
-    data: {
-      testimonial:
-        "Aaron delivered exceptional work on our project. His attention to detail and technical expertise made all the difference.",
-      customer_name: "Sample Client",
-      company_title: "CEO, Sample Company",
-    },
-  },
-  // Add more fallback testimonials as needed
-];
-
-let testimonials: any[] = fallbackTestimonials;
-
+let testimonials = [];
 try {
-  const cms = new AyeZeeCMSClient({
-    cmsDomain: import.meta.env.PUBLIC_CMS_DOMAIN || "your-cms-domain.com",
-    projectSlug: import.meta.env.PUBLIC_PROJECT_SLUG || "portfolio",
-    cache: { enabled: false, ttl: 0 },
-  });
-
-  const result = await cms.getModuleData("testimonials-1761693428651");
-
-  if (result && result.data && Array.isArray(result.data)) {
-    testimonials = result.data;
-  } else {
-    console.warn(
-      "Unexpected API response structure, using fallback testimonials"
-    );
-    testimonials = fallbackTestimonials;
-  }
+  const testimonialData = await getModuleData(
+    import.meta.env.PUBLIC_TESTIMONIALS_KEY
+  );
+  testimonials = testimonialData.data;
 } catch (error) {
-  console.error("Failed to fetch testimonials at build time:", error);
-  testimonials = fallbackTestimonials;
+  console.warn("Failed to load testimonials:", error);
+  // Fallback testimonials for when CMS is unavailable
+  testimonials = [
+    {
+      data: {
+        testimonial:
+          "Aaron delivered exceptional work on our project. His attention to detail and technical expertise made all the difference.",
+        customer_name: "John Smith",
+        company_title: "Owner, Tech Solutions Inc.",
+      },
+    },
+    {
+      data: {
+        testimonial:
+          "Professional, reliable, and skilled developer. Would definitely work with Aaron again.",
+        customer_name: "Sarah Johnson",
+        company_title: "Owner, Creative Digital Agency",
+      },
+    },
+  ];
 }
 ---
 
-div class="relative
-bg-[linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]
-py-20" >
-<div class="container">
-  <div class="flex text-foreground-muted gap-4 items-center mb-12">
-    <p class="text-white">
-      <span class="text-primary">//</span> what my clients say
-    </p>
-    <div class="h-px bg-lines flex-1"></div>
-  </div>
+<div
+  class="relative bg-[linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] py-20"
+>
+  <div class="container">
+    <div class="flex text-foreground-muted gap-4 items-center mb-12">
+      <p class="text-white">
+        <span class="text-primary">//</span> what my clients say
+      </p>
+      <div class="h-px bg-lines flex-1"></div>
+    </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-8 gap-8 md:gap-6">
-    {
-      testimonials.map((testimonial: any) => (
-        <div class="col-span-1 md:col-span-8 grid grid-cols-1 md:grid-cols-8 gap-6 border-b border-lines pb-8 last:border-b-0">
-          <div class="col-span-1 md:col-span-5">
-            <p class="text-foreground-muted text-lg leading-relaxed">
-              "{testimonial.data.testimonial}"
-            </p>
+    <div class="grid grid-cols-1 md:grid-cols-8 gap-8 md:gap-6">
+      {
+        testimonials.map((testimonial: any) => (
+          <div class="col-span-1 md:col-span-8 grid grid-cols-1 md:grid-cols-8 gap-6 border-b border-lines pb-8 last:border-b-0">
+            <div class="col-span-1 md:col-span-5">
+              <p class="text-foreground-muted text-lg leading-relaxed">
+                "{testimonial.data.testimonial}"
+              </p>
+            </div>
+            <div class="col-span-1 md:col-span-3 flex flex-col justify-end">
+              <p class="text-white font-medium">
+                {testimonial.data.customer_name}
+              </p>
+              <p class="text-foreground-muted text-sm">
+                {testimonial.data.company_title}
+              </p>
+            </div>
           </div>
-          <div class="col-span-1 md:col-span-3 flex flex-col justify-end">
-            <p class="text-white font-medium">
-              {testimonial.data.customer_name}
-            </p>
-            <p class="text-foreground-muted text-sm">
-              {testimonial.data.company_title}
-            </p>
-          </div>
-        </div>
-      ))
-    }
+        ))
+      }
+    </div>
   </div>
 </div>
