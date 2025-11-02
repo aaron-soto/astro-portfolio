@@ -23,61 +23,52 @@ try {
     cache: { enabled: false, ttl: 0 },
   });
 
-  console.log("Fetching testimonials...");
   const result = await cms.getModuleData("testimonials-1761693428651");
-  console.log("API Result:", result);
 
-  // Handle different possible response structures
-  if (result && Array.isArray(result.data)) {
+  if (result && result.data && Array.isArray(result.data)) {
     testimonials = result.data;
-    console.log("Using result.data:", testimonials.length, "testimonials");
-  } else if (result && Array.isArray(result)) {
-    testimonials = result;
-    console.log("Using direct result:", testimonials.length, "testimonials");
   } else {
-    console.warn("Unexpected API response structure:", result);
+    console.warn(
+      "Unexpected API response structure, using fallback testimonials"
+    );
     testimonials = fallbackTestimonials;
   }
 } catch (error) {
   console.error("Failed to fetch testimonials at build time:", error);
-  // Use fallback testimonials
   testimonials = fallbackTestimonials;
 }
-
-console.log("Final testimonials:", testimonials.length, "items");
 ---
 
-<div
-  class="relative bg-[linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] py-20"
->
-  <div class="container">
-    <div class="flex text-foreground-muted gap-4 items-center mb-12">
-      <p class="text-white">
-        <span class="text-primary">//</span> what my clients say
-      </p>
-      <div class="h-px bg-lines flex-1"></div>
-    </div>
+div class="relative
+bg-[linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]
+py-20" >
+<div class="container">
+  <div class="flex text-foreground-muted gap-4 items-center mb-12">
+    <p class="text-white">
+      <span class="text-primary">//</span> what my clients say
+    </p>
+    <div class="h-px bg-lines flex-1"></div>
+  </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-8 gap-8 md:gap-6">
-      {
-        testimonials.map((testimonial: any) => (
-          <div class="col-span-1 md:col-span-8 grid grid-cols-1 md:grid-cols-8 gap-6 border-b border-lines pb-8 last:border-b-0">
-            <div class="col-span-1 md:col-span-5">
-              <p class="text-foreground-muted text-lg leading-relaxed">
-                "{testimonial.data.testimonial}"
-              </p>
-            </div>
-            <div class="col-span-1 md:col-span-3 flex flex-col justify-end">
-              <p class="text-white font-medium">
-                {testimonial.data.customer_name}
-              </p>
-              <p class="text-foreground-muted text-sm">
-                {testimonial.data.company_title}
-              </p>
-            </div>
+  <div class="grid grid-cols-1 md:grid-cols-8 gap-8 md:gap-6">
+    {
+      testimonials.map((testimonial: any) => (
+        <div class="col-span-1 md:col-span-8 grid grid-cols-1 md:grid-cols-8 gap-6 border-b border-lines pb-8 last:border-b-0">
+          <div class="col-span-1 md:col-span-5">
+            <p class="text-foreground-muted text-lg leading-relaxed">
+              "{testimonial.data.testimonial}"
+            </p>
           </div>
-        ))
-      }
-    </div>
+          <div class="col-span-1 md:col-span-3 flex flex-col justify-end">
+            <p class="text-white font-medium">
+              {testimonial.data.customer_name}
+            </p>
+            <p class="text-foreground-muted text-sm">
+              {testimonial.data.company_title}
+            </p>
+          </div>
+        </div>
+      ))
+    }
   </div>
 </div>
