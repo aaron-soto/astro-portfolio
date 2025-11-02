@@ -1,0 +1,10 @@
+# Canonical host
+
+http://www.example.com/_ https://example.com/:splat 301
+https://www.example.com/_ https://example.com/:splat 301
+
+# Trailing slash normalization — if your astro.config sets trailingSlash: 'never'
+
+/:slug/ /:slug 301
+
+/\*.html /:splat 301

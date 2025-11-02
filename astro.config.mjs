@@ -10,7 +10,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: "https://aaronsoto.io",
   integrations: [react(), mdx(), sitemap()],
-
+  trailingSlash: "never",
   vite: {
     plugins: [tailwindcss()],
     build: {
