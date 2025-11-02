@@ -1,10 +1,12 @@
-# Canonical host
+# Canonical host - redirect www to non-www
 
-http://www.example.com/_ https://example.com/:splat 301
-https://www.example.com/_ https://example.com/:splat 301
+http://www.aaronsoto.io/_ https://aaronsoto.io/:splat 301!
+https://www.aaronsoto.io/_ https://aaronsoto.io/:splat 301!
 
-# Trailing slash normalization — if your astro.config sets trailingSlash: 'never'
+# Trailing slash normalization — redirect trailing slashes to no trailing slash
 
-/:slug/ /:slug 301
+/\*/ /:splat 301!
 
-/\*.html /:splat 301
+# Remove .html extensions
+
+/\*.html /:splat 301!
