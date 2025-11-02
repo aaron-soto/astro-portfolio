@@ -1,34 +1,14 @@
 ---
-import { getModuleData } from "../../lib/ayezee-cms-helper";
+import AyeZeeCMSClient from "@ayezeewebdesigns/cms-sdk";
 
-let testimonials = [];
-try {
-  const testimonialData = await getModuleData(
-    import.meta.env.PUBLIC_TESTIMONIALS_KEY
-  );
-  testimonials = testimonialData.data;
-} catch (error) {
-  console.warn("Failed to load testimonials:", error);
-  // Fallback testimonials for when CMS is unavailable
-  testimonials = [
-    {
-      data: {
-        testimonial:
-          "Aaron delivered exceptional work on our project. His attention to detail and technical expertise made all the difference.",
-        customer_name: "John Smith",
-        customer_title: "Owner, Tech Solutions Inc.",
-      },
-    },
-    {
-      data: {
-        testimonial:
-          "Professional, reliable, and skilled developer. Would definitely work with Aaron again.",
-        customer_name: "Sarah Johnson",
-        customer_title: "Owner, Creative Digital Agency",
-      },
-    },
-  ];
-}
+const cms = new AyeZeeCMSClient({
+  cmsDomain: import.meta.env.PUBLIC_CMS_DOMAIN,
+  projectSlug: import.meta.env.PUBLIC_PROJECT_SLUG,
+  cache: { enabled: false, ttl: 0 },
+});
+
+const result = await cms.getModuleData("testimonials-1761693428651");
+const testimonials = result.data;
 ---
 
 <div

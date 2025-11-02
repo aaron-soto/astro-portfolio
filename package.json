@@ -14,6 +14,7 @@
     "@astrojs/mdx": "^4.3.8",
     "@astrojs/react": "^4.4.0",
     "@astrojs/sitemap": "^3.6.0",
+    "@ayezeewebdesigns/cms-sdk": "^0.1.0",
     "@tailwindcss/vite": "^4.1.16",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",

@@ -3,9 +3,9 @@ import SpinnerIcon from "../components/icons/SpinnerIcon.astro";
 import Layout from "../layouts/Layout.astro";
 import { SOCIAL_LINKS } from "../lib/data";
 
-// Get environment variables on the server side
-const apiConfig = {
-  baseUrl: import.meta.env.PUBLIC_CMS_DOMAIN || "http://localhost:3000",
+// Get environment variables for client-side form submission
+const formConfig = {
+  cmsDomain: import.meta.env.PUBLIC_CMS_DOMAIN || "localhost:3000",
   projectSlug: import.meta.env.PUBLIC_PROJECT_SLUG || "portfolio",
   instanceKey:
     import.meta.env.PUBLIC_INSTANCE_KEY || "contact_form-1761612119807",
@@ -102,16 +102,15 @@ const apiConfig = {
 </Layout>
 
 <!-- Pass server-side config to client-side -->
-<script is:inline define:vars={{ apiConfig }}>
-  console.log("Setting window.API_CONFIG:", apiConfig);
-  window.API_CONFIG = apiConfig;
+<script is:inline define:vars={{ formConfig }}>
+  window.FORM_CONFIG = formConfig;
 </script>
 
 <script>
+  import AyeZeeCMSClient from "@ayezeewebdesigns/cms-sdk";
+
   function initializeContactForm() {
     console.log("Contact form script loaded");
-    console.log("window.API_CONFIG available:", !!(window as any).API_CONFIG);
-    console.log("Document ready state:", document.readyState);
 
     const form = document.getElementById("contact-form") as HTMLFormElement;
     const submitButton = document.getElementById(
@@ -127,22 +126,9 @@ const apiConfig = {
       "form-message"
     ) as HTMLDivElement;
 
-    console.log("Form elements found:", {
-      form: !!form,
-      submitButton: !!submitButton,
-      buttonText: !!buttonText,
-      buttonSpinner: !!buttonSpinner,
-      formMessage: !!formMessage,
-    });
-
     // Early return if form is not found
-    if (!form) {
-      console.error("Contact form not found! Cannot initialize.");
-      return;
-    }
-
-    if (!submitButton) {
-      console.error("Submit button not found! Cannot initialize.");
+    if (!form || !submitButton) {
+      console.error("Contact form elements not found!");
       return;
     }
 
@@ -155,20 +141,25 @@ const apiConfig = {
     // Mark as initialized
     form.setAttribute("data-initialized", "true");
 
-    // Configuration - Get from server-side passed variables
-    const API_CONFIG = (window as any).API_CONFIG || {
-      baseUrl: "http://localhost:3000",
-      projectSlug: "portfolio",
-      instanceKey: "contact_form-1761612119807",
-      apiKey: "",
-    };
+    // Get configuration from server-side
+    const config = (window as any).FORM_CONFIG;
 
-    console.log("API Config:", {
-      ...API_CONFIG,
-      apiKey: API_CONFIG.apiKey ? "***set***" : "not set",
+    if (!config?.apiKey) {
+      console.error("API key not configured");
+      return;
+    }
+
+    // Initialize CMS client
+    const cms = new AyeZeeCMSClient({
+      cmsDomain: config.cmsDomain,
+      projectSlug: config.projectSlug,
+      apiKey: config.apiKey,
+      cache: { enabled: false, ttl: 0 },
     });
 
     function showMessage(message: string, isSuccess: boolean = true) {
+      if (!formMessage) return;
+
       formMessage.textContent = message;
       formMessage.classList.remove("hidden");
 
@@ -198,10 +189,14 @@ const apiConfig = {
     }
 
     function hideMessage() {
-      formMessage.classList.add("hidden");
+      if (formMessage) {
+        formMessage.classList.add("hidden");
+      }
     }
 
     function setButtonLoading(isLoading: boolean) {
+      if (!submitButton || !buttonText || !buttonSpinner) return;
+
       submitButton.disabled = isLoading;
 
       if (isLoading) {
@@ -216,27 +211,19 @@ const apiConfig = {
     }
 
     form.addEventListener("submit", async function (e) {
-      console.log("Form submit event triggered");
       e.preventDefault();
-
-      // Hide any previous messages
       hideMessage();
-
-      // Show loading state
       setButtonLoading(true);
 
       try {
-        console.log("Starting form submission process");
-
         // Get form data
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        console.log("Form data collected:", data);
+        console.log("Submitting form data:", data);
 
         // Basic validation
         if (!data.name || !data.email || !data.message) {
-          console.log("Validation failed: missing required fields");
           showMessage("Please fill in all required fields.", false);
           return;
         }
@@ -244,113 +231,28 @@ const apiConfig = {
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(data.email as string)) {
-          console.log("Validation failed: invalid email");
           showMessage("Please enter a valid email address.", false);
           return;
         }
 
-        // Check if API key is configured
-        if (!API_CONFIG.apiKey || API_CONFIG.apiKey === "your-api-key-here") {
-          console.log("API key not configured");
-          showMessage(
-            "Contact form is not properly configured. Please use the email link above.",
-            false
-          );
-          return;
-        }
-
-        // Construct the API URL with proper protocol handling
-        let apiUrl;
-        if (
-          API_CONFIG.baseUrl.startsWith("http://") ||
-          API_CONFIG.baseUrl.startsWith("https://")
-        ) {
-          apiUrl = `${API_CONFIG.baseUrl}/api/v1/projects/${API_CONFIG.projectSlug}/submit/${API_CONFIG.instanceKey}`;
-        } else {
-          // Handle cases where protocol is missing - prefer HTTPS for production
-          const protocol = API_CONFIG.baseUrl.includes("localhost")
-            ? "http://"
-            : "https://";
-          apiUrl = `${protocol}${API_CONFIG.baseUrl}/api/v1/projects/${API_CONFIG.projectSlug}/submit/${API_CONFIG.instanceKey}`;
-        }
-
-        console.log("Submitting to API:", apiUrl);
-
-        // Submit to your CMS API with timeout and retry logic
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
-
-        const response = await fetch(apiUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${API_CONFIG.apiKey}`,
-          },
-          body: JSON.stringify({
-            name: data.name,
-            email: data.email,
-            message: data.message,
-          }),
-          signal: controller.signal,
+        // Submit using the SDK
+        const result = await cms.submitForm(config.instanceKey, {
+          name: data.name,
+          email: data.email,
+          message: data.message,
         });
 
-        clearTimeout(timeoutId);
-
-        console.log("Response status:", response.status);
-        console.log(
-          "Response headers:",
-          Object.fromEntries(response.headers.entries())
-        );
-
-        let result;
-        try {
-          result = await response.json();
-          console.log("Response data:", result);
-        } catch (parseError) {
-          console.error("Failed to parse response JSON:", parseError);
-          const responseText = await response.text();
-          console.log("Raw response:", responseText);
-          throw new Error("Invalid response format from server");
-        }
-
-        if (response.ok) {
+        if (result.success) {
           showMessage(
             "Message sent successfully! I'll get back to you soon. Thank you!",
             true
           );
           form.reset();
         } else {
-          // Handle specific error cases
-          let errorMessage = "Failed to send message. Please try again.";
-
-          if (result.error) {
-            if (result.code === "VALIDATION_ERROR" && result.details) {
-              const details =
-                typeof result.details === "string"
-                  ? JSON.parse(result.details)
-                  : result.details;
-
-              if (details.validationErrors) {
-                errorMessage = `Validation error: ${details.validationErrors.join(", ")}`;
-              } else if (details.missingFields) {
-                errorMessage = `Missing required fields: ${details.missingFields.join(", ")}`;
-              }
-            } else if (result.code === "API_KEY_MISSING") {
-              errorMessage =
-                "Contact form configuration error. Please use the email link above.";
-            } else if (result.code === "INVALID_CREDENTIALS") {
-              errorMessage =
-                "Contact form configuration error. Please use the email link above.";
-            } else if (result.code === "MODULE_NOT_FOUND") {
-              errorMessage =
-                "Contact form not found. Please use the email link above.";
-            } else {
-              errorMessage = result.error;
-            }
-          }
-
-          console.log("Error details:", result);
-          showMessage(errorMessage, false);
+          showMessage(
+            result.message || "Failed to send message. Please try again.",
+            false
+          );
         }
       } catch (error) {
         console.error("Contact form error:", error);
@@ -363,35 +265,18 @@ const apiConfig = {
       }
     });
 
-    // Also add a direct click event listener to the submit button as backup
-    submitButton.addEventListener("click", function (e) {
-      console.log("Submit button clicked directly");
-      e.preventDefault();
-
-      // Trigger form submit event
-      const submitEvent = new Event("submit", {
-        bubbles: true,
-        cancelable: true,
-      });
-      form.dispatchEvent(submitEvent);
-    });
-
-    console.log("Event listeners attached successfully");
+    console.log("Contact form initialized with SDK");
   }
 
-  // Try to initialize immediately if DOM is already loaded
+  // Initialize when DOM is ready
   if (document.readyState === "loading") {
-    console.log("DOM is loading, waiting for DOMContentLoaded");
     document.addEventListener("DOMContentLoaded", initializeContactForm);
   } else {
-    console.log("DOM is already loaded, initializing immediately");
-    // DOM is already loaded, initialize immediately
     initializeContactForm();
   }
 
-  // Add a small delay as backup in case of timing issues
+  // Backup initialization
   setTimeout(() => {
-    console.log("Backup initialization after 100ms");
     if (
       !document.getElementById("contact-form")?.hasAttribute("data-initialized")
     ) {

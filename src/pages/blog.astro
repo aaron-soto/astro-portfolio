@@ -24,7 +24,7 @@ const posts = (await getCollection("blog")).sort(
       {
         posts.map((post, idx: number) => (
           <li class="my-6 md:my-20">
-            <a class="flex flex-col" href={`/blog/${post.data.slug}/`}>
+            <a class="flex flex-col" href={`/blog/${post.data.slug}`}>
               <div
                 class={cn(
                   "w-full md:w-3/4",
