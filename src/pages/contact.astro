@@ -14,89 +14,96 @@ const apiConfig = {
 ---
 
 <Layout>
-  <div class="container">
-    <h1>contact me</h1>
-    <p>
-      feel free to reach out to me via email at
-      <a
-        href="mailto:aaron@ayezeewebdesigns.com"
-        class="text-primary hover:underline">aaron@ayezeewebdesigns.com</a
-      >
-      or use the form below:
-    </p>
-
-    <form id="contact-form" class="w-full grid grid-cols-4 md:grid-cols-8 mt-8">
-      <div class="col-span-4">
-        <label for="name" class="block mt-4 mb-2">name:</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          class="w-full border border-lines bg-neutral-950 py-2 px-3"
-          required
-        />
-
-        <label for="email" class="block mt-4 mb-2">email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          class="w-full border border-lines bg-neutral-950 py-2 px-3"
-          required
-        />
-
-        <label for="message" class="block mt-4 mb-2">message:</label>
-        <textarea
-          id="message"
-          name="message"
-          rows="5"
-          class="w-full border border-lines bg-neutral-950 py-2 px-3"
-          required></textarea>
-
-        <button
-          type="submit"
-          id="submit-button"
-          class="mt-4 bg-neutral-950 hover:bg-neutral-900 border border-lines text-white py-2.5 px-4 w-1/2 transition-all flex items-center justify-center h-[46px] disabled:opacity-75 disabled:cursor-not-allowed"
-        >
-          <span id="button-text" class="flex items-center justify-center h-6"
-            >send message</span
-          >
-          <span
-            id="button-spinner"
-            class="hidden items-center justify-center h-6"
-          >
-            <SpinnerIcon />
-          </span>
-        </button>
-
-        <div id="form-message" class="hidden mt-4 p-3 border rounded text-sm">
-        </div>
+  <div class="container grid grid-cols-1 md:grid-cols-2">
+    <div class="flex w-full flex-col md:pr-8">
+      <div class="slide-up mb-8">
+        <h1>contact me</h1>
       </div>
-    </form>
 
-    <p class="mt-12">
-      you can also find me on social media:
-      <ul class="flex gap-6 mt-2">
-        {
-          Object.values(SOCIAL_LINKS).map((link) => (
-            <li>
-              <a href={link.url} class="text-primary hover:underline">
-                {link.name}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </p>
+      <p>
+        feel free to reach out to me via email at
+        <a
+          href="mailto:aaron@ayezeewebdesigns.com"
+          class="text-primary hover:underline">aaron@ayezeewebdesigns.com</a
+        >
+        or use the form below:
+      </p>
 
-    <!-- mailTo Button -->
-    <div class="mt-6">
-      <a
-        href="mailto:aaron@ayezeewebdesigns.com"
-        class="bg-neutral-950 hover:bg-neutral-900 border border-lines text-white py-2.5 px-16 transition-all w-fit flex items-center justify-center h-[46px]"
-      >
-        send me an email
-      </a>
+      <form id="contact-form" class="w-full flex flex-col mt-8">
+        <div class="col-span-4">
+          <label for="name" class="block mt-4 mb-2">name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="w-full border border-lines bg-neutral-950 py-2 px-3"
+            required
+          />
+
+          <label for="email" class="block mt-4 mb-2">email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="w-full border border-lines bg-neutral-950 py-2 px-3"
+            required
+          />
+
+          <label for="message" class="block mt-4 mb-2">message:</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="5"
+            class="w-full border border-lines bg-neutral-950 py-2 px-3"
+            required></textarea>
+
+          <button
+            type="submit"
+            id="submit-button"
+            class="mt-4 bg-neutral-950 hover:bg-neutral-900 border border-lines text-white py-2.5 px-4 w-1/2 transition-all flex items-center justify-center h-[46px] disabled:opacity-75 disabled:cursor-not-allowed"
+          >
+            <span id="button-text" class="flex items-center justify-center h-6"
+              >send message</span
+            >
+            <span
+              id="button-spinner"
+              class="hidden items-center justify-center h-6"
+            >
+              <SpinnerIcon />
+            </span>
+          </button>
+
+          <div id="form-message" class="hidden mt-4 p-3 border rounded text-sm">
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="flex flex-col">
+      <p class="mt-12">
+        you can also find me on social media:
+        <ul class="flex gap-6 mt-2">
+          {
+            Object.values(SOCIAL_LINKS).map((link) => (
+              <li>
+                <a href={link.url} class="text-primary hover:underline">
+                  {link.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </p>
+
+      <!-- mailTo Button -->
+      <div class="mt-6">
+        <a
+          href="mailto:aaron@ayezeewebdesigns.com"
+          class="bg-neutral-950 hover:bg-neutral-900 border border-lines text-white py-2.5 px-16 transition-all w-fit flex items-center justify-center h-[46px]"
+        >
+          send me an email
+        </a>
+      </div>
     </div>
   </div>
 </Layout>
