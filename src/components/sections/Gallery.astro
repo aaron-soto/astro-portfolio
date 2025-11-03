@@ -1,0 +1,31 @@
+---
+import type { ModuleDataItem } from "@ayezeewebdesigns/cms-sdk";
+import { getModuleData } from "../../lib/ayezee-cms-helper";
+import GalleryGrid from "../GalleryGrid";
+
+const GALLERY_INSTANCE_KEY =
+  import.meta.env.PUBLIC_GALLERY_KEY || "gallery-1762032104811";
+
+let galleryItems: ModuleDataItem[] = [];
+let error: string | null = null;
+
+try {
+  const response = await getModuleData(GALLERY_INSTANCE_KEY);
+  galleryItems = response.data;
+} catch (err) {
+  console.error("Failed to fetch gallery data:", err);
+  error = err instanceof Error ? err.message : "Failed to load gallery";
+}
+---
+
+<div class="container mx-auto px-4 py-8 md:py-16">
+  {
+    error ? (
+      <div class="text-center py-12 text-foreground-muted">
+        <p class="text-lg">⚠️ {error}</p>
+      </div>
+    ) : galleryItems.length === 0 ? null : (
+      <GalleryGrid client:load items={galleryItems} />
+    )
+  }
+</div>

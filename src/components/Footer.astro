@@ -25,20 +25,23 @@ const links = [
     <div class="col-span-1 md:col-span-3">
       <AaronLogo variant="footer" />
       <p class="text-foreground-muted text-sm mt-4 max-w-xs">
-        Building fast, reliable websites and custom software for small businesses.
+        Building fast, reliable websites and custom software for small
+        businesses.
       </p>
     </div>
 
     <!-- Quick Links -->
     <nav class="col-span-1 md:col-span-2 md:col-start-5">
-      <h3 class="text-white text-sm font-semibold mb-3 uppercase tracking-wide">Quick Links</h3>
+      <h3 class="text-white text-sm font-semibold mb-3 tracking-wide">
+        quick links
+      </h3>
       <ul class="flex flex-col gap-2">
         {
           links.map((link) => (
             <li>
               <a
                 href={link.href}
-                class="text-foreground-muted hover:text-primary transition-colors text-sm capitalize"
+                class="text-foreground-muted hover:text-primary transition-colors text-sm"
               >
                 {link.name}
               </a>
@@ -50,17 +53,26 @@ const links = [
 
     <!-- Contact Info -->
     <div class="col-span-1 md:col-span-2">
-      <h3 class="text-white text-sm font-semibold mb-3 uppercase tracking-wide">Get in Touch</h3>
+      <h3 class="text-white text-sm font-semibold mb-3 tracking-wide">
+        get in touch
+      </h3>
       <ul class="flex flex-col gap-2 text-sm">
         <li>
-          <a href="mailto:aaron@ayezeewebdesigns.com" class="text-foreground-muted hover:text-primary transition-colors">
+          <a
+            href="mailto:aaron@ayezeewebdesigns.com"
+            class="text-foreground-muted hover:text-primary transition-colors"
+          >
             aaron@ayezeewebdesigns.com
           </a>
         </li>
-        <li class="text-foreground-muted">Casa Grande, AZ</li>
+        <li class="text-foreground-muted">casa grande, az</li>
         <li>
-          <a href="https://ayezeewebdesigns.com" target="_blank" class="text-foreground-muted hover:text-primary transition-colors">
-            AyeZee Web Designs →
+          <a
+            href="https://ayezeewebdesigns.com"
+            target="_blank"
+            class="text-foreground-muted hover:text-primary transition-colors"
+          >
+            ayezee web designs →
           </a>
         </li>
       </ul>
