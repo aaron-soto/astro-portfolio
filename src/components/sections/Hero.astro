@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import AaronImg from "../../assets/images/aaron.webp";
 import Arrow from "../icons/Arrow.astro";
 import StaticImg from "../../assets/images/static-optimized.png";
+import SplitText from "../SplitText";
 ---
 
 <div
@@ -16,7 +17,13 @@ import StaticImg from "../../assets/images/static-optimized.png";
       open to work</span
     >
     <h1 class="font-normal! text-balance mb-12">
-      a software development partner for your business.
+      <SplitText
+        client:load
+        type="word"
+        text="a software development partner for your business."
+        delay={0.15}
+        staggerDelay={0.08}
+      />
     </h1>
 
     <div class="">
@@ -57,7 +64,7 @@ import StaticImg from "../../assets/images/static-optimized.png";
   <div class="w-full col-span-full flex justify-center order-3 mt-4 md:mt-8">
     <a
       href="/about"
-      class="border border-lines bg-black/1 backdrop-blur-sm text-foreground-muted py-3 px-6 mx-auto transition-all hover:border-primary hover:text-primary flex items-center justify-center gap-3 group min-w-64"
+      class="border border-lines bg-black/1 backdrop-blur-sm text-foreground py-3 px-6 mx-auto transition-all hover:border-primary hover:text-primary flex items-center justify-center gap-3 group min-w-64"
       >about me <Arrow
         class="inline ml-2 group-hover:rotate-45 transition-all"
       />
