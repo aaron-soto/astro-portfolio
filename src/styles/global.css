@@ -248,14 +248,14 @@ html {
 
 /* Slide up from baseline animation utility */
 .slide-up {
-  overflow: hidden;
   display: inline-block;
 }
 
 .slide-up > * {
-  transform: translateY(100%);
+  transform: translateY(50%);
   animation: slideUp 0.2s ease-out 0.2s forwards;
   display: block;
+  opacity: 0;
 }
 
 .slide-up-delayed {
@@ -289,6 +289,7 @@ html {
 @keyframes slideUp {
   to {
     transform: translateY(0);
+    opacity: 1;
   }
 }
 
