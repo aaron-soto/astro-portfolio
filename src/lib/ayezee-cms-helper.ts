@@ -13,22 +13,6 @@
  * - PUBLIC_INSTANCE_KEY: Default instance key for single-module projects
  */
 
-// Environment variables interface for Astro
-interface ImportMetaEnv {
-  readonly PUBLIC_AYEZEE_API_KEY?: string;
-  readonly PUBLIC_CMS_DOMAIN?: string;
-  readonly PUBLIC_PROJECT_SLUG?: string;
-  readonly PUBLIC_INSTANCE_KEY?: string;
-}
-
-// Extend the ImportMetaEnv interface instead of redeclaring ImportMeta
-interface ImportMetaEnv {
-  readonly PUBLIC_AYEZEE_API_KEY?: string;
-  readonly PUBLIC_CMS_DOMAIN?: string;
-  readonly PUBLIC_PROJECT_SLUG?: string;
-  readonly PUBLIC_INSTANCE_KEY?: string;
-}
-
 // Types for the API responses
 export interface ModuleField {
   name: string;
