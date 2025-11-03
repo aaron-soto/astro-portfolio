@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import AaronLoganMarketImg from "../assets/images/aaron-logan-market.webp";
 import AyeZeeLogo from "../components/AyeZeeLogo.astro";
+import PhoenixTime from "../components/PhoenixTime";
 ---
 
 <Layout
@@ -31,7 +32,9 @@ import AyeZeeLogo from "../components/AyeZeeLogo.astro";
           <span class="text-foreground-muted">// location</span>
           <div class="h-px bg-lines flex-1"></div>
         </div>
-        <span class="text-3xl">Arizona (MST)</span>
+        <span class="text-3xl">Arizona</span>
+
+        <PhoenixTime client:load />
       </div>
 
       <div class="flex flex-col col-span-2 md:col-start-7 mt-8 md:mt-0">
@@ -63,24 +66,26 @@ import AyeZeeLogo from "../components/AyeZeeLogo.astro";
           Army Ranger, developer, and owner of <a
             class="text-primary/70 hover:underline hover:text-primary"
             href="https://ayezeewebdesigns.com"
-            target="_blank">AyeZee Web Designs</a>.
+            target="_blank">AyeZee Web Designs</a
+          >.
         </p>
 
         <p class="text-foreground-muted">
-          I build websites and software for small businesses that don't have tech teams. Most of my clients are local brands, nonprofits, and service companies that need something fast, reliable, and maintainable.
+          I build websites and software for small businesses that don't have
+          tech teams. Most of my clients are local brands, nonprofits, and
+          service companies that need something fast, reliable, and
+          maintainable.
         </p>
-        
+
         <p class="text-foreground-muted">
-          I work with modern tools like Astro, Next.js, TypeScript, Postgres and I don't overcomplicate things. If your business has a problem that software can solve, I can build it.
+          I work with modern tools like Astro, Next.js, TypeScript, Postgres and
+          I don't overcomplicate things. If your business has a problem that
+          software can solve, I can build it.
         </p>
       </div>
 
       <div class="md:col-start-6 col-span-4 md:col-span-3 mt-8 md:mt-0">
-        <Image
-          src={AaronLoganMarketImg}
-          alt="Aaron Soto"
-          class="w-full"
-        />
+        <Image src={AaronLoganMarketImg} alt="Aaron Soto" class="w-full" />
       </div>
     </div>
 
@@ -94,7 +99,8 @@ import AyeZeeLogo from "../components/AyeZeeLogo.astro";
       </a>
 
       <p class="text-foreground-muted max-w-prose text-center mb-6">
-        Need a website or custom software built? AyeZee Web Designs builds for small businesses, local brands, and nonprofits.
+        Need a website or custom software built? AyeZee Web Designs builds for
+        small businesses, local brands, and nonprofits.
       </p>
       <a
         href="https://ayezeewebdesigns.com"
