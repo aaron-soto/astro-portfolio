@@ -18,6 +18,8 @@ try {
   console.log("===================================");
 } catch (error) {
   console.error("Error fetching blog posts:", error);
+  console.warn("⚠️ CMS not available - blog page will show no posts");
+  blogPosts = [];
 }
 ---
 
