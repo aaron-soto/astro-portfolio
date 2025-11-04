@@ -42,16 +42,19 @@ import SplitText from "../SplitText";
     </div>
   </div>
   <div class="col-span-4 md:col-span-4 order-1 md:order-2 mb-8">
-    <div class="w-[60%] ml-auto mr-10 relative overflow-hidden">
+    <div
+      class="w-[60%] ml-auto mr-10 relative overflow-hidden hero-image-wrapper"
+    >
       <Image
         src={AaronImg}
         alt="Aaron Soto"
         priority
-        class="object-cover"
+        class="object-cover hero-image"
         sizes="(max-width: 768px) 60vw, 30vw"
         widths={[240, 360, 480, 720]}
       />
 
+      <!-- Static overlay -->
       <div
         class="static-effect absolute inset-0 w-[200%] h-[200%] -top-1/2 -left-1/2 z-10 mix-blend-multiply opacity-30 pointer-events-none animate-[staticRotate_8s_infinite_steps(4)] will-change-transform"
         style={`background-image: url(${StaticImg.src}); background-repeat: repeat; background-size: 32px 32px;`}
@@ -71,3 +74,29 @@ import SplitText from "../SplitText";
     </a>
   </div>
 </div>
+
+<style>
+  /* Hero image wrapper - swipe reveal from left */
+  .hero-image-wrapper {
+    clip-path: inset(0 100% 0 0);
+    animation: swipeReveal 0.2s linear forwards;
+  }
+
+  /* Smooth linear swipe from left to right */
+  @keyframes swipeReveal {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-image-wrapper {
+      animation: none;
+      clip-path: none;
+    }
+  }
+</style>
