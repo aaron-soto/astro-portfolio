@@ -1,18 +1,30 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
-import { getCollection } from "astro:content";
 import { cn } from "../lib/utils";
+import { getModuleData } from "../lib/ayezee-cms-helper";
 
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+let blogPosts: any[] = [];
+
+try {
+  const blogPostData = await getModuleData(import.meta.env.PUBLIC_BLOG_KEY);
+  blogPosts = blogPostData.data;
+  console.log("=== Blog Posts on Listing Page ===");
+  console.log("Total posts:", blogPosts.length);
+  blogPosts.forEach((post: any, idx: number) => {
+    console.log(
+      `${idx + 1}. slug: "${post.data.slug}" | title: "${post.data.title}"`
+    );
+  });
+  console.log("===================================");
+} catch (error) {
+  console.error("Error fetching blog posts:", error);
+}
 ---
 
 <Layout>
   <section class="container">
     <div class="slide-up mb-12">
-      <h1 class="">Blog</h1>
+      <h1 class="">blog.</h1>
     </div>
     <p class="max-w-prose text-foreground-muted">
       Welcome to my blog! Here, I share insights, tutorials, and case studies on
@@ -22,7 +34,7 @@ const posts = (await getCollection("blog")).sort(
 
     <ul class="grid col-span-4 w-full">
       {
-        posts.map((post, idx: number) => (
+        blogPosts.map((post, idx: number) => (
           <li class="my-6 md:my-20">
             <a class="flex flex-col" href={`/blog/${post.data.slug}`}>
               <div
@@ -33,7 +45,7 @@ const posts = (await getCollection("blog")).sort(
               >
                 <div class="overlay" />
                 <img
-                  src={post.data.heroImage}
+                  src={post.data.featured_image}
                   alt={post.data.heroAlt || "Blog Post Hero Image"}
                   transition:name={`blog-hero-${post.data.slug}`}
                 />
@@ -45,7 +57,7 @@ const posts = (await getCollection("blog")).sort(
                 )}
               >
                 <span class="text-sm my-1 text-foreground-muted">
-                  {post.data.tags[0]}
+                  {post.data.category}
                 </span>
                 <h3 class="text-2xl!">{post.data.title}</h3>
               </div>

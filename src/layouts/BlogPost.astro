@@ -1,11 +1,18 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import FormattedDate from "../components/FormattedDate.astro";
 import Layout from "./Layout.astro";
 
-type Props = CollectionEntry<"blog">["data"];
+interface Props {
+  title: string;
+  description?: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  heroImage?: string;
+  category?: string;
+}
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, category } =
+  Astro.props;
 
 // Get the slug from the URL
 const slug = Astro.url.pathname.split("/").pop() || Astro.params.slug;
@@ -13,121 +20,274 @@ const slug = Astro.url.pathname.split("/").pop() || Astro.params.slug;
 
 <style>
   .container {
-    max-width: 720px;
     padding-top: 2rem;
+  }
 
-    .hero-image {
-      max-height: 700px;
-      overflow: hidden;
-      box-shadow:
-        rgba(0, 0, 0, 0.1) 0px 4px 16px,
-        rgba(0, 0, 0, 0.1) 0px 8px 32px;
-    }
-    img {
-      display: block;
-      box-sizing: border-box;
-      height: auto;
-      width: 100%;
-      object-fit: contain;
-      object-position: center;
-      box-shadow: var(--box-shadow);
-      border-radius: 0 !important;
-    }
+  .container:not(:first-of-type) {
+  }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      color: white;
-      font-weight: 600;
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-    }
+  .prose-content {
+    max-width: 720px !important;
+  }
 
-    p {
-      margin-bottom: 2rem;
-      color: rgb(187, 187, 187);
-    }
+  .hero-image {
+    max-height: 700px;
+    overflow: hidden;
+    box-shadow:
+      rgba(0, 0, 0, 0.1) 0px 4px 16px,
+      rgba(0, 0, 0, 0.1) 0px 8px 32px;
+    margin-bottom: 2rem;
+  }
 
-    p > code,
-    td > code,
-    li > code {
-      background: rgba(255, 255, 255, 0.106);
-      padding: 0.15rem 0.4rem;
-      color: aliceblue;
-    }
+  .hero-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
 
-    p > img {
-      max-height: 400px;
-      width: auto;
-      max-width: 100%;
-      margin: 0 auto;
-    }
+  /* Comprehensive prose styling for richtext content */
+  .prose-content :global(h1),
+  .prose-content :global(h2),
+  .prose-content :global(h3),
+  .prose-content :global(h4),
+  .prose-content :global(h5),
+  .prose-content :global(h6) {
+    color: white;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
 
-    p > a {
-      color: var(--color-primary);
-      opacity: 0.8;
-      text-decoration: underline;
-      transition: all 0.3s ease;
+  .prose-content :global(h1) {
+    font-size: 2.25rem;
+  }
+  .prose-content :global(h2) {
+    font-size: 1.875rem;
+  }
+  .prose-content :global(h3) {
+    font-size: 1.5rem;
+  }
+  .prose-content :global(h4) {
+    font-size: 1.25rem;
+  }
+  .prose-content :global(h5) {
+    font-size: 1.125rem;
+  }
+  .prose-content :global(h6) {
+    font-size: 1rem;
+  }
 
-      &:hover {
-        opacity: 1;
-      }
-    }
+  .prose-content :global(p) {
+    margin-bottom: 1.5rem;
+    color: rgb(187, 187, 187);
+    line-height: 1.75;
+    font-size: 1.125rem;
+  }
 
-    pre {
-      font-size: 0.9rem;
-      max-height: 800px;
-      padding: 4px 8px;
-    }
+  .prose-content :global(a) {
+    color: var(--color-primary);
+    text-decoration: underline;
+    transition: opacity 0.3s ease;
+  }
+
+  .prose-content :global(a:hover) {
+    opacity: 0.8;
+  }
+
+  .prose-content :global(ul),
+  .prose-content :global(ol) {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    color: rgb(187, 187, 187);
+    line-height: 1.75;
+  }
+
+  .prose-content :global(ul) {
+    list-style-type: disc;
+  }
+
+  .prose-content :global(ol) {
+    list-style-type: decimal;
+  }
+
+  .prose-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .prose-content :global(li > p) {
+    margin-bottom: 0.5rem;
+  }
+
+  .prose-content :global(ul ul),
+  .prose-content :global(ol ol),
+  .prose-content :global(ul ol),
+  .prose-content :global(ol ul) {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .prose-content :global(blockquote) {
+    border-left: 4px solid var(--color-primary);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: rgb(200, 200, 200);
+  }
+
+  .prose-content :global(code) {
+    background: rgba(255, 255, 255, 0.106);
+    padding: 0.15rem 0.4rem;
+    color: aliceblue;
+    border-radius: 0.25rem;
+    font-size: 0.9em;
+  }
+
+  .prose-content :global(pre) {
+    background-color: #0d1117;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 2rem 0;
+    font-size: 0.9rem;
+  }
+
+  .prose-content :global(pre code) {
+    background: transparent;
+    padding: 0;
+    color: rgb(230, 230, 230);
+  }
+
+  .prose-content :global(img) {
+    max-width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    display: block;
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px;
+  }
+
+  .prose-content :global(hr) {
+    margin: 3rem 0;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .prose-content :global(table) {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+  }
+
+  .prose-content :global(th),
+  .prose-content :global(td) {
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
+  }
+
+  .prose-content :global(th) {
+    background: rgba(255, 255, 255, 0.05);
+    font-weight: 600;
+    color: white;
+  }
+
+  .prose-content :global(td) {
+    color: rgb(187, 187, 187);
+  }
+
+  .prose-content :global(strong),
+  .prose-content :global(b) {
+    font-weight: 700;
+    color: white;
+  }
+
+  .prose-content :global(em),
+  .prose-content :global(i) {
+    font-style: italic;
+  }
+
+  .prose-content :global(input[type="checkbox"]) {
+    margin-right: 0.5rem;
   }
 </style>
 
 <Layout>
   <div class="container">
-    <a 
-      href="/blog" 
+    <a
+      href="/blog"
       class="inline-flex items-center gap-2 text-foreground-muted hover:text-white transition-colors mb-8"
     >
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M10 12L6 8L10 4"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
       </svg>
       Back
     </a>
-    
+
     <article>
       {
         heroImage && (
-          <div class="hero-image w-3/4 mb-4">
+          <div class="hero-image">
             <img
               width={1020}
               height={510}
               src={heroImage}
-              alt=""
+              alt={title}
               transition:name={`blog-hero-${slug}`}
             />
           </div>
         )
       }
-      <h1 class="max-w-3xl mb-6 md:text-5xl!">{title}</h1>
-      <div class="prose max-w-prose">
-        <div class="title mb-12">
-          <div class="date">
-            <FormattedDate date={pubDate} />
-            {
-              updatedDate && (
-                <div class="last-updated-on">
-                  Last updated on <FormattedDate date={updatedDate} />
-                </div>
-              )
-            }
-          </div>
-          <hr class="text-lines! mt-2" />
+    </article>
+
+    <div class="container px-0!">
+      <span class="text-foreground-muted">{category}</span>
+      <h1 class="text-4xl md:text-5xl font-bold mb-6">{title}</h1>
+
+      <div class="mb-12">
+        {
+          description && (
+            <p class="text-foreground-muted max-w-prose mb-4">{description}</p>
+          )
+        }
+        <div class="text-foreground-muted">
+          <FormattedDate date={pubDate} />
+          {
+            updatedDate && (
+              <div class="text-sm mt-1">
+                Last updated on <FormattedDate date={updatedDate} />
+              </div>
+            )
+          }
         </div>
+        <hr class="mt-4 border-t border-lines" />
+      </div>
+
+      <div class="prose-content">
         <slot />
       </div>
-    </article>
+
+      <!-- blog footer -->
+      <div
+        class="mt-20 mb-10 border-t border-lines pt-6 text-foreground-muted text-sm"
+      >
+        <p>
+          Enjoyed this post? Feel free to share it on social media or bookmark
+          it for later!
+        </p>
+      </div>
+    </div>
   </div>
 </Layout>
