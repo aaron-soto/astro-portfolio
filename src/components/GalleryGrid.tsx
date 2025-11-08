@@ -28,30 +28,12 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
               className="relative aspect-square overflow-hidden bg-gray-900"
             >
               <img
-                src={buildCloudinaryUrl(imageUrl, {
-                  width: 600,
-                  height: 600,
-                  crop: "fill",
-                  gravity: "auto",
-                  quality: "auto:best",
-                  format: "auto",
-                  // NO dpr parameter!
-                })}
-                srcSet={generateSrcSet(imageUrl, [400, 600, 800, 1000], {
-                  height: 600, // Fixed height matching aspect ratio
-                  crop: "fill",
-                  gravity: "auto",
-                  quality: "auto:best",
-                  format: "auto",
-                  // NO dpr parameter!
-                })}
-                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                alt="Gallery image"
-                className="h-full w-full object-cover"
-                loading="lazy"
-                decoding="async"
-                width="600"
-                height="600"
+                src={CloudinaryPresets.hero(imageUrl)}
+                alt="About By Faith Bakery"
+                width="1920"
+                height="1080"
+                loading="eager"
+                className="mb-6 max-h-[400px] rounded-2xl shadow-md shadow-blue-900/10"
               />
             </div>
           );
