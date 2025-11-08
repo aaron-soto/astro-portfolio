@@ -29,29 +29,29 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
             >
               <img
                 src={buildCloudinaryUrl(imageUrl, {
-                  width: 800,
-                  height: 800,
+                  width: 600,
+                  height: 600,
                   crop: "fill",
                   gravity: "auto",
                   quality: "auto:best",
                   format: "auto",
-                  dpr: 2,
+                  // NO dpr parameter!
                 })}
                 srcSet={generateSrcSet(imageUrl, [400, 600, 800, 1000], {
-                  height: 800,
+                  height: 600, // Fixed height matching aspect ratio
                   crop: "fill",
                   gravity: "auto",
                   quality: "auto:best",
                   format: "auto",
-                  dpr: 2,
+                  // NO dpr parameter!
                 })}
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
                 alt="Gallery image"
                 className="h-full w-full object-cover"
                 loading="lazy"
                 decoding="async"
-                width="800"
-                height="800"
+                width="600"
+                height="600"
               />
             </div>
           );
