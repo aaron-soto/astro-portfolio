@@ -28,8 +28,8 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
               className="relative aspect-square overflow-hidden bg-gray-900"
             >
               <img
-                src={CloudinaryPresets.hero(imageUrl)}
-                alt="About By Faith Bakery"
+                src={CloudinaryPresets.gallery(imageUrl)}
+                alt="portfolio images"
                 width="1920"
                 height="1080"
                 loading="eager"
