@@ -1,6 +1,10 @@
 // GalleryGrid.tsx (or .jsx)
 
-import { CloudinaryPresets, generateSrcSet } from "../lib/cloudinary";
+import {
+  CloudinaryPresets,
+  buildCloudinaryUrl,
+  generateSrcSet,
+} from "../lib/cloudinary";
 
 import type { ModuleDataItem } from "@ayezeewebdesigns/cms-sdk";
 
@@ -24,12 +28,19 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
               className="relative aspect-square overflow-hidden bg-gray-900"
             >
               <img
-                src={CloudinaryPresets.thumbnail(imageUrl)}
-                srcSet={generateSrcSet(imageUrl, [200, 400, 600], {
-                  height: 600,
+                src={buildCloudinaryUrl(imageUrl, {
+                  width: 400,
+                  height: 400,
                   crop: "fill",
                   gravity: "auto",
-                  quality: "auto:best",
+                  quality: "auto:good",
+                  format: "auto",
+                })}
+                srcSet={generateSrcSet(imageUrl, [400, 600, 800], {
+                  height: 400, // Match aspect-square (1:1 ratio)
+                  crop: "fill",
+                  gravity: "auto",
+                  quality: "auto:good",
                   format: "auto",
                 })}
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
@@ -37,6 +48,8 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
                 className="h-full w-full object-cover"
                 loading="lazy"
                 decoding="async"
+                width="400"
+                height="400"
               />
             </div>
           );
