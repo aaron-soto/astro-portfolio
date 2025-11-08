@@ -1,12 +1,11 @@
 ---
-import type { ModuleDataItem } from "@ayezeewebdesigns/cms-sdk";
 import { getModuleData } from "../../lib/ayezee-cms-helper";
 import GalleryGrid from "../GalleryGrid";
 
 const GALLERY_INSTANCE_KEY =
   import.meta.env.PUBLIC_GALLERY_KEY || "gallery-1762032104811";
 
-let galleryItems: ModuleDataItem[] = [];
+let galleryItems: any[] = [];
 let error: string | null = null;
 
 try {

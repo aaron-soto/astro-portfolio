@@ -1,3 +1,7 @@
+// GalleryGrid.tsx (or .jsx)
+
+import { CloudinaryPresets, generateSrcSet } from "../lib/cloudinary";
+
 import type { ModuleDataItem } from "@ayezeewebdesigns/cms-sdk";
 
 interface GalleryGridProps {
@@ -6,29 +10,38 @@ interface GalleryGridProps {
 
 export default function GalleryGrid({ items }: GalleryGridProps) {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
-      {items.map((item) => {
-        const data = item.data;
-        const imageUrl = String(data.image || data.photo || "");
-        const altText = String(data.alt_text);
+    <div className="flex justify-center">
+      <div className="grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+        {items.map((item) => {
+          const imageUrl = (item.data.image ||
+            item.data.gallery_image) as string;
 
-        return (
-          <div
-            key={item.id}
-            className="group border-lines bg-background hover:border-primary relative overflow-hidden border transition-all duration-300"
-          >
-            <div className="bg-background-muted relative aspect-4/3 overflow-hidden">
+          if (!imageUrl) return null;
+
+          return (
+            <div
+              key={item.id}
+              className="relative aspect-square overflow-hidden bg-gray-900"
+            >
               <img
-                src={imageUrl}
-                alt={altText}
-                title={altText}
-                loading="lazy"
+                src={CloudinaryPresets.thumbnail(imageUrl)}
+                srcSet={generateSrcSet(imageUrl, [200, 400, 600], {
+                  height: 600,
+                  crop: "fill",
+                  gravity: "auto",
+                  quality: "auto:best",
+                  format: "auto",
+                })}
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                alt={"Gallery image"}
                 className="h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }
