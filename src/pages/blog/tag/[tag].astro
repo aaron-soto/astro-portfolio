@@ -8,14 +8,15 @@ export async function getStaticPaths() {
   const allTags = getAllTags(blogPosts);
 
   return allTags.map((tag) => ({
-    params: { tag },
+    params: { tag: encodeURIComponent(tag) },
     props: { blogPosts, allTags, selectedTag: tag },
   }));
 }
 
 const { blogPosts, allTags, selectedTag } = Astro.props;
+const decodedTag = decodeURIComponent(Astro.params.tag || selectedTag);
 const filteredPosts = blogPosts.filter((post: any) =>
-  post.data?.tags?.includes(selectedTag)
+  post.data?.tags?.includes(decodedTag)
 );
 ---
 
