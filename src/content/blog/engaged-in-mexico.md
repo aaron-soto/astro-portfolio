@@ -1,7 +1,7 @@
 ---
 title: "Getting Engaged in Mexico"
 description: "The story of how I proposed to my best friend on a beach in Mexico."
-pubDate: "2024-11-15"
+pubDate: "2025-05-20"
 heroImage: "/images/blog/engaged-in-mexico/hero.png"
 heroAlt: "Engagement on a Mexican beach"
 slug: "engaged-in-mexico"
