@@ -293,7 +293,7 @@ export default function WorkGrid({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.3, delay: idx * 0.05 }}
-                className="border-lines hover:border-primary border-b py-6 transition-colors"
+                className="border-lines border-b py-6 transition-colors"
               >
                 <a
                   href={`/work/${project.data.slug}`}
