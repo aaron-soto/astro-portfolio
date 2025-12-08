@@ -16,7 +16,7 @@ const navItems = [
   { href: "/", label: "home" },
   { href: "/about", label: "about" },
   { href: "/blog", label: "blog" },
-  { href: "/projects", label: "projects" },
+  { href: "/work", label: "work" },
   { href: "/resume", label: "resume" },
 ];
 ---
@@ -29,44 +29,15 @@ const navItems = [
     <div class="flex flex-row justify-between items-center pb-4 relative z-30">
       <AaronLogo transition:name="main-logo" />
 
-      <button
-        id="mobile-menu-toggle"
-        type="button"
-        aria-label="Toggle mobile menu"
-        class="md:hidden z-30 relative"
-      >
-        <!-- Hamburger Icon -->
-        <svg
-          id="hamburger-icon"
-          xmlns="http://www.w3.org/2000/svg"
-          class="size-9 text-foreground transition-opacity duration-200"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-
-        <!-- X Icon -->
-        <svg
-          id="close-icon"
-          xmlns="http://www.w3.org/2000/svg"
-          class="size-9 text-foreground transition-opacity duration-200 opacity-0 absolute top-0 left-0"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-      </button>
+      <!-- Mobile Menu Toggle -->
+      <div class="md:hidden z-30 relative">
+        <input type="checkbox" id="mobile-menu-checkbox" class="hidden" />
+        <label for="mobile-menu-checkbox" class="toggle">
+          <div class="bar bar--top"></div>
+          <div class="bar bar--middle"></div>
+          <div class="bar bar--bottom"></div>
+        </label>
+      </div>
 
       <!-- Desktop Navigation -->
       <nav class="items-center hidden md:flex">
@@ -104,13 +75,12 @@ const navItems = [
   <!-- Mobile Menu Overlay -->
   <div
     id="mobile-menu"
-    class="fixed inset-0 bg-black bg-opacity-95 z-20 md:hidden opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out"
+    class="fixed inset-0 bg-black bg-opacity-95 z-20 md:hidden opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out max-h-screen overflow-y-auto"
   >
-    <nav class="flex flex-col items-center justify-center w-full h-full">
-      <ul
-        id="mobile-menu-links"
-        class="w-full flex flex-col gap-8 px-6 h-full pt-44 pb-20"
-      >
+    <nav
+      class="flex flex-col items-center justify-center w-full h-full px-6 pt-44 pb-12"
+    >
+      <ul id="mobile-menu-links" class="w-full flex flex-col gap-8">
         {
           navItems.map((item, index) => (
             <li
@@ -130,19 +100,20 @@ const navItems = [
             </li>
           ))
         }
-
-        <li
-          class="transform translate-y-8 opacity-0 transition-all duration-300 ease-out mt-auto w-full"
-          style={`transition-delay: ${100 + navItems.length}ms`}
-        >
-          <a
-            href="/contact"
-            class={`text-2xl transition-colors border text-center inline-block w-full border-lines px-20 py-3 hover:bg-primary hover:text-white`}
-          >
-            get in touch
-          </a>
-        </li>
       </ul>
+
+      <div
+        id="mobile-menu-button"
+        class="transform translate-y-8 opacity-0 transition-all duration-300 ease-out mt-auto w-full"
+        style={`transition-delay: ${100 + navItems.length}ms`}
+      >
+        <a
+          href="/contact"
+          class={`text-2xl transition-colors border text-center inline-block w-full border-lines px-20 py-3 hover:bg-primary hover:text-white`}
+        >
+          get in touch
+        </a>
+      </div>
     </nav>
   </div>
 </div>
@@ -165,32 +136,26 @@ const navItems = [
       window.mobileMenuState.cleanup();
     }
 
-    const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
+    const mobileMenuCheckbox = document.getElementById(
+      "mobile-menu-checkbox"
+    ) as HTMLInputElement;
     const mobileMenu = document.getElementById("mobile-menu");
-    const hamburgerIcon = document.getElementById("hamburger-icon");
-    const closeIcon = document.getElementById("close-icon");
     const mobileMenuLinks = document.querySelectorAll("#mobile-menu-links li");
+    const mobileMenuButton = document.getElementById("mobile-menu-button");
 
-    if (!mobileMenuToggle || !mobileMenu || !hamburgerIcon || !closeIcon) {
+    if (!mobileMenuCheckbox || !mobileMenu) {
       return; // Exit if elements don't exist
     }
 
-    let isMenuOpen = false;
-
     function toggleMenu() {
-      if (!mobileMenu || !hamburgerIcon || !closeIcon) return;
+      if (!mobileMenu) return;
 
-      isMenuOpen = !isMenuOpen;
+      const isMenuOpen = mobileMenuCheckbox.checked;
 
       if (isMenuOpen) {
         // Open menu
         mobileMenu.classList.remove("opacity-0", "pointer-events-none");
         mobileMenu.classList.add("opacity-100");
-
-        // Switch icons
-        hamburgerIcon.classList.add("opacity-0");
-        closeIcon.classList.remove("opacity-0");
-        closeIcon.classList.add("opacity-100");
 
         // Animate links in with staggered delay
         mobileMenuLinks.forEach((link, index) => {
@@ -200,20 +165,28 @@ const navItems = [
               link.classList.add("translate-y-0", "opacity-100");
             },
             150 + index * 100
-          ); // 150ms delay + 100ms stagger
+          );
         });
+
+        // Animate button
+        if (mobileMenuButton) {
+          setTimeout(
+            () => {
+              mobileMenuButton.classList.remove("translate-y-8", "opacity-0");
+              mobileMenuButton.classList.add("translate-y-0", "opacity-100");
+            },
+            150 + mobileMenuLinks.length * 100
+          );
+        }
 
         // Prevent body scroll
         document.body.style.overflow = "hidden";
+        document.body.style.position = "fixed";
+        document.body.style.width = "100%";
       } else {
         // Close menu
         mobileMenu.classList.add("opacity-0", "pointer-events-none");
         mobileMenu.classList.remove("opacity-100");
-
-        // Switch icons
-        hamburgerIcon.classList.remove("opacity-0");
-        closeIcon.classList.add("opacity-0");
-        closeIcon.classList.remove("opacity-100");
 
         // Reset links
         mobileMenuLinks.forEach((link) => {
@@ -221,51 +194,72 @@ const navItems = [
           link.classList.remove("translate-y-0", "opacity-100");
         });
 
+        // Reset button
+        if (mobileMenuButton) {
+          mobileMenuButton.classList.add("translate-y-8", "opacity-0");
+          mobileMenuButton.classList.remove("translate-y-0", "opacity-100");
+        }
+
         // Restore body scroll
         document.body.style.overflow = "";
+        document.body.style.position = "";
+        document.body.style.width = "";
       }
     }
 
     function handleEscape(e: KeyboardEvent) {
-      if (e.key === "Escape" && isMenuOpen) {
+      if (e.key === "Escape" && mobileMenuCheckbox.checked) {
+        mobileMenuCheckbox.checked = false;
         toggleMenu();
       }
     }
 
     function handleLinkClick() {
-      if (isMenuOpen) {
+      if (mobileMenuCheckbox.checked) {
+        mobileMenuCheckbox.checked = false;
         toggleMenu();
       }
     }
 
     // Add event listeners
-    mobileMenuToggle.addEventListener("click", toggleMenu);
+    mobileMenuCheckbox.addEventListener("change", toggleMenu);
 
     // Close menu when clicking on a link
     mobileMenuLinks.forEach((link) => {
       link.addEventListener("click", handleLinkClick);
     });
 
+    // Close menu when clicking on button
+    if (mobileMenuButton) {
+      mobileMenuButton.addEventListener("click", handleLinkClick);
+    }
+
     // Close menu when pressing escape
     document.addEventListener("keydown", handleEscape);
 
     // Store state and cleanup function globally
     window.mobileMenuState = {
-      isOpen: isMenuOpen,
+      isOpen: mobileMenuCheckbox.checked,
       cleanup: () => {
-        mobileMenuToggle.removeEventListener("click", toggleMenu);
+        mobileMenuCheckbox.removeEventListener("change", toggleMenu);
         mobileMenuLinks.forEach((link) => {
           link.removeEventListener("click", handleLinkClick);
         });
+        if (mobileMenuButton) {
+          mobileMenuButton.removeEventListener("click", handleLinkClick);
+        }
         document.removeEventListener("keydown", handleEscape);
 
         // Reset menu state
-        if (isMenuOpen) {
+        if (mobileMenuCheckbox.checked) {
+          mobileMenuCheckbox.checked = false;
           toggleMenu();
         }
 
         // Restore body scroll just in case
         document.body.style.overflow = "";
+        document.body.style.position = "";
+        document.body.style.width = "";
       },
     };
   }
@@ -287,3 +281,68 @@ const navItems = [
     }
   });
 </script>
+
+<style>
+  #mobile-menu-checkbox {
+    display: none;
+  }
+
+  .toggle {
+    position: relative;
+    width: 36px;
+    cursor: pointer;
+    margin: auto;
+    display: block;
+    height: calc(4px * 3 * 2);
+  }
+
+  .bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: calc(4px / 2);
+    background: var(--color-primary);
+    color: inherit;
+    opacity: 1;
+    transition: none 0.35s cubic-bezier(0.5, -0.35, 0.35, 1.5) 0s;
+  }
+
+  /***** Spin Animation *****/
+
+  .bar--top {
+    bottom: calc(50% + 8px + 4px / 2);
+    transition-property: bottom, transform;
+    transition-delay: calc(0s + 0.35s), 0s;
+  }
+
+  .bar--middle {
+    top: calc(50% - 4px / 2);
+    transition-property: opacity;
+    transition-delay: calc(0s + 0.35s);
+  }
+
+  .bar--bottom {
+    top: calc(50% + 8px + 4px / 2);
+    transition-property: top, transform;
+    transition-delay: calc(0s + 0.35s), 0s;
+  }
+
+  #mobile-menu-checkbox:checked + .toggle .bar--top {
+    bottom: calc(50% - 4px / 2);
+    transform: rotate(135deg);
+    transition-delay: 0s, calc(0s + 0.35s);
+  }
+
+  #mobile-menu-checkbox:checked + .toggle .bar--middle {
+    opacity: 0;
+    transition-duration: 0s;
+    transition-delay: calc(0s + 0.35s);
+  }
+
+  #mobile-menu-checkbox:checked + .toggle .bar--bottom {
+    top: calc(50% - 4px / 2);
+    transform: rotate(225deg);
+    transition-delay: 0s, calc(0s + 0.35s);
+  }
+</style>

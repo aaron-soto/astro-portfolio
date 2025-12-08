@@ -1,0 +1,25 @@
+---
+import WorkLayout from "../../../components/WorkLayout.astro";
+import { getAllCategories } from "../../../lib/utils";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const workPosts = await getCollection("work");
+  const allCategories = getAllCategories(workPosts);
+
+  return allCategories.map((category) => {
+    const filteredPosts = workPosts.filter(
+      (post) => post.data.category === category
+    );
+    return {
+      params: { category },
+      props: { posts: filteredPosts },
+    };
+  });
+}
+
+const { category } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<WorkLayout currentCategory={category} posts={posts} />

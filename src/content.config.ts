@@ -27,6 +27,13 @@ const workCollection = defineCollection({
       title: z.string(),
       slug: z.string(),
       description: z.string(),
+      category: z.enum([
+        "development",
+        "military",
+        "craftsmanship",
+        "learning",
+        "personal",
+      ]),
       tags: z.array(z.string()).optional(),
       logo: z.string(),
       url: z.string().optional(),

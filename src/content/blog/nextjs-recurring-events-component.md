@@ -2,7 +2,7 @@
 title: "Building a Dynamic Events Component for a Coffee Shop Website"
 description: "Lorem ipsum dolor sit amet"
 pubDate: "2025-01-28"
-tags: ["fullstack", "ui/ux", "case-studies"]
+tags: ["fullstack", "ui-ux", "case-studies"]
 slug: "nextjs-recurring-events-component"
 heroImage: "/images/blog/dynamic-events/hero.webp"
 ---

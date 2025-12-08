@@ -1,0 +1,8 @@
+---
+import WorkLayout from "../components/WorkLayout.astro";
+import { getCollection } from "astro:content";
+
+const workPosts = await getCollection("work");
+---
+
+<WorkLayout posts={workPosts} />

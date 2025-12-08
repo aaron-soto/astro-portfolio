@@ -15,3 +15,13 @@ export function getAllTags(posts: any[]): string[] {
   });
   return Array.from(tagSet).sort();
 }
+
+export function getAllCategories(posts: any[]): string[] {
+  const categorySet = new Set<string>();
+  posts.forEach((post) => {
+    if (post.data?.category) {
+      categorySet.add(post.data.category);
+    }
+  });
+  return Array.from(categorySet).sort();
+}

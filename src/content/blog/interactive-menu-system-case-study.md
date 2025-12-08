@@ -2,7 +2,7 @@
 title: "Creating an Interactive Menu System: A Real-World Solution"
 description: "Explore how I designed and built an interactive menu system using Next.js, Tailwind CSS, and Framer Motion. This case study demonstrates creative problem-solving and polished user experience across desktop and mobile devices."
 pubDate: "2024-11-22"
-tags: ["ui/ux", "frontend", "case-studies"]
+tags: ["ui-ux", "frontend", "case-studies"]
 slug: "interactive-menu-system-case-study"
 heroImage: "/images/blog/interactive-menu/hero.webp"
 ---

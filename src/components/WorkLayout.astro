@@ -1,0 +1,71 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { cn } from "../lib/utils";
+import WorkGrid from "./WorkGrid";
+import { getAllCategories } from "../lib/utils";
+
+interface Props {
+  currentCategory?: string | null;
+  posts: any[];
+}
+
+const { currentCategory, posts } = Astro.props;
+
+const allCategories = getAllCategories(posts);
+
+const categoryLabels: Record<string, string> = {
+  development: "Development",
+  military: "Military",
+  craftsmanship: "Craftsmanship",
+  learning: "Learning",
+  personal: "Personal",
+};
+
+const pageTitle = currentCategory
+  ? categoryLabels[currentCategory] || currentCategory
+  : "work.";
+---
+
+<Layout
+  title={currentCategory
+    ? `${categoryLabels[currentCategory]} | Aaron Soto`
+    : "Work by Aaron Soto"}
+  description={currentCategory
+    ? `Explore Aaron Soto's ${categoryLabels[currentCategory].toLowerCase()} projects and experiences.`
+    : "Explore Aaron Soto's diverse portfolio of development work, military experiences, craftsmanship, and personal stories."}
+>
+  <div class="container">
+    <!-- Animated Work Grid Component with Title -->
+    <WorkGrid
+      client:load
+      posts={posts}
+      categoryLabels={categoryLabels}
+      pageTitle={pageTitle}
+      description="A collection of projects, experiences, and stories from software development to military service, craftsmanship, and beyond."
+      allCategories={allCategories}
+      currentCategory={currentCategory}
+    />
+
+    {
+      posts.length === 0 && (
+        <div class="text-center py-12">
+          <p class="text-foreground-muted">
+            No projects found in this category yet.
+          </p>
+        </div>
+      )
+    }
+
+    <div class="text-center mt-16 mb-20">
+      <p class="text-foreground-muted mb-6">
+        Want to see more of my work or discuss a project?
+      </p>
+      <a
+        href="/contact"
+        class="inline-block bg-black text-foreground-muted px-16 border border-lines py-3 hover:bg-neutral-950 transition-colors"
+      >
+        Get in touch
+      </a>
+    </div>
+  </div>
+</Layout>

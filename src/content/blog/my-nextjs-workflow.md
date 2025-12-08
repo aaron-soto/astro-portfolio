@@ -2,7 +2,7 @@
 title: "My NextJs Workflow"
 description: "I talk through the project structure that I have found to be the most efficient for my NextJs projects. I use these same practices across each project allowing me to quickly jump into any project and know exactly where everything is."
 pubDate: "2025-02-10"
-tags: ["ui/ux", "fullstack", "ai"]
+tags: ["ui-ux", "fullstack", "ai"]
 slug: "my-nextjs-workflow"
 heroImage: "/images/blog/my-nextjs-workflow/hero.webp"
 ---

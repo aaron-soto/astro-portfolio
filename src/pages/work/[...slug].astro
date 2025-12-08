@@ -10,8 +10,8 @@ export async function getStaticPaths() {
   return workProjects
     .filter(
       (project: CollectionEntry<"work">) =>
-        project.data.slug && project.data.slug !== "projects"
-    ) // Filter out empty slugs and avoid conflict with /projects
+        project.data.slug && project.data.slug !== "work"
+    ) // Filter out empty slugs and avoid conflict with /work
     .map((project: CollectionEntry<"work">) => ({
       params: { slug: project.data.slug },
       props: { project },
