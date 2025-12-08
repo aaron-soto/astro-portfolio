@@ -52,7 +52,16 @@ import Gallery from "../components/sections/Gallery.astro";
           >
           <div class="h-px bg-lines flex-1"></div>
         </div>
-        <span class="text-3xl">Available</span>
+        <span class="text-3xl flex items-center gap-2">
+          <!-- green active circle -->
+          <span class="absolute w-3 h-3 rounded-full bg-green-500 animate-pulse"
+          ></span>
+          <span
+            class="inline-block w-3 h-3 mr-2 rounded-full bg-green-500 animate-ping"
+          >
+          </span>
+          Available</span
+        >
       </div>
     </div>
 

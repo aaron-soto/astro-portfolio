@@ -1,72 +1,11 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import { cn } from "../lib/utils";
-import { getModuleData } from "../lib/ayezee-cms-helper";
+import BlogLayout from "../components/BlogLayout.astro";
+import { getAllTags } from "../lib/utils";
+import { getCollection } from "astro:content";
 
-let blogPosts: any[] = [];
-
-try {
-  const blogPostData = await getModuleData(import.meta.env.PUBLIC_BLOG_KEY);
-  blogPosts = blogPostData.data;
-  console.log("=== Blog Posts on Listing Page ===");
-  console.log("Total posts:", blogPosts.length);
-  blogPosts.forEach((post: any, idx: number) => {
-    console.log(
-      `${idx + 1}. slug: "${post.data.slug}" | title: "${post.data.title}"`
-    );
-  });
-  console.log("===================================");
-} catch (error) {
-  console.error("Error fetching blog posts:", error);
-  console.warn("⚠️ CMS not available - blog page will show no posts");
-  blogPosts = [];
-}
+// Get blog posts from content collection
+const blogPosts = await getCollection("blog");
+const allTags = getAllTags(blogPosts);
 ---
 
-<Layout>
-  <section class="container">
-    <div class="slide-up mb-12">
-      <h1 class="">blog.</h1>
-    </div>
-    <p class="max-w-prose text-foreground-muted">
-      Welcome to my blog! Here, I share insights, tutorials, and case studies on
-      web development, UI/UX design, and AI integration. Dive in to explore my
-      latest projects and thoughts.
-    </p>
-
-    <ul class="grid col-span-4 w-full">
-      {
-        blogPosts.map((post, idx: number) => (
-          <li class="my-6 md:my-20">
-            <a class="flex flex-col" href={`/blog/${post.data.slug}`}>
-              <div
-                class={cn(
-                  "w-full md:w-3/4",
-                  idx % 2 === 0 ? "float-left mr-4" : "ml-auto"
-                )}
-              >
-                <div class="overlay" />
-                <img
-                  src={post.data.featured_image}
-                  alt={post.data.heroAlt || "Blog Post Hero Image"}
-                  transition:name={`blog-hero-${post.data.slug}`}
-                />
-              </div>
-              <div
-                class={cn(
-                  "flex flex-col w-full md:w-3/4",
-                  idx % 2 === 0 ? "" : "ml-auto"
-                )}
-              >
-                <span class="text-sm my-1 text-foreground-muted">
-                  {post.data.category}
-                </span>
-                <h3 class="text-2xl!">{post.data.title}</h3>
-              </div>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-</Layout>
+<BlogLayout allTags={allTags} posts={blogPosts} />

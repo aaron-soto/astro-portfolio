@@ -33,7 +33,7 @@ export default function GalleryGrid({ items }: GalleryGridProps) {
                 width="1920"
                 height="1080"
                 loading="eager"
-                className="mb-6 max-h-[400px] rounded-2xl shadow-md shadow-blue-900/10"
+                className="mb-6 max-h-[400px] shadow-md shadow-blue-900/10"
               />
             </div>
           );

@@ -1,0 +1,96 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { cn } from "../lib/utils";
+
+interface Props {
+  allTags: string[];
+  currentTag?: string | null;
+  posts: any[];
+}
+
+const { allTags, currentTag, posts } = Astro.props;
+const pageTitle = currentTag ? `#${currentTag}` : "blog.";
+---
+
+<Layout>
+  <section class="container">
+    <div class="slide-up mb-12">
+      <h1 class="">{pageTitle}</h1>
+    </div>
+    <p class="max-w-prose text-foreground-muted">
+      Welcome to my blog! Here, I share what I am learning, what I am doing and
+      just brain dump in general. Enjoy!
+    </p>
+
+    <ul class="mt-4">
+      <!-- tags -->
+      <li class="inline-block mr-4 my-2">
+        <a
+          class={cn(
+            "px-4 py-2 rounded-full text-sm hover:bg-foreground-muted/20 transition",
+            !currentTag ? "bg-foreground-muted/30" : "bg-foreground-muted/10"
+          )}
+          href="/blog"
+        >
+          All
+        </a>
+      </li>
+      {
+        allTags.map((tag) => (
+          <li class="inline-block mr-4 my-2">
+            <a
+              class={cn(
+                "px-4 py-2 rounded-full text-sm hover:bg-foreground-muted/20 transition",
+                currentTag === tag
+                  ? "bg-foreground-muted/30"
+                  : "bg-foreground-muted/10"
+              )}
+              href={`/blog/tag/${tag}`}
+            >
+              #{tag}
+            </a>
+          </li>
+        ))
+      }
+
+      <ul class="grid col-span-4 w-full">
+        {
+          posts.map((post, idx: number) => (
+            <li class="blog-post my-6 md:my-20">
+              <a class="flex flex-col" href={`/blog/${post.data.slug}`}>
+                <div
+                  class={cn(
+                    "w-full md:w-3/4",
+                    idx % 2 === 0 ? "float-left mr-4" : "ml-auto"
+                  )}
+                >
+                  <div class="overlay" />
+                  <img
+                    src={post.data.heroImage}
+                    alt={post.data.heroAlt || "Blog Post Hero Image"}
+                    transition:name={`blog-hero-${post.data.slug}`}
+                  />
+                </div>
+                <div
+                  class={cn(
+                    "flex flex-col w-full md:w-3/4",
+                    idx % 2 === 0 ? "" : "ml-auto"
+                  )}
+                >
+                  <span class="text-sm my-1 text-foreground-muted">
+                    {new Date(post.data.pubDate).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </span>
+                  <h3 class="text-2xl!">{post.data.title}</h3>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </ul>
+  </section>
+</Layout>
