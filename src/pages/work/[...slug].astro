@@ -34,7 +34,7 @@ const { Content } = await render(project);
   <div class="relative">
     <div class="container relative pt-6 flex flex-col">
       {
-        project.data.logo && (
+        project.data.logo ? (
           <div class="bg-white aspect-square size-44 mb-6 grid place-items-center">
             <img
               src={project.data.logo}
@@ -42,7 +42,15 @@ const { Content } = await render(project);
               class="size-44 object-contain group-hover:scale-110 transition-transform duration-300"
             />
           </div>
-        )
+        ) : project.data.heroImage ? (
+          <div class="mb-6 max-w-3xl">
+            <img
+              src={project.data.heroImage}
+              alt={`${project.data.title} hero image`}
+              class="w-full object-cover"
+            />
+          </div>
+        ) : null
       }
       <div>
         <h1 class="text-3xl! md:text-5xl! font-bold mb-4 bg-linear-to-br">

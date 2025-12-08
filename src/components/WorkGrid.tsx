@@ -8,6 +8,7 @@ interface Project {
     description: string;
     category: string;
     logo?: string;
+    heroImage?: string;
   };
 }
 
@@ -177,6 +178,14 @@ export default function WorkGrid({
                           className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
                         />
                       </div>
+                    ) : project.data.heroImage ? (
+                      <div className="grid aspect-video place-items-center overflow-hidden">
+                        <img
+                          src={project.data.heroImage}
+                          alt={`${project.data.title} hero image`}
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
                     ) : (
                       <div className="from-primary/20 to-primary/5 grid aspect-video place-items-center bg-gradient-to-br">
                         <span className="text-primary/30 text-4xl font-bold">
@@ -234,6 +243,14 @@ export default function WorkGrid({
                         src={project.data.logo}
                         alt={`${project.data.title} logo`}
                         className="size-12 object-contain"
+                      />
+                    </div>
+                  ) : project.data.heroImage ? (
+                    <div className="mb-4 overflow-hidden rounded">
+                      <img
+                        src={project.data.heroImage}
+                        alt={`${project.data.title} hero image`}
+                        className="aspect-video w-full object-cover"
                       />
                     </div>
                   ) : (
