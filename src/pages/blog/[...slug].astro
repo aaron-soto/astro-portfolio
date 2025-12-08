@@ -20,6 +20,13 @@ if (!entry) {
 }
 
 const { Content } = await render(entry);
+
+// Get related posts (exclude current post and get 2 random posts)
+const allBlogPosts = await getCollection("blog");
+const relatedPosts = allBlogPosts
+  .filter((post) => post.data.slug !== slug)
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 2);
 ---
 
 <BlogPost
@@ -28,6 +35,7 @@ const { Content } = await render(entry);
   pubDate={entry.data.pubDate}
   updatedDate={entry.data.updatedDate}
   heroImage={entry.data.heroImage}
+  relatedPosts={relatedPosts}
 >
   <Content />
 </BlogPost>

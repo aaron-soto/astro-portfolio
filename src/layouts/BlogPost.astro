@@ -1,5 +1,6 @@
 ---
 import FormattedDate from "../components/FormattedDate.astro";
+import { cn } from "../lib/utils";
 import Layout from "./Layout.astro";
 
 interface Props {
@@ -9,10 +10,18 @@ interface Props {
   updatedDate?: Date;
   heroImage?: string;
   category?: string;
+  relatedPosts?: any[];
 }
 
-const { title, description, pubDate, updatedDate, heroImage, category } =
-  Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  category,
+  relatedPosts,
+} = Astro.props;
 
 // Get the slug from the URL
 const slug = Astro.url.pathname.split("/").pop() || Astro.params.slug;
@@ -270,6 +279,50 @@ const slug = Astro.url.pathname.split("/").pop() || Astro.params.slug;
       <div class="prose-content">
         <slot />
       </div>
+
+      <!-- More Like This Section -->
+      {
+        relatedPosts && relatedPosts.length > 0 && (
+          <div class="mt-20 border-t border-lines pt-12">
+            <h2 class="text-2xl font-bold mb-8">More Like This</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-8">
+              {relatedPosts.map((post, idx) => (
+                <a
+                  href={`/blog/${post.data.slug}`}
+                  class={cn(
+                    "group block overflow-hidden col-span-3 border border-lines hover:border-primary transition-colors",
+                    idx % 2 === 0 ? "md:col-start-1" : "md:col-start-6"
+                  )}
+                >
+                  {post.data.heroImage && (
+                    <div class="overflow-hidden">
+                      <img
+                        src={post.data.heroImage}
+                        alt={post.data.title}
+                        class="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+                  )}
+                  <div class="p-6 bg-black">
+                    <div class="text-foreground-muted text-sm">
+                      <FormattedDate date={post.data.pubDate} />
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+                      {post.data.title}
+                    </h3>
+                    {post.data.description && (
+                      <p class="text-foreground-muted text-sm">
+                        {post.data.description}
+                      </p>
+                    )}
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
 
       <!-- blog footer -->
       <div

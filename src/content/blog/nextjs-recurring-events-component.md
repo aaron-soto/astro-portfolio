@@ -1,6 +1,6 @@
 ---
 title: "Building a Dynamic Events Component for a Coffee Shop Website"
-description: "Lorem ipsum dolor sit amet"
+description: "How I built a system to show recurring events at a coffee shop."
 pubDate: "2025-01-28"
 tags: ["fullstack", "ui-ux", "case-studies"]
 slug: "nextjs-recurring-events-component"
