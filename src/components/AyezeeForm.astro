@@ -1,0 +1,293 @@
+---
+import { getFormConfig } from "../lib/ayezee-cms-helper";
+
+interface Props {
+  label?: string;
+  instanceKey?: string;
+  submitButtonText?: string;
+  submitButtonClass?: string;
+  formClass?: string;
+  successMessage?: string;
+  errorMessage?: string;
+}
+
+const {
+  label,
+  instanceKey,
+  submitButtonText = "Submit",
+  submitButtonClass = "",
+  formClass = "",
+  successMessage = "Form submitted successfully!",
+  errorMessage = "Failed to submit form. Please try again.",
+} = Astro.props;
+
+// Get form configuration (includes Turnstile settings)
+const moduleIdentifier = instanceKey || label;
+if (!moduleIdentifier) {
+  throw new Error('AyezeeForm requires either "label" or "instanceKey" prop');
+}
+
+const formConfig = getFormConfig(moduleIdentifier);
+
+if (!formConfig.module) {
+  throw new Error(`Form module "${moduleIdentifier}" not found`);
+}
+
+// Generate unique form ID
+const formId = `ayezee-form-${formConfig.module.instanceKey}`;
+
+// Pass config to client
+const clientConfig = {
+  formId,
+  apiUrl: formConfig.apiUrl,
+  apiKey: formConfig.apiKey,
+  turnstile: formConfig.turnstile,
+  successMessage,
+  errorMessage,
+};
+---
+
+<form id={formId} class={formClass} data-ayezee-form>
+  <!-- Honeypot field -->
+  <input
+    type="text"
+    name="website"
+    class="absolute -left-[9999px] opacity-0 pointer-events-none"
+    tabindex="-1"
+    autocomplete="off"
+    aria-hidden="true"
+  />
+
+  <!-- Form fields from slot -->
+  <slot />
+
+  <!-- Turnstile container (only rendered if enabled) -->
+  {
+    formConfig.turnstile.enabled && (
+      <div id={`${formId}-turnstile`} class="turnstile-container my-4" />
+    )
+  }
+
+  <!-- Messages -->
+  <div
+    id={`${formId}-message`}
+    class="hidden mt-2 p-3 border rounded text-sm"
+    role="alert"
+    aria-live="polite"
+  >
+  </div>
+
+  <!-- Submit button -->
+  <button
+    type="submit"
+    id={`${formId}-submit`}
+    class={submitButtonClass ||
+      "bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"}
+  >
+    <span class="button-text">{submitButtonText}</span>
+    <span class="button-loading hidden">Submitting...</span>
+  </button>
+</form>
+
+<!-- Load Turnstile script if enabled -->
+{
+  formConfig.turnstile.enabled && (
+    <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
+  )
+}
+
+<!-- Pass config to client-side script -->
+<script is:inline define:vars={{ clientConfig }}>
+  window[`FORM_CONFIG_${clientConfig.formId}`] = clientConfig;
+</script>
+
+<!-- Form handler script -->
+<script>
+  class FormHandler {
+    private form: HTMLFormElement;
+    private submitButton: HTMLButtonElement;
+    private messageDiv: HTMLDivElement;
+    private turnstileContainer: HTMLDivElement | null;
+    private turnstileWidgetId: string | null = null;
+    private config: any;
+
+    constructor(formId: string) {
+      this.form = document.getElementById(formId) as HTMLFormElement;
+      this.submitButton = document.getElementById(`${formId}-submit`) as HTMLButtonElement;
+      this.messageDiv = document.getElementById(`${formId}-message`) as HTMLDivElement;
+      this.turnstileContainer = document.getElementById(
+        `${formId}-turnstile`
+      ) as HTMLDivElement | null;
+      this.config = (window as any)[`FORM_CONFIG_${formId}`];
+
+      if (!this.form || !this.config) {
+        console.error("Form or config not found:", formId);
+        return;
+      }
+
+      this.init();
+    }
+
+    private init() {
+      // Initialize Turnstile if enabled
+      if (this.config.turnstile.enabled && this.turnstileContainer) {
+        this.initTurnstile();
+      }
+
+      // Attach submit handler
+      this.form.addEventListener("submit", (e) => this.handleSubmit(e));
+    }
+
+    private initTurnstile() {
+      if (!(window as any).turnstile) {
+        console.warn("Turnstile script not loaded yet, waiting...");
+        setTimeout(() => this.initTurnstile(), 100);
+        return;
+      }
+
+      this.turnstileWidgetId = (window as any).turnstile.render(this.turnstileContainer, {
+        sitekey: this.config.turnstile.siteKey,
+        theme: "light",
+        size: "normal",
+      });
+    }
+
+    private async handleSubmit(e: Event) {
+      e.preventDefault();
+
+      this.hideMessage();
+      this.setLoading(true);
+
+      try {
+        const formData = new FormData(this.form);
+        const data: Record<string, any> = {};
+
+        formData.forEach((value, key) => {
+          data[key] = value;
+        });
+
+        // Honeypot check
+        if (data.website) {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          this.showMessage(this.config.successMessage, true);
+          this.form.reset();
+          return;
+        }
+
+        // Remove honeypot field before sending to API
+        delete data.website;
+
+        // Get Turnstile token if enabled
+        if (this.config.turnstile.enabled) {
+          const token = (window as any).turnstile?.getResponse(this.turnstileWidgetId);
+          if (!token) {
+            this.showMessage("Please complete the security challenge.", false);
+            return;
+          }
+          data["cf-turnstile-response"] = token;
+        }
+
+        // Submit to API
+        console.log("Submitting to:", this.config.apiUrl);
+        console.log("Data being sent:", data);
+
+        const response = await fetch(this.config.apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.config.apiKey}`,
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        console.log("API Response:", result);
+
+        if (response.ok && result.success) {
+          this.showMessage(this.config.successMessage, true);
+          this.form.reset();
+
+          // Reset Turnstile
+          if (this.turnstileWidgetId !== null) {
+            (window as any).turnstile?.reset(this.turnstileWidgetId);
+          }
+        } else {
+          console.error("Submission failed:", result);
+
+          // Parse validation errors
+          let errorMessage = this.config.errorMessage;
+
+          if (result.details) {
+            try {
+              const details =
+                typeof result.details === "string" ? JSON.parse(result.details) : result.details;
+
+              if (details.validationErrors && Array.isArray(details.validationErrors)) {
+                errorMessage = details.validationErrors.join(". ");
+              }
+            } catch (e) {
+              console.error("Error parsing validation details:", e);
+            }
+          }
+
+          if (!errorMessage || errorMessage === this.config.errorMessage) {
+            errorMessage = result.error || result.message || this.config.errorMessage;
+          }
+
+          this.showMessage(errorMessage, false);
+        }
+      } catch (error) {
+        console.error("Form submission error:", error);
+        this.showMessage("Network error. Please try again.", false);
+      } finally {
+        this.setLoading(false);
+      }
+    }
+
+    private showMessage(message: string, isSuccess: boolean) {
+      this.messageDiv.textContent = message;
+      this.messageDiv.classList.remove("hidden");
+
+      if (isSuccess) {
+        this.messageDiv.classList.remove("border-red-300", "bg-red-50", "text-red-700");
+        this.messageDiv.classList.add("border-green-300", "bg-green-50", "text-green-700");
+      } else {
+        this.messageDiv.classList.remove("border-green-300", "bg-green-50", "text-green-700");
+        this.messageDiv.classList.add("border-red-300", "bg-red-50", "text-red-700");
+      }
+    }
+
+    private hideMessage() {
+      this.messageDiv.classList.add("hidden");
+    }
+
+    private setLoading(isLoading: boolean) {
+      this.submitButton.disabled = isLoading;
+      const textSpan = this.submitButton.querySelector(".button-text") as HTMLElement;
+      const loadingSpan = this.submitButton.querySelector(".button-loading") as HTMLElement;
+
+      if (isLoading) {
+        textSpan?.classList.add("hidden");
+        loadingSpan?.classList.remove("hidden");
+      } else {
+        textSpan?.classList.remove("hidden");
+        loadingSpan?.classList.add("hidden");
+      }
+    }
+  }
+
+  // Initialize all forms on the page
+  function initForms() {
+    const forms = document.querySelectorAll("[data-ayezee-form]");
+    forms.forEach((form) => {
+      new FormHandler(form.id);
+    });
+  }
+
+  // Init when DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initForms);
+  } else {
+    initForms();
+  }
+</script>

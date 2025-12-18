@@ -1,15 +1,16 @@
 ---
-import { getModuleData } from "../../lib/ayezee-cms-helper";
+import { getModuleByLabel } from "../../lib/ayezee-cms-helper";
 
 let testimonials = [];
 try {
-  const testimonialData = await getModuleData(
-    import.meta.env.PUBLIC_TESTIMONIALS_KEY
-  );
-  testimonials = testimonialData.data;
+  const testimonialsModule = getModuleByLabel("Testimonials");
+  testimonials = testimonialsModule?.data || [];
 } catch (error) {
   console.warn("Failed to load testimonials:", error);
-  // Fallback testimonials for when CMS is unavailable
+}
+
+// Fallback testimonials if CMS data is empty
+if (testimonials.length === 0) {
   testimonials = [
     {
       data: {

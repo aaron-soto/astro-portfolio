@@ -1,16 +1,13 @@
 ---
-import { getModuleData } from "../../lib/ayezee-cms-helper";
+import { getModuleByLabel } from "../../lib/ayezee-cms-helper";
 import GalleryGrid from "../GalleryGrid";
-
-const GALLERY_INSTANCE_KEY =
-  import.meta.env.PUBLIC_GALLERY_KEY || "gallery-1762032104811";
 
 let galleryItems: any[] = [];
 let error: string | null = null;
 
 try {
-  const response = await getModuleData(GALLERY_INSTANCE_KEY);
-  galleryItems = response.data;
+  const galleryModule = getModuleByLabel("Gallery");
+  galleryItems = galleryModule?.data || [];
 } catch (err) {
   console.error("Failed to fetch gallery data:", err);
   error = err instanceof Error ? err.message : "Failed to load gallery";
