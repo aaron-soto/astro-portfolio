@@ -138,7 +138,8 @@ const slug = Astro.url.pathname.split("/").pop() || Astro.params.slug;
     color: rgb(200, 200, 200);
   }
 
-  .prose-content :global(code) {
+  /* Inline code (not in pre blocks) */
+  .prose-content :global(code:not(pre code)) {
     background: rgba(255, 255, 255, 0.106);
     padding: 0.15rem 0.4rem;
     color: aliceblue;
@@ -146,19 +147,26 @@ const slug = Astro.url.pathname.split("/").pop() || Astro.params.slug;
     font-size: 0.9em;
   }
 
+  /* Code blocks with Shiki syntax highlighting */
   .prose-content :global(pre) {
-    background-color: #0d1117;
     padding: 1.5rem;
     border-radius: 0.5rem;
     overflow-x: auto;
     margin: 2rem 0;
     font-size: 0.9rem;
+    line-height: 1.7;
   }
 
   .prose-content :global(pre code) {
     background: transparent;
     padding: 0;
-    color: rgb(230, 230, 230);
+    font-size: inherit;
+    color: inherit;
+  }
+
+  /* Shiki adds a background color, but we can add a box shadow for depth */
+  .prose-content :global(pre.astro-code) {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
   }
 
   .prose-content :global(img) {

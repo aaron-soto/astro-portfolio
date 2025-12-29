@@ -25,3 +25,10 @@ export function getAllCategories(posts: any[]): string[] {
   });
   return Array.from(categorySet).sort();
 }
+
+// Helper function to safely create a date
+export function safeDate(dateValue: any, fallback: string = new Date().toISOString()): Date {
+  if (!dateValue) return new Date(fallback);
+  const date = new Date(dateValue);
+  return isNaN(date.getTime()) ? new Date(fallback) : date;
+}

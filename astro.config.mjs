@@ -12,6 +12,12 @@ export default defineConfig({
   site: "https://aaronsoto.io",
   integrations: [ayezeeCMS(), react(), mdx(), sitemap()],
   trailingSlash: "never",
+  markdown: {
+    shikiConfig: {
+      theme: "github-dark",
+      wrap: true,
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
     build: {
