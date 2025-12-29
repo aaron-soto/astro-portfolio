@@ -96,7 +96,10 @@ export function getModule(instanceKey: string): CachedModule | null {
  */
 export function getModuleByLabel(label: string): CachedModule | null {
   const normalizedLabel = label.toLowerCase();
-  return cache.modules.find((mod) => mod.label.toLowerCase() === normalizedLabel) || null;
+  return (
+    cache.modules.find((mod) => mod.label.toLowerCase() === normalizedLabel) ||
+    null
+  );
 }
 
 /**
@@ -227,7 +230,8 @@ export async function submitForm(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Form submission failed",
+      message:
+        error instanceof Error ? error.message : "Form submission failed",
     };
   }
 }
@@ -320,7 +324,8 @@ export function getFormConfig(moduleIdentifier: string): {
     module = getModuleBySlug(moduleIdentifier);
   }
 
-  const cmsDomain = import.meta.env.PUBLIC_CMS_DOMAIN || "http://localhost:3000";
+  const cmsDomain =
+    import.meta.env.PUBLIC_CMS_DOMAIN || "http://localhost:3000";
   const projectSlug = import.meta.env.PUBLIC_PROJECT_SLUG || "";
   const apiKey = import.meta.env.PUBLIC_AYEZEE_API_KEY || "";
 

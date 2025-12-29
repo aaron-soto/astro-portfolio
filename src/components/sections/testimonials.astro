@@ -1,7 +1,7 @@
 ---
 import { getModuleByLabel } from "../../lib/ayezee-cms-helper";
 
-let testimonials = [];
+let testimonials: any = [];
 try {
   const testimonialsModule = getModuleByLabel("Testimonials");
   testimonials = testimonialsModule?.data || [];

@@ -81,7 +81,9 @@ export default function ayezeeCmsIntegration() {
           const modulesResponse = await fetch(`${baseUrl}/modules`);
 
           if (!modulesResponse.ok) {
-            throw new Error(`API error: ${modulesResponse.status} ${modulesResponse.statusText}`);
+            throw new Error(
+              `API error: ${modulesResponse.status} ${modulesResponse.statusText}`
+            );
           }
 
           const modulesResult = await modulesResponse.json();
@@ -96,7 +98,9 @@ export default function ayezeeCmsIntegration() {
           const modulesWithData = [];
           for (const module of modules) {
             try {
-              const dataResponse = await fetch(`${baseUrl}/modules/${module.instanceKey}/data`);
+              const dataResponse = await fetch(
+                `${baseUrl}/modules/${module.instanceKey}/data`
+              );
               const dataResult = await dataResponse.json();
 
               const itemCount = dataResult.data?.pagination?.total || 0;
@@ -115,13 +119,18 @@ export default function ayezeeCmsIntegration() {
                 isActive: module.isActive,
                 sortOrder: module.sortOrder,
                 data: dataResult.data?.data || [],
-                pagination: dataResult.data?.pagination || { total: 0, count: 0 },
+                pagination: dataResult.data?.pagination || {
+                  total: 0,
+                  count: 0,
+                },
                 parameters: dataResult.data?.module?.parameters || {},
                 createdAt: module.createdAt,
                 updatedAt: module.updatedAt,
               });
             } catch (error) {
-              logger.warn(`   ⚠️  Failed to fetch ${module.label}: ${error.message}`);
+              logger.warn(
+                `   ⚠️  Failed to fetch ${module.label}: ${error.message}`
+              );
               modulesWithData.push({
                 ...module,
                 slug: slugify(module.label),
@@ -150,9 +159,15 @@ export default function ayezeeCmsIntegration() {
 
           // Write cache file
           const cachePath = path.join(dataDir, "cms-cache.json");
-          fs.writeFileSync(cachePath, JSON.stringify(cacheData, null, 2), "utf-8");
+          fs.writeFileSync(
+            cachePath,
+            JSON.stringify(cacheData, null, 2),
+            "utf-8"
+          );
 
-          logger.info(`✅ Cached data to: ${path.relative(process.cwd(), cachePath)}`);
+          logger.info(
+            `✅ Cached data to: ${path.relative(process.cwd(), cachePath)}`
+          );
           logger.info(`📅 Fetched at: ${cacheData.fetchedAt}`);
         } catch (error) {
           logger.error("❌ Failed to fetch CMS data:");
