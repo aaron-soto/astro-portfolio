@@ -29,7 +29,7 @@ export async function getStaticPaths() {
         pubDate,
         updatedDate,
         heroImage: data.featured_image || data.heroImage,
-        heroAlt: data.heroAlt || "",
+        heroAlt: data.heroAlt || `${data.title} hero image`,
         tags: data.category ? [data.category] : [],
       },
       rawData: data,

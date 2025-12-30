@@ -27,6 +27,7 @@ const blogPosts = cmsBlogData.map((item) => {
       pubDate,
       updatedDate,
       heroImage: data.featured_image || data.heroImage,
+      heroAlt: data.heroAlt || `${data.title} hero image`,
       tags: data.category ? [data.category] : [], // Use category field as a single tag
     },
   };
