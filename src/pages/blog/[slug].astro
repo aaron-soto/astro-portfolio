@@ -45,7 +45,7 @@ export async function getStaticPaths() {
       post.data.tags.includes(tag)
     );
     // Create URL-safe slug by replacing slashes and special characters
-    const tagSlug = tag.toLowerCase().replace(/\//g, '-').replace(/\s+/g, '-');
+    const tagSlug = tag.toLowerCase().replace(/\//g, "-").replace(/\s+/g, "-");
 
     paths.push({
       params: { slug: tagSlug },
@@ -65,8 +65,8 @@ export async function getStaticPaths() {
     const slug = data.slug || item.id;
 
     // Only add if slug doesn't conflict with a tag
-    const tagSlugs = allTags.map(tag =>
-      tag.toLowerCase().replace(/\//g, '-').replace(/\s+/g, '-')
+    const tagSlugs = allTags.map((tag) =>
+      tag.toLowerCase().replace(/\//g, "-").replace(/\s+/g, "-")
     );
 
     if (!tagSlugs.includes(slug.toLowerCase())) {
@@ -90,71 +90,74 @@ const { type, item, tag, posts, allTags } = Astro.props;
 
 // Prepare data for individual posts
 const data = type === "post" ? (item.data as Record<string, any>) : null;
-const highlightedContent = type === "post" ? await highlightCodeBlocks(data.content || "") : null;
+const highlightedContent =
+  type === "post" ? await highlightCodeBlocks(data.content || "") : null;
 
 if (type === "post" && !item) {
   return Astro.redirect("/404");
 }
 ---
 
-{type === "tag" ? (
-  <BlogLayout
-    currentTag={tag}
-    posts={posts}
-    allTags={allTags}
-    pageTitle={`Blog - ${tag}`}
-    description={`All blog posts tagged with ${tag}`}
-  />
-) : (
-  <Layout
-    title={data.title || "Untitled"}
-    description={data.description || data.excerpt || ""}
-  >
-    <article class="container mx-auto px-4 py-12 max-w-4xl">
-      {data.featured_image && (
-        <div class="mb-8">
-          <img
-            src={data.featured_image}
-            alt={data.heroAlt || `${data.title} hero image`}
-            class="w-full h-auto rounded-lg"
-          />
-        </div>
-      )}
-
-      <header class="mb-8">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">{data.title}</h1>
-
-        {data.description && (
-          <p class="text-xl text-neutral-300 leading-relaxed mb-4">
-            {data.description}
-          </p>
+{
+  type === "tag" ? (
+    <BlogLayout
+      currentTag={tag}
+      posts={posts}
+      allTags={allTags}
+      pageTitle={`Blog - ${tag}`}
+      description={`All blog posts tagged with ${tag}`}
+    />
+  ) : (
+    <Layout
+      title={data.title || "Untitled"}
+      description={data.description || data.excerpt || ""}
+    >
+      <article class="container mx-auto px-4 py-12 max-w-4xl">
+        {data.featured_image && (
+          <div class="mb-8">
+            <img
+              src={data.featured_image}
+              alt={data.heroAlt || `${data.title} hero image`}
+              class="w-full h-auto rounded-lg"
+            />
+          </div>
         )}
 
-        <div class="flex items-center gap-4 text-sm text-neutral-400">
-          {data.pubDate && (
-            <time datetime={new Date(data.pubDate).toISOString()}>
-              {new Date(data.pubDate).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </time>
+        <header class="mb-8">
+          <h1 class="text-4xl md:text-5xl font-bold mb-4">{data.title}</h1>
+
+          {data.description && (
+            <p class="text-xl text-neutral-300 leading-relaxed mb-4">
+              {data.description}
+            </p>
           )}
 
-          {data.category && (
-            <span class="px-3 py-1 bg-primary/20 text-primary rounded-full">
-              #{data.category}
-            </span>
-          )}
+          <div class="flex items-center gap-4 text-sm text-neutral-400">
+            {data.pubDate && (
+              <time datetime={new Date(data.pubDate).toISOString()}>
+                {new Date(data.pubDate).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+            )}
+
+            {data.category && (
+              <span class="px-3 py-1 bg-primary/20 text-primary rounded-full">
+                #{data.category}
+              </span>
+            )}
+          </div>
+        </header>
+
+        <div class="prose prose-invert prose-lg max-w-none content-sections">
+          <div set:html={highlightedContent} />
         </div>
-      </header>
-
-      <div class="prose prose-invert prose-lg max-w-none content-sections">
-        <div set:html={highlightedContent} />
-      </div>
-    </article>
-  </Layout>
-)}
+      </article>
+    </Layout>
+  )
+}
 
 <style>
   html {
