@@ -6,10 +6,13 @@ interface Props {
   allTags: string[];
   currentTag?: string | null;
   posts: any[];
+  pageTitle?: string;
+  description?: string;
 }
 
-const { allTags, currentTag, posts } = Astro.props;
-const pageTitle = currentTag ? `#${currentTag}` : "blog.";
+const { allTags, currentTag, posts, pageTitle: customPageTitle, description: customDescription } = Astro.props;
+const pageTitle = customPageTitle || (currentTag ? `#${currentTag}` : "blog.");
+const description = customDescription || "Welcome to my blog! Here, I share what I am learning, what I am doing and just brain dump in general. Enjoy!";
 ---
 
 <Layout>
@@ -20,7 +23,7 @@ const pageTitle = currentTag ? `#${currentTag}` : "blog.";
       allTags={allTags}
       currentTag={currentTag}
       pageTitle={pageTitle}
-      description="Welcome to my blog! Here, I share what I am learning, what I am doing and just brain dump in general. Enjoy!"
+      description={description}
     />
   </section>
 </Layout>
