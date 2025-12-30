@@ -37,7 +37,7 @@ export async function getStaticPaths() {
   });
 
   const allTags = getAllTags(blogPosts);
-  const paths = [];
+  const paths: any[] = [];
 
   // Generate tag pages
   allTags.forEach((tag) => {
@@ -91,7 +91,9 @@ const { type, item, tag, posts, allTags } = Astro.props;
 // Prepare data for individual posts
 const data = type === "post" ? (item.data as Record<string, any>) : null;
 const highlightedContent =
-  type === "post" ? await highlightCodeBlocks(data.content || "") : null;
+  type === "post" && data
+    ? await highlightCodeBlocks(data.content || "")
+    : null;
 
 if (type === "post" && !item) {
   return Astro.redirect("/404");
@@ -107,7 +109,7 @@ if (type === "post" && !item) {
       pageTitle={`Blog - ${tag}`}
       description={`All blog posts tagged with ${tag}`}
     />
-  ) : (
+  ) : data ? (
     <Layout
       title={data.title || "Untitled"}
       description={data.description || data.excerpt || ""}
@@ -156,7 +158,7 @@ if (type === "post" && !item) {
         </div>
       </article>
     </Layout>
-  )
+  ) : null
 }
 
 <style>
