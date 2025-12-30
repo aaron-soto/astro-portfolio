@@ -50,7 +50,7 @@ body {
   font-family: "Urbanist", sans-serif;
   background-color: var(--color-background);
   color: var(--color-foreground);
-  font-size: 18px;
+  font-size: 16px;
 }
 
 h1,
@@ -60,7 +60,6 @@ h4,
 h5,
 h6 {
   font-family: "Urbanist", sans-serif;
-  font-weight: 700;
 }
 
 h1 {

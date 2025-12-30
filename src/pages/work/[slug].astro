@@ -2,15 +2,19 @@
 import Layout from "../../layouts/Layout.astro";
 import WorkLayout from "../../components/WorkLayout.astro";
 import ExternalLink from "../../components/icons/ExternalLink.astro";
-import { initCmsHelper, getModuleDataBySlug } from "ayezee-astro-cms";
+import {
+  initCmsHelper,
+  getModuleDataBySlug,
+  type CMSCache,
+} from "ayezee-astro-cms";
 import cmsData from "../../data/cms-cache.json";
 import { highlightCodeBlocks } from "../../lib/highlight-code";
 import { getAllCategories } from "../../lib/utils";
 
-// Initialize CMS helper
-initCmsHelper(cmsData);
-
 export async function getStaticPaths() {
+  // Initialize CMS helper
+  initCmsHelper(cmsData as CMSCache);
+
   const cmsWorkData = getModuleDataBySlug("work");
 
   // Transform CMS data to match expected format
@@ -23,7 +27,7 @@ export async function getStaticPaths() {
       data: {
         title: data.title || "Untitled",
         slug: data.slug || item.id,
-        description: data.description || "",
+        description: data.description || data.excerpt || "",
         category: data.category || "",
         heroImage: data.featured_image || "",
         url: data.project_url || "",
@@ -36,7 +40,15 @@ export async function getStaticPaths() {
   });
 
   const allCategories = getAllCategories(workPosts);
-  const paths = [];
+  const paths: Array<{
+    params: { slug: string };
+    props: {
+      isCategory: boolean;
+      category: string | null;
+      posts: typeof workPosts | null;
+      item: any;
+    };
+  }> = [];
 
   // Generate category pages
   allCategories.forEach((category) => {
@@ -60,7 +72,9 @@ export async function getStaticPaths() {
     const slug = data.slug || item.id;
 
     // Only add if slug doesn't conflict with a category
-    if (!allCategories.some(cat => cat.toLowerCase() === slug.toLowerCase())) {
+    if (
+      !allCategories.some((cat) => cat.toLowerCase() === slug.toLowerCase())
+    ) {
       paths.push({
         params: { slug },
         props: {
@@ -80,24 +94,26 @@ const { isCategory, item, category, posts } = Astro.props;
 
 // Prepare data for individual posts
 const data = isCategory ? null : (item.data as Record<string, any>);
-const highlightedContent = isCategory ? null : await highlightCodeBlocks(data.content || "");
+const highlightedContent = isCategory
+  ? null
+  : await highlightCodeBlocks(data?.content || "");
 
 if (!isCategory && !item) {
   return Astro.redirect("/404");
 }
 ---
 
-{isCategory ? (
-  <WorkLayout currentCategory={category} posts={posts} />
-) : (
-  <Layout
-    title={data.title || "Untitled"}
-    description={data.description || ""}
-  >
-    <div class="relative">
-      <div class="container relative pt-6 flex flex-col">
-        {
-          data.logo ? (
+{
+  isCategory ? (
+    <WorkLayout currentCategory={category} posts={posts || []} />
+  ) : data ? (
+    <Layout
+      title={data.title || "Untitled"}
+      description={data.description || data.excerpt || ""}
+    >
+      <div class="relative">
+        <div class="container relative pt-6 flex flex-col">
+          {data.logo ? (
             <div class="bg-white aspect-square size-44 mb-6 grid place-items-center">
               <img
                 src={data.logo}
@@ -113,18 +129,16 @@ if (!isCategory && !item) {
                 class="w-full object-cover"
               />
             </div>
-          ) : null
-        }
-        <div>
-          <h1 class="text-3xl! md:text-5xl! font-bold mb-4 bg-linear-to-br">
-            {data.title}
-          </h1>
-          <p class="text-lg text-neutral-300 leading-relaxed max-w-prose">
-            {data.description}
-          </p>
+          ) : null}
+          <div>
+            <h1 class="text-3xl! md:text-5xl! font-bold mb-4 bg-linear-to-br">
+              {data.title}
+            </h1>
+            <p class="text-lg text-neutral-300 leading-relaxed max-w-prose">
+              {data.description || data.excerpt}
+            </p>
 
-          {
-            data.project_url && (
+            {data.project_url && (
               <div class="pt-6">
                 <a
                   href={data.project_url}
@@ -136,17 +150,17 @@ if (!isCategory && !item) {
                   <ExternalLink class="size-5" />
                 </a>
               </div>
-            )
-          }
+            )}
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="container content-sections pb-20 grid-cols-4 md:grid-cols-8">
-      <div set:html={highlightedContent} />
-    </div>
-  </Layout>
-)}
+      <div class="container content-sections pb-20 grid-cols-4 md:grid-cols-8">
+        <div set:html={highlightedContent} />
+      </div>
+    </Layout>
+  ) : null
+}
 
 <style>
   html {
@@ -163,6 +177,7 @@ if (!isCategory && !item) {
     position: relative;
     scroll-margin-top: 100px;
   }
+
   .content-sections :global(h3) {
     color: var(--color-foreground);
     font-size: 1.75rem;
@@ -201,7 +216,7 @@ if (!isCategory && !item) {
   .content-sections :global(ul),
   .content-sections :global(ol) {
     margin: 2rem 0;
-    padding-left: 0;
+    padding-left: 1.6rem;
   }
 
   .content-sections :global(li) {
@@ -210,7 +225,12 @@ if (!isCategory && !item) {
     line-height: 1.7;
     margin-bottom: 1rem;
     position: relative;
-    padding-left: 2rem;
+    padding-left: 1rem;
+    list-style: disc;
+  }
+
+  .content-sections :global(li p) {
+    margin-bottom: 0.4rem;
   }
 
   .content-sections :global(li strong) {
@@ -225,6 +245,7 @@ if (!isCategory && !item) {
     height: auto;
     transition: all 0.3s ease;
     border: 1px solid var(--color-lines);
+    margin: 2rem 0;
   }
 
   .content-sections :global(img.full-width) {

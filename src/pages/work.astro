@@ -1,10 +1,14 @@
 ---
 import WorkLayout from "../components/WorkLayout.astro";
-import { initCmsHelper, getModuleDataBySlug } from "ayezee-astro-cms";
+import {
+  initCmsHelper,
+  getModuleDataBySlug,
+  type CMSCache,
+} from "ayezee-astro-cms";
 import cmsData from "../data/cms-cache.json";
 
 // Initialize CMS helper
-initCmsHelper(cmsData);
+initCmsHelper(cmsData as CMSCache);
 
 // Get work projects from CMS
 const cmsWorkData = getModuleDataBySlug("work");

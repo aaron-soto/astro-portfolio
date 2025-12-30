@@ -1,11 +1,15 @@
 ---
 import BlogLayout from "../components/BlogLayout.astro";
 import { getAllTags, safeDate } from "../lib/utils";
-import { initCmsHelper, getModuleDataBySlug } from "ayezee-astro-cms";
+import {
+  initCmsHelper,
+  getModuleDataBySlug,
+  type CMSCache,
+} from "ayezee-astro-cms";
 import cmsData from "../data/cms-cache.json";
 
 // Initialize CMS helper
-initCmsHelper(cmsData);
+initCmsHelper(cmsData as CMSCache);
 
 // Get blog posts from CMS
 const cmsBlogData = getModuleDataBySlug("blog");

@@ -1,9 +1,13 @@
 ---
-import { initCmsHelper, getModuleByLabel } from "ayezee-astro-cms";
+import {
+  initCmsHelper,
+  getModuleByLabel,
+  type CMSCache,
+} from "ayezee-astro-cms";
 import cmsData from "../../data/cms-cache.json";
 
 // Initialize CMS helper
-initCmsHelper(cmsData);
+initCmsHelper(cmsData as CMSCache);
 
 let testimonials: any = [];
 try {

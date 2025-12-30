@@ -1,10 +1,14 @@
 ---
 import Arrow from "../icons/Arrow.astro";
-import { initCmsHelper, getModuleDataBySlug } from "ayezee-astro-cms";
+import {
+  initCmsHelper,
+  getModuleDataBySlug,
+  type CMSCache,
+} from "ayezee-astro-cms";
 import cmsData from "../../data/cms-cache.json";
 
 // Initialize CMS helper
-initCmsHelper(cmsData);
+initCmsHelper(cmsData as CMSCache);
 
 // Get work projects from CMS
 const cmsWorkData = getModuleDataBySlug("work");
@@ -19,7 +23,7 @@ const workProjects = cmsWorkData.map((item) => {
     data: {
       title: data.title || "Untitled",
       slug: data.slug || item.id,
-      description: data.description || data.Excerpt || "",
+      description: data.description || data.excerpt || "",
       category: data.category || "",
       heroImage: data.featured_image || "",
       url: data.project_url || "",
@@ -109,7 +113,7 @@ const recentProjects = workProjects.slice(1, 4);
                   </a>
                 )}
                 <span class="px-6 py-2.5 bg-primary hover:bg-primary/90 transition-all text-black font-medium text-center text-sm">
-                  View Details →
+                  Read More →
                 </span>
               </div>
             </div>
