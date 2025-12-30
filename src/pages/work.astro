@@ -1,8 +1,34 @@
 ---
 import WorkLayout from "../components/WorkLayout.astro";
-import { getCollection } from "astro:content";
+import { initCmsHelper, getModuleDataBySlug } from "ayezee-astro-cms";
+import cmsData from "../data/cms-cache.json";
 
-const workPosts = await getCollection("work");
+// Initialize CMS helper
+initCmsHelper(cmsData);
+
+// Get work projects from CMS
+const cmsWorkData = getModuleDataBySlug("work");
+
+// Transform CMS data to match expected format
+const workPosts = cmsWorkData.map((item) => {
+  const data = item.data as Record<string, any>;
+
+  return {
+    id: item.id,
+    slug: data.slug || item.id,
+    data: {
+      title: data.title || "Untitled",
+      slug: data.slug || item.id,
+      description: data.description || "",
+      category: data.category || "",
+      heroImage: data.featured_image || "",
+      url: data.project_url || "",
+      logo: data.logo || "",
+      metaTitle: data.title || "Untitled",
+      metaDescription: data.description || "",
+    },
+  };
+});
 ---
 
 <WorkLayout posts={workPosts} />

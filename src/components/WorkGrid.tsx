@@ -132,7 +132,7 @@ export default function WorkGrid({
                   ? "bg-foreground-muted/30"
                   : "bg-foreground-muted/10"
               }`}
-              href={`/work/category/${category}`}
+              href={`/work/${category.toLowerCase()}`}
             >
               {categoryLabels[category] || category}
             </a>

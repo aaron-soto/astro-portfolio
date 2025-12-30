@@ -1,7 +1,11 @@
 ---
 import BlogLayout from "../components/BlogLayout.astro";
 import { getAllTags, safeDate } from "../lib/utils";
-import { getModuleDataBySlug } from "../lib/ayezee-cms-helper";
+import { initCmsHelper, getModuleDataBySlug } from "ayezee-astro-cms";
+import cmsData from "../data/cms-cache.json";
+
+// Initialize CMS helper
+initCmsHelper(cmsData);
 
 // Get blog posts from CMS
 const cmsBlogData = getModuleDataBySlug("blog");
@@ -23,7 +27,7 @@ const blogPosts = cmsBlogData.map((item) => {
       pubDate,
       updatedDate,
       heroImage: data.featured_image || data.heroImage,
-      tags: data.tags || [],
+      tags: data.category ? [data.category] : [], // Use category field as a single tag
     },
   };
 });

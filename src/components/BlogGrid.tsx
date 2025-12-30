@@ -126,20 +126,24 @@ export default function BlogGrid({
             All
           </a>
         </li>
-        {allTags.map((tag) => (
-          <li key={tag} className="my-2 mr-4 inline-block">
-            <a
-              className={`hover:bg-foreground-muted/20 rounded-full px-4 py-2 text-sm transition ${
-                currentTag === tag
-                  ? "bg-foreground-muted/30"
-                  : "bg-foreground-muted/10"
-              }`}
-              href={`/blog/tag/${tag}`}
-            >
-              #{tag}
-            </a>
-          </li>
-        ))}
+        {allTags.map((tag) => {
+          // Create URL-safe slug by replacing slashes and special characters
+          const tagSlug = tag.toLowerCase().replace(/\//g, '-').replace(/\s+/g, '-');
+          return (
+            <li key={tag} className="my-2 mr-4 inline-block">
+              <a
+                className={`hover:bg-foreground-muted/20 rounded-full px-4 py-2 text-sm transition ${
+                  currentTag === tag
+                    ? "bg-foreground-muted/30"
+                    : "bg-foreground-muted/10"
+                }`}
+                href={`/blog/${tagSlug}`}
+              >
+                #{tag}
+              </a>
+            </li>
+          );
+        })}
       </ul>
 
       <ViewButtons className="mb-8" />

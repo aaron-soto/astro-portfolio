@@ -31,7 +31,7 @@ const pageTitle = currentCategory
     ? `${categoryLabels[currentCategory]} | Aaron Soto`
     : "Work by Aaron Soto"}
   description={currentCategory
-    ? `Explore Aaron Soto's ${categoryLabels[currentCategory].toLowerCase()} projects and experiences.`
+    ? `Explore Aaron Soto's ${(categoryLabels[currentCategory] || currentCategory).toLowerCase()} projects and experiences.`
     : "Explore Aaron Soto's diverse portfolio of development work, military experiences, craftsmanship, and personal stories."}
 >
   <div class="container">

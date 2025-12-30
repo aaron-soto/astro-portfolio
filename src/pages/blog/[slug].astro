@@ -1,0 +1,263 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import BlogLayout from "../../components/BlogLayout.astro";
+import { initCmsHelper, getModuleDataBySlug } from "ayezee-astro-cms";
+import cmsData from "../../data/cms-cache.json";
+import { highlightCodeBlocks } from "../../lib/highlight-code";
+import { getAllTags, safeDate } from "../../lib/utils";
+
+// Initialize CMS helper
+initCmsHelper(cmsData);
+
+export async function getStaticPaths() {
+  const cmsBlogData = getModuleDataBySlug("blog");
+
+  // Transform CMS data to match expected format
+  const blogPosts = cmsBlogData.map((item) => {
+    const data = item.data as Record<string, any>;
+    const pubDate = safeDate(data.pubDate || item.createdAt);
+    const updatedDate = item.updatedAt ? safeDate(item.updatedAt) : undefined;
+
+    return {
+      id: item.id,
+      slug: data.slug || item.id,
+      body: data.content || "",
+      data: {
+        title: data.title || "Untitled",
+        slug: data.slug || item.id,
+        description: data.excerpt || data.description || "",
+        pubDate,
+        updatedDate,
+        heroImage: data.featured_image || data.heroImage,
+        heroAlt: data.heroAlt || "",
+        tags: data.category ? [data.category] : [],
+      },
+      rawData: data,
+    };
+  });
+
+  const allTags = getAllTags(blogPosts);
+  const paths = [];
+
+  // Generate tag pages
+  allTags.forEach((tag) => {
+    const filteredPosts = blogPosts.filter((post) =>
+      post.data.tags.includes(tag)
+    );
+    // Create URL-safe slug by replacing slashes and special characters
+    const tagSlug = tag.toLowerCase().replace(/\//g, '-').replace(/\s+/g, '-');
+
+    paths.push({
+      params: { slug: tagSlug },
+      props: {
+        type: "tag",
+        tag,
+        posts: filteredPosts,
+        allTags,
+        item: null,
+      },
+    });
+  });
+
+  // Generate individual blog post pages
+  cmsBlogData.forEach((item) => {
+    const data = item.data as Record<string, any>;
+    const slug = data.slug || item.id;
+
+    // Only add if slug doesn't conflict with a tag
+    const tagSlugs = allTags.map(tag =>
+      tag.toLowerCase().replace(/\//g, '-').replace(/\s+/g, '-')
+    );
+
+    if (!tagSlugs.includes(slug.toLowerCase())) {
+      paths.push({
+        params: { slug },
+        props: {
+          type: "post",
+          tag: null,
+          posts: null,
+          allTags,
+          item,
+        },
+      });
+    }
+  });
+
+  return paths;
+}
+
+const { type, item, tag, posts, allTags } = Astro.props;
+
+// Prepare data for individual posts
+const data = type === "post" ? (item.data as Record<string, any>) : null;
+const highlightedContent = type === "post" ? await highlightCodeBlocks(data.content || "") : null;
+
+if (type === "post" && !item) {
+  return Astro.redirect("/404");
+}
+---
+
+{type === "tag" ? (
+  <BlogLayout
+    currentTag={tag}
+    posts={posts}
+    allTags={allTags}
+    pageTitle={`Blog - ${tag}`}
+    description={`All blog posts tagged with ${tag}`}
+  />
+) : (
+  <Layout
+    title={data.title || "Untitled"}
+    description={data.description || data.excerpt || ""}
+  >
+    <article class="container mx-auto px-4 py-12 max-w-4xl">
+      {data.featured_image && (
+        <div class="mb-8">
+          <img
+            src={data.featured_image}
+            alt={data.heroAlt || `${data.title} hero image`}
+            class="w-full h-auto rounded-lg"
+          />
+        </div>
+      )}
+
+      <header class="mb-8">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">{data.title}</h1>
+
+        {data.description && (
+          <p class="text-xl text-neutral-300 leading-relaxed mb-4">
+            {data.description}
+          </p>
+        )}
+
+        <div class="flex items-center gap-4 text-sm text-neutral-400">
+          {data.pubDate && (
+            <time datetime={new Date(data.pubDate).toISOString()}>
+              {new Date(data.pubDate).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
+          )}
+
+          {data.category && (
+            <span class="px-3 py-1 bg-primary/20 text-primary rounded-full">
+              #{data.category}
+            </span>
+          )}
+        </div>
+      </header>
+
+      <div class="prose prose-invert prose-lg max-w-none content-sections">
+        <div set:html={highlightedContent} />
+      </div>
+    </article>
+  </Layout>
+)}
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .content-sections :global(h2) {
+    color: var(--color-primary);
+    font-size: 2rem;
+    line-height: 1.3;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    scroll-margin-top: 100px;
+  }
+
+  .content-sections :global(h3) {
+    color: var(--color-foreground);
+    font-size: 1.5rem;
+    line-height: 1.4;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    position: relative;
+    padding-left: 1rem;
+  }
+
+  .content-sections :global(h3::before) {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.4rem;
+    width: 3px;
+    height: 1.2rem;
+    background: var(--color-primary);
+    border-radius: 2px;
+  }
+
+  .content-sections :global(p) {
+    color: var(--color-foreground-muted);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .content-sections :global(ul),
+  .content-sections :global(ol) {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .content-sections :global(li) {
+    color: var(--color-foreground-muted);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .content-sections :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    margin: 2rem 0;
+  }
+
+  .content-sections :global(blockquote) {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 4px solid var(--color-primary);
+    border-radius: 0 8px 8px 0;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+  }
+
+  .content-sections :global(pre) {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--color-lines);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    overflow-x: auto;
+  }
+
+  .content-sections :global(code) {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-primary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  }
+
+  .content-sections :global(pre code) {
+    background: none;
+    padding: 0;
+    color: var(--color-foreground);
+  }
+
+  @media (max-width: 768px) {
+    .content-sections :global(h3) {
+      padding-left: 0;
+    }
+
+    .content-sections :global(h3::before) {
+      display: none;
+    }
+  }
+</style>

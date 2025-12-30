@@ -1,5 +1,9 @@
 ---
-import { getFormConfig } from "../lib/ayezee-cms-helper";
+import { initCmsHelper, getFormConfig } from "ayezee-astro-cms";
+import cmsData from "../data/cms-cache.json";
+
+// Initialize CMS helper with cached data
+initCmsHelper(cmsData);
 
 interface Props {
   label?: string;

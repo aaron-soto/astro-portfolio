@@ -1,6 +1,10 @@
 ---
-import { getModuleByLabel } from "../../lib/ayezee-cms-helper";
+import { initCmsHelper, getModuleByLabel } from "ayezee-astro-cms";
+import cmsData from "../../data/cms-cache.json";
 import GalleryGrid from "../GalleryGrid";
+
+// Initialize CMS helper
+initCmsHelper(cmsData);
 
 let galleryItems: any[] = [];
 let error: string | null = null;

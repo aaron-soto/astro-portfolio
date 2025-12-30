@@ -5,12 +5,12 @@ import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
-import ayezeeCMS from "./integrations/ayezee-cms-integration.mjs";
+import { ayezeeCms } from "ayezee-astro-cms/integration";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://aaronsoto.io",
-  integrations: [ayezeeCMS(), react(), mdx(), sitemap()],
+  integrations: [ayezeeCms(), react(), mdx(), sitemap()],
   trailingSlash: "never",
   markdown: {
     shikiConfig: {

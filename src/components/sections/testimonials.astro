@@ -1,5 +1,9 @@
 ---
-import { getModuleByLabel } from "../../lib/ayezee-cms-helper";
+import { initCmsHelper, getModuleByLabel } from "ayezee-astro-cms";
+import cmsData from "../../data/cms-cache.json";
+
+// Initialize CMS helper
+initCmsHelper(cmsData);
 
 let testimonials: any = [];
 try {
