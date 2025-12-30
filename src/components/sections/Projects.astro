@@ -1,8 +1,33 @@
 ---
 import Arrow from "../icons/Arrow.astro";
-import { getCollection } from "astro:content";
+import { initCmsHelper, getModuleDataBySlug } from "ayezee-astro-cms";
+import cmsData from "../../data/cms-cache.json";
 
-const workProjects = await getCollection("work");
+// Initialize CMS helper
+initCmsHelper(cmsData);
+
+// Get work projects from CMS
+const cmsWorkData = getModuleDataBySlug("work");
+
+// Transform CMS data to match expected format
+const workProjects = cmsWorkData.map((item) => {
+  const data = item.data as Record<string, any>;
+
+  return {
+    id: item.id,
+    slug: data.slug || item.id,
+    data: {
+      title: data.title || "Untitled",
+      slug: data.slug || item.id,
+      description: data.description || data.Excerpt || "",
+      category: data.category || "",
+      heroImage: data.featured_image || "",
+      url: data.project_url || "",
+      logo: data.logo || "",
+      tags: data.tags || [],
+    },
+  };
+});
 
 // Get featured project (first one) and 3 recent projects
 const featuredProject = workProjects[0];
@@ -64,11 +89,11 @@ const recentProjects = workProjects.slice(1, 4);
               </p>
 
               <div class="flex flex-wrap gap-2 mb-6">
-                {featuredProject.data.tags?.map((tag) => (
-                  <span class="text-xs px-3 py-1 bg-foreground-muted/10 text-foreground-muted rounded-full">
-                    {tag}
+                {featuredProject.data.category && (
+                  <span class="px-3 py-1 bg-lines text-xs text-foreground-muted">
+                    {featuredProject.data.category}
                   </span>
-                ))}
+                )}
               </div>
 
               <div class="flex gap-3 mt-auto">
