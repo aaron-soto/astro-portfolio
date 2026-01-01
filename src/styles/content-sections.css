@@ -41,7 +41,6 @@ html {
   color: var(--color-foreground-muted);
   line-height: 1.7;
   margin-bottom: 1.5rem;
-  text-align: justify;
   max-width: 680px;
 }
 
