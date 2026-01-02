@@ -58,6 +58,7 @@ html {
 
 .content-sections p:first-of-type {
   color: var(--color-foreground);
+  margin-bottom: 1.5rem;
   font-weight: 500;
 }
 
