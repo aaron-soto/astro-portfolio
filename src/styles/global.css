@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "./content-sections.css";
 
 @font-face {
   font-family: "Urbanist";
@@ -93,10 +92,14 @@ html {
   view-transition-name: none;
 }
 
-/* Custom view transition animations */
+/* Custom view transition animations - disable root animations to allow image morphing */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 0.5s;
+  animation: none;
+}
+
+::view-transition-group(root) {
+  animation-duration: 0.2s;
 }
 
 /* Blog and Project hero image transitions */

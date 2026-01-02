@@ -27,8 +27,21 @@ export function getAllCategories(posts: any[]): string[] {
 }
 
 // Helper function to safely create a date
-export function safeDate(dateValue: any, fallback: string = new Date().toISOString()): Date {
+export function safeDate(
+  dateValue: any,
+  fallback: string = new Date().toISOString()
+): Date {
   if (!dateValue) return new Date(fallback);
   const date = new Date(dateValue);
   return isNaN(date.getTime()) ? new Date(fallback) : date;
+}
+
+// Helper function to generate URL-friendly slugs from titles
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "") // Remove special characters
+    .replace(/[\s_-]+/g, "-") // Replace spaces, underscores with hyphens
+    .replace(/^-+|-+$/g, ""); // Remove leading/trailing hyphens
 }

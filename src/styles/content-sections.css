@@ -4,33 +4,42 @@ html {
   scroll-behavior: smooth;
 }
 
-.content-sections :global(h2) {
-  color: var(--color-primary);
-  font-size: 2.5rem;
-  line-height: 1.2;
-  margin-top: 6rem;
-  padding-bottom: 1rem;
-  font-weight: 700;
+.content-sections h1 {
+  color: var(--color-primary) !important;
+  font-size: 2.4rem !important;
+  line-height: 1.2 !important;
+  margin-bottom: 2rem !important;
+  font-weight: 800 !important;
   position: relative;
   scroll-margin-top: 100px;
 }
 
-.content-sections :global(h2:first-child) {
-  margin-top: 2rem;
-}
-
-.content-sections :global(h3) {
-  color: var(--color-foreground);
-  font-size: 1.75rem;
-  line-height: 1.3;
-  margin-top: 4rem;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
+.content-sections h2 {
+  color: var(--color-primary) !important;
+  font-size: 2.5rem !important;
+  line-height: 1.2 !important;
+  margin-top: 2rem !important;
+  font-weight: 700 !important;
   position: relative;
-  padding-left: 1.5rem;
+  scroll-margin-top: 100px;
 }
 
-.content-sections :global(h3::before) {
+.content-sections h2:first-child {
+  margin-top: 2rem !important;
+}
+
+.content-sections h3 {
+  color: var(--color-foreground) !important;
+  font-size: 1.75rem !important;
+  line-height: 1.3 !important;
+  margin-top: 4rem !important;
+  margin-bottom: 1.5rem !important;
+  font-weight: 600 !important;
+  position: relative;
+  padding-left: 1.5rem !important;
+}
+
+.content-sections h3::before {
   content: "";
   position: absolute;
   left: 0;
@@ -41,46 +50,51 @@ html {
   border-radius: 2px;
 }
 
-.content-sections :global(p) {
+.content-sections p {
   color: var(--color-foreground-muted);
-  line-height: 1.7;
-  margin-bottom: 2.5rem;
+  line-height: 1.7 !important;
   max-width: 680px;
 }
 
-.content-sections :global(p:first-of-type) {
+.content-sections p:first-of-type {
   color: var(--color-foreground);
   font-weight: 500;
 }
 
-.content-sections :global(ul),
-.content-sections :global(ol) {
-  margin: 2.5rem 0;
+.content-sections ul,
+.content-sections ol {
+  margin: 1rem 0;
   padding-left: 1.6rem;
 }
 
-.content-sections :global(li) {
-  color: var(--color-foreground-muted);
+.content-sections li,
+.content-sections li p {
+  color: var(--color-foreground-muted) !important;
   font-size: 1.125rem;
-  line-height: 1.7;
+  line-height: 1.7 !important;
   margin-bottom: 0.75rem;
   position: relative;
-  padding-left: 1rem;
   list-style: disc;
 }
 
-.content-sections :global(li p) {
+.content-sections li p {
   margin-bottom: 0.4rem;
 }
 
-.content-sections :global(li strong) {
+.content-sections hr {
+  border: none;
+  border-top: 1px solid var(--color-lines);
+  margin: 4rem 0;
+}
+
+.content-sections li strong {
   color: var(--color-primary);
   font-weight: 600;
   display: block;
   margin-bottom: 0.25rem;
 }
 
-.content-sections :global(img) {
+.content-sections img {
   width: 100%;
   height: auto;
   transition: all 0.3s ease;
@@ -88,11 +102,11 @@ html {
   margin: 2rem 0;
 }
 
-.content-sections :global(img.full-width) {
+.content-sections img.full-width {
   width: 75%;
 }
 
-.content-sections :global(blockquote) {
+.content-sections blockquote {
   background: rgba(255, 255, 255, 0.03);
   border-left: 4px solid var(--color-primary);
   border-radius: 0 8px 8px 0;
@@ -104,7 +118,7 @@ html {
   position: relative;
 }
 
-.content-sections :global(blockquote::before) {
+.content-sections blockquote::before {
   content: '"';
   position: absolute;
   top: -0.5rem;
@@ -114,7 +128,7 @@ html {
   opacity: 0.3;
 }
 
-.content-sections :global(pre) {
+.content-sections pre {
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid var(--color-lines);
   border-radius: 12px;
@@ -125,7 +139,7 @@ html {
   backdrop-filter: blur(10px);
 }
 
-.content-sections :global(pre::before) {
+.content-sections pre::before {
   content: "";
   position: absolute;
   top: 1rem;
@@ -139,7 +153,7 @@ html {
     40px 0 #27ca3f;
 }
 
-.content-sections :global(code) {
+.content-sections code {
   background: rgba(255, 255, 255, 0.1);
   color: var(--color-primary);
   padding: 0.25rem 0.5rem;
@@ -148,24 +162,27 @@ html {
   font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
 }
 
-.content-sections :global(pre code) {
+.content-sections pre code {
   background: none;
   padding: 0;
   color: var(--color-foreground);
 }
 
 @media (max-width: 768px) {
-  .content-sections :global(h3) {
+  .content-sections h3 {
     padding-left: 0;
   }
 
-  .content-sections :global(h3::before) {
+  .content-sections h3::before {
     display: none;
   }
 
-  .content-sections :global(img.full-width) {
+  .content-sections img.full-width {
     width: 100%;
     margin-left: 0;
     margin-right: 0;
+  }
+  .content-sections hr {
+    margin: 2rem 0;
   }
 }

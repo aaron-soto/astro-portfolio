@@ -142,198 +142,210 @@ export default function WorkGrid({
 
       <ViewButtons className="-mb-8" />
 
-      <AnimatePresence mode="wait">
-        {viewMode === "staggered" && (
-          <motion.ul
-            key="staggered"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="col-span-4 mt-12 grid w-full md:mt-0"
-          >
-            {posts.map((project, idx) => (
-              <motion.li
-                key={project.data.slug}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, delay: idx * 0.05 }}
-                className="work-item my-6 md:my-20"
-              >
-                <a
-                  className="group flex flex-col"
-                  href={`/work/${project.data.slug}`}
-                >
-                  <div
-                    className={`border-lines relative w-full overflow-hidden border md:w-3/4 ${
-                      idx % 2 === 0 ? "float-left mr-4" : "ml-auto"
-                    }`}
-                  >
-                    {project.data.logo ? (
-                      <div className="grid aspect-video place-items-center bg-white p-8">
-                        <img
-                          src={project.data.logo}
-                          alt={`${project.data.title} logo`}
-                          className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
-                        />
-                      </div>
-                    ) : project.data.heroImage ? (
-                      <div className="grid aspect-video place-items-center overflow-hidden">
-                        <img
-                          src={project.data.heroImage}
-                          alt={`${project.data.title} hero image`}
-                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                      </div>
-                    ) : (
-                      <div className="from-primary/20 to-primary/5 grid aspect-video place-items-center bg-gradient-to-br">
-                        <span className="text-primary/30 text-4xl font-bold">
-                          {project.data.title.charAt(0)}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  <div
-                    className={`mt-4 flex w-full flex-col md:w-3/4 ${
-                      idx % 2 === 0 ? "" : "ml-auto"
-                    }`}
-                  >
-                    <span className="text-foreground-muted/70 mb-2 text-xs">
-                      {categoryLabels[project.data.category] ||
-                        project.data.category}
-                    </span>
-                    <h3 className="group-hover:text-primary text-2xl font-semibold transition-colors">
-                      {project.data.title}
-                    </h3>
-                    <p className="text-foreground-muted mt-2">
-                      {project.data.description}
-                    </p>
-                  </div>
-                </a>
-              </motion.li>
-            ))}
-          </motion.ul>
-        )}
-
-        {/* Grid View */}
-        {viewMode === "grid" && (
-          <motion.div
-            key="grid"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="mt-18 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
-          >
-            {posts.map((project, idx) => (
-              <motion.a
-                key={project.data.slug}
+      {viewMode === "staggered" && (
+        <motion.ul
+          key="staggered"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="col-span-4 mt-12 grid w-full md:mt-0"
+        >
+          {posts.map((project, idx) => (
+            <motion.li
+              key={project.data.slug}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: idx * 0.05 }}
+              className="work-item my-6 md:my-20"
+            >
+              <a
+                className="group flex flex-col"
                 href={`/work/${project.data.slug}`}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3, delay: idx * 0.05 }}
-                className="border-lines hover:border-primary group block border bg-black/1 p-6 backdrop-blur-xs transition-colors"
               >
-                <div className="flex h-full flex-col">
+                <div
+                  className={`border-lines relative w-full overflow-hidden border md:w-3/4 ${
+                    idx % 2 === 0 ? "float-left mr-4" : "ml-auto"
+                  }`}
+                >
                   {project.data.logo ? (
-                    <div className="mb-4 grid size-16 place-items-center rounded bg-white">
+                    <div className="grid aspect-video place-items-center bg-white p-8">
                       <img
                         src={project.data.logo}
                         alt={`${project.data.title} logo`}
-                        className="size-12 object-contain"
+                        className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                        style={
+                          {
+                            viewTransitionName: `work-image-${project.data.slug}`,
+                          } as React.CSSProperties
+                        }
                       />
                     </div>
                   ) : project.data.heroImage ? (
-                    <div className="mb-4 overflow-hidden rounded">
+                    <div className="grid aspect-video place-items-center overflow-hidden">
                       <img
                         src={project.data.heroImage}
                         alt={`${project.data.title} hero image`}
-                        className="aspect-video w-full object-cover"
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        style={
+                          {
+                            viewTransitionName: `work-image-${project.data.slug}`,
+                          } as React.CSSProperties
+                        }
                       />
                     </div>
                   ) : (
-                    <div className="from-primary/20 to-primary/5 mb-4 grid size-16 place-items-center rounded bg-gradient-to-br">
-                      <span className="text-primary/30 text-2xl font-bold">
+                    <div className="from-primary/20 to-primary/5 grid aspect-video place-items-center bg-gradient-to-br">
+                      <span className="text-primary/30 text-4xl font-bold">
                         {project.data.title.charAt(0)}
                       </span>
                     </div>
                   )}
-                  <h3 className="group-hover:text-primary mb-2 text-lg font-semibold transition-colors">
-                    {project.data.title}
-                  </h3>
-                  <span className="text-foreground-muted/70 mb-3 text-xs">
+                </div>
+                <div
+                  className={`mt-4 flex w-full flex-col md:w-3/4 ${
+                    idx % 2 === 0 ? "" : "ml-auto"
+                  }`}
+                >
+                  <span className="text-foreground-muted/70 mb-2 text-xs">
                     {categoryLabels[project.data.category] ||
                       project.data.category}
                   </span>
-                  <p className="text-foreground-muted mt-auto text-sm">
+                  <h3 className="group-hover:text-primary text-2xl font-semibold transition-colors">
+                    {project.data.title}
+                  </h3>
+                  <p className="text-foreground-muted mt-2">
                     {project.data.description}
                   </p>
                 </div>
-              </motion.a>
-            ))}
-          </motion.div>
-        )}
+              </a>
+            </motion.li>
+          ))}
+        </motion.ul>
+      )}
 
-        {/* List View */}
-        {viewMode === "list" && (
-          <motion.ul
-            key="list"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="mt-16"
-          >
-            {posts.map((project, idx) => (
-              <motion.li
-                key={project.data.slug}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.3, delay: idx * 0.05 }}
-                className="border-lines border-b py-6 transition-colors"
-              >
-                <a
-                  href={`/work/${project.data.slug}`}
-                  className="group flex items-center justify-between gap-4"
-                >
-                  <div className="flex-1">
-                    <div className="mb-2 flex items-center gap-3">
-                      <h3 className="group-hover:text-primary text-lg! font-semibold transition-colors md:text-3xl!">
-                        {project.data.title}
-                      </h3>
-
-                      <span className="bg-foreground-muted/10 text-foreground-muted rounded-full px-2 py-1 text-xs">
-                        {categoryLabels[project.data.category] ||
-                          project.data.category}
-                      </span>
-                    </div>
-                    <p className="text-foreground-muted text-sm">
-                      {project.data.description}
-                    </p>
-                  </div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="text-foreground-muted group-hover:text-primary size-5 transition-all group-hover:translate-x-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 5l7 7-7 7"
+      {/* Grid View */}
+      {viewMode === "grid" && (
+        <motion.div
+          key="grid"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="mt-18 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+        >
+          {posts.map((project, idx) => (
+            <motion.a
+              key={project.data.slug}
+              href={`/work/${project.data.slug}`}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, delay: idx * 0.05 }}
+              className="border-lines hover:border-primary group block border bg-black/1 p-6 backdrop-blur-xs transition-colors"
+            >
+              <div className="flex h-full flex-col">
+                {project.data.logo ? (
+                  <div className="mb-4 grid size-16 place-items-center rounded bg-white">
+                    <img
+                      src={project.data.logo}
+                      alt={`${project.data.title} logo`}
+                      className="size-12 object-contain"
+                      style={
+                        {
+                          viewTransitionName: `work-image-${project.data.slug}`,
+                        } as React.CSSProperties
+                      }
                     />
-                  </svg>
-                </a>
-              </motion.li>
-            ))}
-          </motion.ul>
-        )}
-      </AnimatePresence>
+                  </div>
+                ) : project.data.heroImage ? (
+                  <div className="mb-4 overflow-hidden rounded">
+                    <img
+                      src={project.data.heroImage}
+                      alt={`${project.data.title} hero image`}
+                      className="aspect-video w-full object-cover"
+                      style={
+                        {
+                          viewTransitionName: `work-image-${project.data.slug}`,
+                        } as React.CSSProperties
+                      }
+                    />
+                  </div>
+                ) : (
+                  <div className="from-primary/20 to-primary/5 mb-4 grid size-16 place-items-center rounded bg-gradient-to-br">
+                    <span className="text-primary/30 text-2xl font-bold">
+                      {project.data.title.charAt(0)}
+                    </span>
+                  </div>
+                )}
+                <h3 className="group-hover:text-primary mb-2 text-lg font-semibold transition-colors">
+                  {project.data.title}
+                </h3>
+                <span className="text-foreground-muted/70 mb-3 text-xs">
+                  {categoryLabels[project.data.category] ||
+                    project.data.category}
+                </span>
+                <p className="text-foreground-muted mt-auto text-sm">
+                  {project.data.description}
+                </p>
+              </div>
+            </motion.a>
+          ))}
+        </motion.div>
+      )}
+
+      {/* List View */}
+      {viewMode === "list" && (
+        <motion.ul
+          key="list"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="mt-16"
+        >
+          {posts.map((project, idx) => (
+            <motion.li
+              key={project.data.slug}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: idx * 0.05 }}
+              className="border-lines border-b py-6 transition-colors"
+            >
+              <a
+                href={`/work/${project.data.slug}`}
+                className="group flex items-center justify-between gap-4"
+              >
+                <div className="flex-1">
+                  <div className="mb-2 flex items-center gap-3">
+                    <h3 className="group-hover:text-primary text-lg! font-semibold transition-colors md:text-3xl!">
+                      {project.data.title}
+                    </h3>
+
+                    <span className="bg-foreground-muted/10 text-foreground-muted rounded-full px-2 py-1 text-xs">
+                      {categoryLabels[project.data.category] ||
+                        project.data.category}
+                    </span>
+                  </div>
+                  <p className="text-foreground-muted text-sm">
+                    {project.data.description}
+                  </p>
+                </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="text-foreground-muted group-hover:text-primary size-5 transition-all group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </a>
+            </motion.li>
+          ))}
+        </motion.ul>
+      )}
     </>
   );
 }

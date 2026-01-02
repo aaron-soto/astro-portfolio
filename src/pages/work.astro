@@ -6,6 +6,7 @@ import {
   type CMSCache,
 } from "ayezee-astro-cms";
 import cmsData from "../data/cms-cache.json";
+import { slugify } from "../lib/utils";
 
 // Initialize CMS helper
 initCmsHelper(cmsData as CMSCache);
@@ -16,13 +17,14 @@ const cmsWorkData = getModuleDataBySlug("work");
 // Transform CMS data to match expected format
 const workPosts = cmsWorkData.map((item) => {
   const data = item.data as Record<string, any>;
+  const generatedSlug = data.slug || slugify(data.title || item.id);
 
   return {
     id: item.id,
-    slug: data.slug || item.id,
+    slug: generatedSlug,
     data: {
       title: data.title || "Untitled",
-      slug: data.slug || item.id,
+      slug: generatedSlug,
       description: data.description || "",
       category: data.category || "",
       heroImage: data.featured_image || "",
