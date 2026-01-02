@@ -5,6 +5,7 @@ import AaronLoganMarketImg from "../assets/images/aaron-logan-market.webp";
 import AyeZeeLogo from "../components/AyeZeeLogo.astro";
 import PhoenixTime from "../components/PhoenixTime";
 import Gallery from "../components/sections/Gallery.astro";
+import Arrow from "../components/icons/Arrow.astro";
 ---
 
 <Layout
@@ -124,9 +125,10 @@ import Gallery from "../components/sections/Gallery.astro";
       <a
         href="https://ayezeewebdesigns.com"
         target="_blank"
-        class="inline-block bg-neutral-950 hover:bg-neutral-900 border border-lines text-white px-9 py-3 transition-colors"
+        class="inline-flex items-center gap-4 bg-neutral-950 hover:bg-neutral-900 border border-lines text-white px-9 py-3 transition-colors group"
       >
         Visit AyeZee Web Designs
+        <Arrow class="inline group-hover:rotate-45 transition-all" />
       </a>
     </div>
 

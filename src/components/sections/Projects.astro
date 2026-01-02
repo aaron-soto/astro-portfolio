@@ -96,14 +96,6 @@ const recentProjects = workProjects.slice(1, 4);
                 {featuredProject.data.description}
               </p>
 
-              <div class="flex flex-wrap gap-2 mb-6">
-                {featuredProject.data.category && (
-                  <span class="px-3 py-1 bg-lines text-xs text-foreground-muted">
-                    {featuredProject.data.category}
-                  </span>
-                )}
-              </div>
-
               <div class="flex gap-3 mt-auto">
                 {featuredProject.data.url && (
                   <a
@@ -116,8 +108,9 @@ const recentProjects = workProjects.slice(1, 4);
                     View Live
                   </a>
                 )}
-                <span class="px-6 py-2.5 bg-primary hover:bg-primary/90 transition-all text-black font-medium text-center text-sm">
-                  Read More →
+                <span class="px-6 py-2.5 bg-transparent border border-primary text-primary hover:bg-primary transition-colors! hover:text-black font-medium text-center text-sm flex items-center gap-4 group">
+                  Read More{" "}
+                  <Arrow class="inline group-hover:rotate-45 transition-all" />
                 </span>
               </div>
             </div>
@@ -189,10 +182,10 @@ const recentProjects = workProjects.slice(1, 4);
     <div class="text-center">
       <a
         href="/work"
-        class="inline-flex items-center gap-2 px-8 py-3 border border-lines hover:border-primary hover:text-primary transition-all"
+        class="inline-flex items-center gap-4 px-8 py-3 border border-lines hover:border-primary hover:text-primary transition-all group"
       >
         <span>View All Work</span>
-        <Arrow class="inline rotate-45 size-4" />
+        <Arrow class="inline group-hover:rotate-45 transition-all size-4" />
       </a>
     </div>
   </div>

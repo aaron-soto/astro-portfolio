@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import BlogLayout from "../../components/BlogLayout.astro";
+import Arrow from "../../components/icons/Arrow.astro";
 import {
   initCmsHelper,
   getModuleDataBySlug,
@@ -8,7 +9,8 @@ import {
 } from "ayezee-astro-cms";
 import cmsData from "../../data/cms-cache.json";
 import { highlightCodeBlocks } from "../../lib/highlight-code";
-import { getAllTags, safeDate } from "../../lib/utils";
+import { getAllTags, safeDate, slugify } from "../../lib/utils";
+import "../../styles/content-sections.css";
 
 export async function getStaticPaths() {
   // Initialize CMS helper
@@ -21,14 +23,15 @@ export async function getStaticPaths() {
     const data = item.data as Record<string, any>;
     const pubDate = safeDate(data.pubDate || item.createdAt);
     const updatedDate = item.updatedAt ? safeDate(item.updatedAt) : undefined;
+    const generatedSlug = data.slug || slugify(data.title || item.id);
 
     return {
       id: item.id,
-      slug: data.slug || item.id,
+      slug: generatedSlug,
       body: data.content || "",
       data: {
         title: data.title || "Untitled",
-        slug: data.slug || item.id,
+        slug: generatedSlug,
         description: data.excerpt || data.description || "",
         pubDate,
         updatedDate,
@@ -66,7 +69,7 @@ export async function getStaticPaths() {
   // Generate individual blog post pages
   cmsBlogData.forEach((item) => {
     const data = item.data as Record<string, any>;
-    const slug = data.slug || item.id;
+    const slug = data.slug || slugify(data.title || item.id);
 
     // Only add if slug doesn't conflict with a tag
     const tagSlugs = allTags.map((tag) =>
@@ -91,6 +94,9 @@ export async function getStaticPaths() {
 }
 
 const { type, item, tag, posts, allTags } = Astro.props;
+
+// Get the slug from the URL params to ensure consistency
+const currentSlug = Astro.params.slug;
 
 // Prepare data for individual posts
 const data = type === "post" ? (item.data as Record<string, any>) : null;
@@ -118,49 +124,60 @@ if (type === "post" && !item) {
       title={data.title || "Untitled"}
       description={data.description || data.excerpt || ""}
     >
-      <article class="container mx-auto px-4 py-12 max-w-4xl">
-        {data.featured_image && (
-          <div class="mb-8">
-            <img
-              src={data.featured_image}
-              alt={data.heroAlt || `${data.title} hero image`}
-              class="w-full h-auto rounded-lg"
-            />
-          </div>
-        )}
+      <div class="relative">
+        <div class="container relative flex flex-col">
+          <a
+            href="/blog"
+            class="inline-flex items-center gap-4 text-foreground-muted hover:text-primary transition-colors mb-6 group w-fit"
+          >
+            <Arrow class="inline rotate-270 group-hover:rotate-225 transition-all" />
+            <span>Back to Blog</span>
+          </a>
 
-        <header class="mb-8">
-          <h1 class="text-4xl md:text-5xl font-bold mb-4">{data.title}</h1>
-
-          {data.description && (
-            <p class="text-xl text-neutral-300 leading-relaxed mb-4">
-              {data.description}
-            </p>
+          {data.featured_image && (
+            <div class="mb-6 max-w-3xl">
+              <img
+                src={data.featured_image}
+                alt={data.heroAlt || `${data.title} hero image`}
+                class="w-full object-cover"
+                transition:name={`blog-image-${currentSlug}`}
+              />
+            </div>
           )}
 
-          <div class="flex items-center gap-4 text-sm text-neutral-400">
-            {data.pubDate && (
-              <time datetime={new Date(data.pubDate).toISOString()}>
-                {new Date(data.pubDate).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </time>
+          <div>
+            <h1 class="text-3xl! md:text-5xl! font-bold mb-4">{data.title}</h1>
+
+            {data.description && (
+              <p class="text-lg text-neutral-300 leading-relaxed max-w-prose mb-4">
+                {data.description}
+              </p>
             )}
 
-            {data.category && (
-              <span class="px-3 py-1 bg-primary/20 text-primary rounded-full">
-                #{data.category}
-              </span>
-            )}
+            <div class="flex items-center gap-4 text-sm text-neutral-400 mb-6">
+              {data.pubDate && (
+                <time datetime={new Date(data.pubDate).toISOString()}>
+                  {new Date(data.pubDate).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+              )}
+
+              {data.category && (
+                <span class="px-3 py-1 bg-primary/20 text-primary rounded-full">
+                  #{data.category}
+                </span>
+              )}
+            </div>
           </div>
-        </header>
-
-        <div class="prose prose-invert prose-lg max-w-none content-sections">
-          <div set:html={highlightedContent} />
         </div>
-      </article>
+      </div>
+
+      <div class="container py-12 md:py-20">
+        <div class="content-sections" set:html={highlightedContent} />
+      </div>
     </Layout>
   ) : null
 }

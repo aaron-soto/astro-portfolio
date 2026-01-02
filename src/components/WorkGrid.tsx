@@ -6,6 +6,7 @@ interface Project {
     title: string;
     slug: string;
     description: string;
+    publishedDate: string;
     category: string;
     logo?: string;
     heroImage?: string;

@@ -1,6 +1,6 @@
 ---
 import BlogLayout from "../components/BlogLayout.astro";
-import { getAllTags, safeDate } from "../lib/utils";
+import { getAllTags, safeDate, slugify } from "../lib/utils";
 import {
   initCmsHelper,
   getModuleDataBySlug,
@@ -19,14 +19,15 @@ const blogPosts = cmsBlogData.map((item) => {
   const data = item.data as Record<string, any>;
   const pubDate = safeDate(data.pubDate || item.createdAt);
   const updatedDate = item.updatedAt ? safeDate(item.updatedAt) : undefined;
+  const generatedSlug = data.slug || slugify(data.title || item.id);
 
   return {
     id: item.id,
-    slug: data.slug || item.id,
+    slug: generatedSlug,
     body: data.content || "",
     data: {
       title: data.title || "Untitled",
-      slug: data.slug || item.id, // Add slug to data object for BlogGrid component
+      slug: generatedSlug, // Add slug to data object for BlogGrid component
       description: data.excerpt || data.description || "",
       pubDate,
       updatedDate,

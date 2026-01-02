@@ -128,7 +128,10 @@ export default function BlogGrid({
         </li>
         {allTags.map((tag) => {
           // Create URL-safe slug by replacing slashes and special characters
-          const tagSlug = tag.toLowerCase().replace(/\//g, '-').replace(/\s+/g, '-');
+          const tagSlug = tag
+            .toLowerCase()
+            .replace(/\//g, "-")
+            .replace(/\s+/g, "-");
           return (
             <li key={tag} className="my-2 mr-4 inline-block">
               <a
@@ -148,158 +151,165 @@ export default function BlogGrid({
 
       <ViewButtons className="mb-8" />
 
-      <AnimatePresence mode="wait">
-        {/* Staggered View */}
-        {viewMode === "staggered" && (
-          <motion.ul
-            key="staggered"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="col-span-4 grid w-full"
-          >
-            {posts.map((post, idx) => (
-              <motion.li
-                key={post.data.slug}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, delay: idx * 0.05 }}
-                className="blog-post my-6 md:my-20"
-              >
-                <a
-                  className="group flex flex-col"
-                  href={`/blog/${post.data.slug}`}
-                >
-                  <div
-                    className={`relative w-full overflow-hidden md:w-3/4 ${
-                      idx % 2 === 0 ? "float-left mr-4" : "ml-auto"
-                    }`}
-                  >
-                    <img
-                      src={post.data.heroImage}
-                      alt={post.data.heroAlt || "Blog Post Hero Image"}
-                      className="w-full transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-                  <div
-                    className={`mt-4 flex w-full flex-col md:w-3/4 ${
-                      idx % 2 === 0 ? "" : "ml-auto"
-                    }`}
-                  >
-                    <span className="text-foreground-muted my-1 text-sm">
-                      {formatDate(post.data.pubDate)}
-                    </span>
-                    <h3 className="group-hover:text-primary text-2xl! font-semibold transition-colors">
-                      {post.data.title}
-                    </h3>
-                  </div>
-                </a>
-              </motion.li>
-            ))}
-          </motion.ul>
-        )}
-
-        {/* Grid View */}
-        {viewMode === "grid" && (
-          <motion.div
-            key="grid"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
-          >
-            {posts.map((post, idx) => (
-              <motion.a
-                key={post.data.slug}
+      {/* Staggered View */}
+      {viewMode === "staggered" && (
+        <motion.ul
+          key="staggered"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="col-span-4 grid w-full"
+        >
+          {posts.map((post, idx) => (
+            <motion.li
+              key={post.data.slug}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: idx * 0.05 }}
+              className="blog-post my-6 md:my-20"
+            >
+              <a
+                className="group flex flex-col"
                 href={`/blog/${post.data.slug}`}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3, delay: idx * 0.05 }}
-                className="group block overflow-hidden"
               >
-                <div className="flex h-full flex-col">
-                  <div className="mb-4 overflow-hidden">
+                <div
+                  className={`relative w-full overflow-hidden md:w-3/4 ${
+                    idx % 2 === 0 ? "float-left mr-4" : "ml-auto"
+                  }`}
+                >
+                  <img
+                    src={post.data.heroImage}
+                    alt={post.data.heroAlt || "Blog Post Hero Image"}
+                    className="w-full transition-transform duration-300 group-hover:scale-105"
+                    style={
+                      {
+                        viewTransitionName: `blog-image-${post.data.slug}`,
+                      } as React.CSSProperties
+                    }
+                  />
+                </div>
+                <div
+                  className={`mt-4 flex w-full flex-col md:w-3/4 ${
+                    idx % 2 === 0 ? "" : "ml-auto"
+                  }`}
+                >
+                  <span className="text-foreground-muted my-1 text-sm">
+                    {formatDate(post.data.pubDate)}
+                  </span>
+                  <h3 className="group-hover:text-primary text-2xl! font-semibold transition-colors">
+                    {post.data.title}
+                  </h3>
+                </div>
+              </a>
+            </motion.li>
+          ))}
+        </motion.ul>
+      )}
+
+      {/* Grid View */}
+      {viewMode === "grid" && (
+        <motion.div
+          key="grid"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+        >
+          {posts.map((post, idx) => (
+            <motion.a
+              key={post.data.slug}
+              href={`/blog/${post.data.slug}`}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, delay: idx * 0.05 }}
+              className="group block overflow-hidden"
+            >
+              <div className="flex h-full flex-col">
+                <div className="mb-4 overflow-hidden">
+                  <img
+                    src={post.data.heroImage}
+                    alt={post.data.heroAlt || "Blog Post Hero Image"}
+                    className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    style={
+                      {
+                        viewTransitionName: `blog-image-${post.data.slug}`,
+                      } as React.CSSProperties
+                    }
+                  />
+                </div>
+                <span className="text-foreground-muted mb-2 text-xs">
+                  {formatDate(post.data.pubDate)}
+                </span>
+                <h3 className="group-hover:text-primary text-lg! font-semibold transition-colors md:text-2xl!">
+                  {post.data.title}
+                </h3>
+              </div>
+            </motion.a>
+          ))}
+        </motion.div>
+      )}
+
+      {/* List View */}
+      {viewMode === "list" && (
+        <motion.ul
+          key="list"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          {posts.map((post, idx) => (
+            <motion.li
+              key={post.data.slug}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: idx * 0.05 }}
+              className="border-lines border-b py-3 transition-colors md:py-6"
+            >
+              <a
+                href={`/blog/${post.data.slug}`}
+                className="group flex items-center justify-between gap-6"
+              >
+                <div className="flex flex-1 items-center gap-6">
+                  <div className="hidden w-32 flex-shrink-0 overflow-hidden sm:block">
                     <img
                       src={post.data.heroImage}
                       alt={post.data.heroAlt || "Blog Post Hero Image"}
                       className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      style={
+                        {
+                          viewTransitionName: `blog-image-${post.data.slug}`,
+                        } as React.CSSProperties
+                      }
                     />
                   </div>
-                  <span className="text-foreground-muted mb-2 text-xs">
-                    {formatDate(post.data.pubDate)}
-                  </span>
-                  <h3 className="group-hover:text-primary text-lg! font-semibold transition-colors md:text-2xl!">
-                    {post.data.title}
-                  </h3>
+                  <div className="flex-1">
+                    <h3 className="group-hover:text-primary text-lg! font-semibold transition-colors md:mb-1 md:text-xl">
+                      {post.data.title}
+                    </h3>
+                    <span className="text-foreground-muted text-sm">
+                      {formatDate(post.data.pubDate)}
+                    </span>
+                  </div>
                 </div>
-              </motion.a>
-            ))}
-          </motion.div>
-        )}
-
-        {/* List View */}
-        {viewMode === "list" && (
-          <motion.ul
-            key="list"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            {posts.map((post, idx) => (
-              <motion.li
-                key={post.data.slug}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.3, delay: idx * 0.05 }}
-                className="border-lines border-b py-3 transition-colors md:py-6"
-              >
-                <a
-                  href={`/blog/${post.data.slug}`}
-                  className="group flex items-center justify-between gap-6"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="text-foreground-muted group-hover:text-primary size-5 flex-shrink-0 transition-all group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  <div className="flex flex-1 items-center gap-6">
-                    <div className="hidden w-32 flex-shrink-0 overflow-hidden sm:block">
-                      <img
-                        src={post.data.heroImage}
-                        alt={post.data.heroAlt || "Blog Post Hero Image"}
-                        className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="group-hover:text-primary text-lg! font-semibold transition-colors md:mb-1 md:text-xl">
-                        {post.data.title}
-                      </h3>
-                      <span className="text-foreground-muted text-sm">
-                        {formatDate(post.data.pubDate)}
-                      </span>
-                    </div>
-                  </div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="text-foreground-muted group-hover:text-primary size-5 flex-shrink-0 transition-all group-hover:translate-x-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </a>
-              </motion.li>
-            ))}
-          </motion.ul>
-        )}
-      </AnimatePresence>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </a>
+            </motion.li>
+          ))}
+        </motion.ul>
+      )}
     </>
   );
 }

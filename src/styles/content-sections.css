@@ -133,25 +133,12 @@ html {
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid var(--color-lines);
   border-radius: 12px;
-  padding: 2rem;
+  padding: 1.2rem;
   margin: 2rem 0;
   overflow-x: auto;
   position: relative;
   backdrop-filter: blur(10px);
-}
-
-.content-sections pre::before {
-  content: "";
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  width: 12px;
-  height: 12px;
-  background: #ff5f56;
-  border-radius: 50%;
-  box-shadow:
-    20px 0 #ffbd2e,
-    40px 0 #27ca3f;
+  max-width: 660px;
 }
 
 .content-sections code {

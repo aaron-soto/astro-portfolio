@@ -2,6 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import WorkLayout from "../../components/WorkLayout.astro";
 import ExternalLink from "../../components/icons/ExternalLink.astro";
+import Arrow from "../../components/icons/Arrow.astro";
 import {
   initCmsHelper,
   getModuleDataBySlug,
@@ -118,7 +119,15 @@ if (!isCategory && !item) {
       description={data.description || data.excerpt || ""}
     >
       <div class="relative">
-        <div class="container relative pt-6 flex flex-col">
+        <div class="container relative flex flex-col">
+          <a
+            href="/work"
+            class="inline-flex items-center gap-4 text-foreground-muted hover:text-primary transition-colors mb-6 group w-fit"
+          >
+            <Arrow class="inline rotate-270 group-hover:rotate-225 transition-all" />
+            <span>Back to Work</span>
+          </a>
+
           {data.logo ? (
             <div class="bg-white aspect-square size-44 mb-6 grid place-items-center">
               <img
