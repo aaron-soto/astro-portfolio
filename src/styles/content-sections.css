@@ -59,7 +59,7 @@ html {
   color: var(--color-foreground-muted);
   font-size: 1.125rem;
   line-height: 1.7;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   position: relative;
   padding-left: 1rem;
   list-style: disc;
