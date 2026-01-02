@@ -4,7 +4,7 @@
   "description": "Portfolio of Aaron Soto, a veteran developer specializing in web development and custom software solutions.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#000000",
   "theme_color": "#000000",
   "icons": [
     {
