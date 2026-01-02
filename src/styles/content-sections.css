@@ -15,6 +15,10 @@ html {
   scroll-margin-top: 100px;
 }
 
+.content-sections :global(h2:first-child) {
+  margin-top: 0;
+}
+
 .content-sections :global(h3) {
   color: var(--color-foreground);
   font-size: 1.75rem;
