@@ -320,3 +320,34 @@ html {
   transform: translateZ(0); /* Force hardware acceleration */
   backface-visibility: hidden; /* Prevent flickering */
 }
+
+/* Reusable swipe reveal effect - add to image wrapper elements */
+.swipe-reveal {
+  clip-path: inset(0 100% 0 0);
+  animation: swipeReveal 0.2s linear forwards;
+}
+
+/* Slower variant for larger images */
+.swipe-reveal-slow {
+  clip-path: inset(0 100% 0 0);
+  animation: swipeReveal 0.6s linear forwards;
+}
+
+/* Swipe from left to right animation */
+@keyframes swipeReveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .swipe-reveal,
+  .swipe-reveal-slow {
+    animation: none;
+    clip-path: none;
+  }
+}
