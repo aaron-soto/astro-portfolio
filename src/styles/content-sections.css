@@ -91,7 +91,7 @@ html {
 .content-sections li strong {
   color: var(--color-primary);
   font-weight: 600;
-  display: block;
+  display: inline-block;
   margin-bottom: 0.25rem;
 }
 
