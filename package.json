@@ -18,7 +18,7 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "astro": "^5.15.1",
-    "ayezee-astro-cms": "^1.0.0",
+    "ayezee-astro-cms": "^1.2.2",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.25",
     "marked": "^17.0.1",
