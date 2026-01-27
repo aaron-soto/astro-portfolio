@@ -1,18 +1,9 @@
 ---
-import {
-  initCmsHelper,
-  getModuleByLabel,
-  type CMSCache,
-} from "ayezee-astro-cms";
-import cmsData from "../../data/cms-cache.json";
-
-// Initialize CMS helper
-initCmsHelper(cmsData as CMSCache);
+import { getModuleDataBySlug } from "../../data/cms";
 
 let testimonials: any = [];
 try {
-  const testimonialsModule = getModuleByLabel("Testimonials");
-  testimonials = testimonialsModule?.data || [];
+  testimonials = getModuleDataBySlug("testimonials");
 } catch (error) {
   console.warn("Failed to load testimonials:", error);
 }

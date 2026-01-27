@@ -3,20 +3,12 @@ import Layout from "../../layouts/Layout.astro";
 import WorkLayout from "../../components/WorkLayout.astro";
 import ExternalLink from "../../components/icons/ExternalLink.astro";
 import Arrow from "../../components/icons/Arrow.astro";
-import {
-  initCmsHelper,
-  getModuleDataBySlug,
-  type CMSCache,
-} from "ayezee-astro-cms";
-import cmsData from "../../data/cms-cache.json";
+import { getModuleDataBySlug } from "../../data/cms";
 import { highlightCodeBlocks } from "../../lib/highlight-code";
 import { getAllCategories, slugify } from "../../lib/utils";
 import "../../styles/content-sections.css";
 
 export async function getStaticPaths() {
-  // Initialize CMS helper
-  initCmsHelper(cmsData as CMSCache);
-
   const cmsWorkData = getModuleDataBySlug("work");
 
   // Transform CMS data to match expected format

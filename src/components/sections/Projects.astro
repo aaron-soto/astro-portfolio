@@ -1,15 +1,7 @@
 ---
 import Arrow from "../icons/Arrow.astro";
-import {
-  initCmsHelper,
-  getModuleDataBySlug,
-  type CMSCache,
-} from "ayezee-astro-cms";
-import cmsData from "../../data/cms-cache.json";
+import { getModuleDataBySlug } from "../../data/cms";
 import { slugify } from "../../lib/utils";
-
-// Initialize CMS helper
-initCmsHelper(cmsData as CMSCache);
 
 // Get work projects from CMS
 const cmsWorkData = getModuleDataBySlug("work");

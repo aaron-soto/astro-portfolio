@@ -1,17 +1,12 @@
 ---
-import { initCmsHelper, getModuleByLabel } from "ayezee-astro-cms";
-import cmsData from "../../data/cms-cache.json";
+import { getModuleDataBySlug } from "../../data/cms";
 import GalleryGrid from "../GalleryGrid";
-
-// Initialize CMS helper
-initCmsHelper(cmsData);
 
 let galleryItems: any[] = [];
 let error: string | null = null;
 
 try {
-  const galleryModule = getModuleByLabel("Gallery");
-  galleryItems = galleryModule?.data || [];
+  galleryItems = getModuleDataBySlug("gallery");
 } catch (err) {
   console.error("Failed to fetch gallery data:", err);
   error = err instanceof Error ? err.message : "Failed to load gallery";
