@@ -27,3 +27,8 @@ pnpm-debug.log*
 src/data/cms-cache.json
 src/data/cms-types.ts
 src/data/cms.ts
+src/data/cms-helper.ts
+src/data/form-handler.ts
+src/data/cloudinary-utils.ts
+src/data/business-hours-utils.ts
+src/data/AyezeeForm.astro

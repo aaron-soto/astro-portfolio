@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev --host",
+    "dev:fresh": "cross-env CMS_FRESH=true astro dev --host",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -18,7 +19,6 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "astro": "^5.15.1",
-    "ayezee-astro-cms": "^1.8.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.25",
     "marked": "^17.0.1",
@@ -28,6 +28,7 @@
     "tailwindcss": "^4.1.16"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.7.1"
   }
